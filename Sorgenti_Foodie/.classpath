@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="Test"/>
+	<classpathentry kind="lib" path="lib/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-annotations-2.16.1.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-2.16.1.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-databind-2.16.1.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.13.2.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-j-8.3.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/mich/Desktop/javafx-sdk-21.0.2/lib/javafx-swt.jar"/>
+	<classpathentry kind="lib" path="/Users/mich/Desktop/javafx-sdk-21.0.2/lib/javafx.base.jar"/>
+	<classpathentry kind="lib" path="/Users/mich/Desktop/javafx-sdk-21.0.2/lib/javafx.controls.jar"/>
+	<classpathentry kind="lib" path="/Users/mich/Desktop/javafx-sdk-21.0.2/lib/javafx.fxml.jar"/>
+	<classpathentry kind="lib" path="/Users/mich/Desktop/javafx-sdk-21.0.2/lib/javafx.graphics.jar"/>
+	<classpathentry kind="lib" path="/Users/mich/Desktop/javafx-sdk-21.0.2/lib/javafx.media.jar"/>
+	<classpathentry kind="lib" path="/Users/mich/Desktop/javafx-sdk-21.0.2/lib/javafx.swing.jar"/>
+	<classpathentry kind="lib" path="/Users/mich/Desktop/javafx-sdk-21.0.2/lib/javafx.web.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
