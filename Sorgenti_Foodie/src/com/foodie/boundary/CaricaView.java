@@ -23,6 +23,7 @@ public class CaricaView {  //CLASSE CON METODI PER CARICARE LE VIEW
 		return istanza;
 	}
 	
+	/*
 	public void caricaViewGestisciRicette(Stage primaryStage) {  //CARICA VIEW GESTISCI RICETTE
         try {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("GestisciRicetteView.fxml"));
@@ -39,11 +40,13 @@ public class CaricaView {  //CLASSE CON METODI PER CARICARE LE VIEW
             e.printStackTrace(); 
         }
     }
+    */
+	
 	
     public void tornaAlLogin(Stage primaryStage) { //CARICA VIEW LOGIN
         try { 
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/foodie/Applicazione/LoginView.fxml"));
-            LoginViewController loginViewController = LoginViewController.ottieniIstanza();
+            LoginViewController loginViewController = new LoginViewController(); //modificato singleton
             loader.setController(loginViewController);
             Parent root = loader.load();
             loginViewController.setPrimaryStage(primaryStage);
@@ -54,6 +57,7 @@ public class CaricaView {  //CLASSE CON METODI PER CARICARE LE VIEW
             e.printStackTrace(); 
         }
     }
+    
 	
 	public void caricaViewRicetta(Stage primaryStage) {  //CARICA VIEW DELLA RICETTA NUOVA DA CREARE
 		PubblicaRicettaController.creaRicetta(); //QUANDO ENTRO NELLA RICETTA CREO L'ISTANZA DELLA RICETTA
@@ -71,6 +75,7 @@ public class CaricaView {  //CLASSE CON METODI PER CARICARE LE VIEW
         }
 	}
 	
+	/*
 	public void caricaViewAreaPersonale(Stage primaryStage) {  //CARICA VIEW AREA PERSONALE	
 		AreaPersonaleViewController controllerAreaPersonale = AreaPersonaleViewController.ottieniIstanza();
 		try {
@@ -87,7 +92,10 @@ public class CaricaView {  //CLASSE CON METODI PER CARICARE LE VIEW
 			e.printStackTrace();
 		}
 	}
+	*/
 	
+	
+	/*
 	public void caricaViewDispensa(Stage primaryStage) {  //CARICA VIEW DISPENSA
 		try {
 			DispensaUtenteViewController dispensaUtenteViewController = DispensaUtenteViewController.ottieniIstanza();
@@ -103,5 +111,6 @@ public class CaricaView {  //CLASSE CON METODI PER CARICARE LE VIEW
             e.printStackTrace(); 
         }
 	}
+	*/
 	
 }

@@ -19,24 +19,30 @@ import com.foodie.model.Standard;
 import com.foodie.model.Utente;
 import com.foodie.model.UtenteEsistenteException;
 
-public class LoginController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOLO 1 ISTANZA!
+public class LoginController {
 	
 	private static LoginController istanza;
 	private static Utente utente=null;
 	private static LoginDao database;
-	private static DispensaDao databaseDispensa= DispensaImplementazioneDao.ottieniIstanza();
+	private static DispensaDao databaseDispensa = DispensaImplementazioneDao.ottieniIstanza();
 	private static AreaPersonaleDao databaseAreaPersonale= AreaPersonaleImplementazioneDao.ottieniIstanza();
 	private static final String MESSAGGIO= "PROBLEMA CON IL DB";
 	private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 	
 	private LoginController() {
+		try {
+			database = LoginImplementazioneDao.ottieniIstanza();
+		} catch (IOException e) {
+			logger.severe("Problema nel collegamento con il DB, termino l'applicazione");
+			System.exit(0);
+		}
 	}
 	
 	public static synchronized LoginController ottieniIstanza() { //METODO PER OTTENERE L'ISTANZA
 		if(istanza == null) {
 			istanza = new LoginController();
 			try {
-				database= LoginImplementazioneDao.ottieniIstanza();
+				database = LoginImplementazioneDao.ottieniIstanza();
 			} catch (IOException e) {
 				logger.severe("PROBLEMA CON IL COLLEGAMENTO DEL DB! TERMINO L'APPLICAZIONE");
 				System.exit(0);
@@ -45,12 +51,13 @@ public class LoginController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOLO 1 IST
 		return istanza;
 	}
 	
+	
 	public static void setUtente(String username, String tipo) {  //ISTANZIA L'UTENTE IN FUNZIONE DEL TIPO
 		if(tipo.equals("Standard")) {
-			utente= new Standard(username);
+			utente = new Standard(username);
 		}
 		else if(tipo.equals("Chef")) {
-			utente= new Chef(username);
+			utente = new Chef(username);
 		}
 		else {
 			utente= Moderatore.ottieniIstanza(username);
@@ -58,16 +65,13 @@ public class LoginController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOLO 1 IST
 		logger.info(username);
 	}
 	
-	public String ottieniView(int interfaccia) {  //RESTITUISCE LA VIEW DA CARICARE
-		return utente.getViewIniziale(interfaccia);
-	}
 	
 	public int effettuaLogin(String username, String pwd) {  //EFFETTUA IL LOGIN
 		try {
 			return database.validazioneLogin(username, pwd);
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.severe("ERRORE NELLA FASE DI LOGIN");
+			logger.severe("errore nella fase di login");
 			logger.info(MESSAGGIO);
 			return -1;
 		}
@@ -128,5 +132,9 @@ public class LoginController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOLO 1 IST
 	public Map<String,String> caricaAreaPersonale() {  //CARICA LA DESCRIZIONE DELL'AREA PERSONALE DA DB
 		return databaseAreaPersonale.caricaAreaPersonale();
     }
+	
+	public String ottieniView(int interfacciaSelezionata) {  // restituisce la view iniziale da caricare
+		return utente.getViewIniziale(interfacciaSelezionata);
+	}
 	
 }

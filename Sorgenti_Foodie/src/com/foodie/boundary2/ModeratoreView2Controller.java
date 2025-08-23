@@ -23,7 +23,7 @@ public class ModeratoreView2Controller implements Observer{
 	private AdattatoreFactory factory= AdattatoreFactory.ottieniIstanza();
 	private PubblicaRicettaController controller= PubblicaRicettaController.ottieniIstanza();
 	private ControllerAdapter adattatorePubblicaRicettaController= factory.creaPubblicaRicettaAdapter();
-	private static ModeratoreView2Controller istanza;
+	//private static ModeratoreView2Controller istanza;
 	private CaricaView2 caricaView2= CaricaView2.ottieniIstanza();
 	private Stage primaryStage;
 	private static final String FORMATO = "Arial";
@@ -34,6 +34,7 @@ public class ModeratoreView2Controller implements Observer{
 	@FXML
 	private VBox contenitoreRicetteDaApprovare;
 	
+	/*
 	private ModeratoreView2Controller() {
 	}
 	
@@ -42,6 +43,13 @@ public class ModeratoreView2Controller implements Observer{
 			istanza = new ModeratoreView2Controller();
 		}
 		return istanza;
+	}
+	*/
+	
+	@FXML
+	public void initialize() {
+		controller.registraOsservatore(this,3);
+		aggiornaView();
 	}
 	
 	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE

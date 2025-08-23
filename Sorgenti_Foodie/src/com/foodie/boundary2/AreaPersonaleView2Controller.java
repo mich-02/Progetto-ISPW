@@ -2,6 +2,8 @@ package com.foodie.boundary2;
 
 import java.util.Map;
 
+import com.foodie.boundary.components.ViewInfo;
+import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
 import com.foodie.controller.LoginController;
@@ -17,9 +19,9 @@ import javafx.stage.Stage;
 
 public class AreaPersonaleView2Controller {
 	
-	private static AreaPersonaleView2Controller istanza;
+	//private static AreaPersonaleView2Controller istanza;
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
-	private LoginController controller = LoginController.ottieniIstanza();
+	private LoginController controller = LoginController.ottieniIstanza(); //tolto singleton
 	private ControllerAdapter adattatoreLoginController= factory.creaLoginAdapter();
 	private CaricaView2 caricaView2= CaricaView2.ottieniIstanza();
 	private Stage primaryStage;
@@ -28,6 +30,7 @@ public class AreaPersonaleView2Controller {
 	@FXML
 	private Label usernameLabel;
 	
+	/*
 	private AreaPersonaleView2Controller() {
 		
 	}
@@ -38,6 +41,13 @@ public class AreaPersonaleView2Controller {
 		}
 		return istanza;
 	}
+	*/
+	
+	@FXML
+	public void initialize() {
+		caricaAreaPersonale();
+		aggiornaView();	
+	}
 
 	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
 		this.primaryStage= primaryStage;
@@ -45,7 +55,8 @@ public class AreaPersonaleView2Controller {
 	
 	@FXML
     private void tornaAlLogin(MouseEvent event) { //CARICA VIEW LOGIN
-        caricaView2.tornaAlLogin(primaryStage);
+       // caricaView2.tornaAlLogin(primaryStage);
+		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     }
 	
 	@FXML

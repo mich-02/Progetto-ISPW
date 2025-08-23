@@ -14,16 +14,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import com.foodie.boundary.components.ViewInfo;
+import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.LoginController;
 
 
 public class RegistratiViewController {
 	
-	private static RegistratiViewController istanza;  //SINGLETON
+	// private static RegistratiViewController istanza;  //SINGLETON
 	// Variabile per memorizzare il ruolo, 0 per l'utente base, 1 per lo chef
     private int ruolo;
 	private Stage primaryStage;
-    private LoginController controller = LoginController.ottieniIstanza();
+    private LoginController controller = LoginController.ottieniIstanza(); //tolto singleton
 	@FXML
     private RadioButton baseRadioButton;
     @FXML
@@ -44,6 +46,7 @@ public class RegistratiViewController {
     @FXML
     private Label esitoRegistrazioneLabel;
     
+    /*
     private RegistratiViewController() {
     }
     
@@ -53,6 +56,7 @@ public class RegistratiViewController {
 		}
 		return istanza;
 	}
+	*/
     
     @FXML
     public void initialize() {  //METODO PER INIZIALIZZARE
@@ -83,10 +87,10 @@ public class RegistratiViewController {
     
     @FXML
     public void indietroButtonOnAction(ActionEvent event) {  //RITORNA AL LOGIN
-    	
+    	/*
     	try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginView.fxml"));
-			LoginViewController loginViewController=LoginViewController.ottieniIstanza();
+			LoginViewController loginViewController= new LoginViewController(); //modificato singleton
 			loader.setController(loginViewController);
             Parent root = loader.load();
             loginViewController.setPrimaryStage(primaryStage);
@@ -98,6 +102,8 @@ public class RegistratiViewController {
     		e.printStackTrace();
     		e.getCause();
     	}
+    	*/
+    	ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     	
    }
    
@@ -135,7 +141,7 @@ public class RegistratiViewController {
     	pause.setOnFinished(event -> {
     		
     		try {
-    			LoginViewController loginViewController=LoginViewController.ottieniIstanza();
+    			LoginViewController loginViewController= new LoginViewController(); //modificato singleton
     			FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginView.fxml"));
                 loader.setController(loginViewController);
     			Parent root = loader.load();

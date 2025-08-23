@@ -16,11 +16,18 @@ import java.util.logging.Logger;
 public class DispensaImplementazioneDao implements DispensaDao{  //IMPLEMENTAZIONE DAO 
 	
 	private static DispensaImplementazioneDao istanza;
+	/*
 	private static Path currentPath = Paths.get("");
 	private static Path projectPath = currentPath.toAbsolutePath().normalize();
 	private static Path otherDirectory = projectPath.resolve("ClassiSerializzate");
 	private static Path filePath = otherDirectory.resolve("dispensa_data.ser");
 	private static final String PATH = filePath.toString();
+	*/
+	
+	private static final Path filePath = Paths.get("ClassiSerializzate/dispensa_data.ser").toAbsolutePath();
+   // private static final Path filePath = Paths.get("Sorgenti_Foodie/ClassiSerializzate/dispensa_data.ser").toAbsolutePath();
+    private static final String PATH = filePath.toString();
+    
 	private static final Logger logger = Logger.getLogger(DispensaImplementazioneDao.class.getName());
 	
 	private DispensaImplementazioneDao() {

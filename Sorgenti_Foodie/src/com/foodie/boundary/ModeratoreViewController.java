@@ -5,6 +5,8 @@ import java.util.List;
 import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.model.Observer;
 import com.foodie.model.RicettaBean;
+import com.foodie.boundary.components.ViewInfo;
+import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
 import javafx.event.ActionEvent;
@@ -32,6 +34,7 @@ public class ModeratoreViewController implements Observer{
 	@FXML
 	private VBox contenitoreContenutoRicetta;
 	
+	/*
 	private ModeratoreViewController() {
 	}
 	
@@ -40,6 +43,13 @@ public class ModeratoreViewController implements Observer{
 			istanza = new ModeratoreViewController();
 		}
 		return istanza;
+	}
+	*/
+	
+	@FXML
+	public void initialize() {
+		controller.registraOsservatore(this,3);
+		aggiornaView();
 	}
 	
 	@Override
@@ -127,7 +137,9 @@ public class ModeratoreViewController implements Observer{
 	
 	@FXML  
 	private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
-		caricaView.tornaAlLogin(primaryStage);
+		//caricaView.tornaAlLogin(primaryStage);
+		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
+		
 	}
 	
 }

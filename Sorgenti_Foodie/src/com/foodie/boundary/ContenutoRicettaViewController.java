@@ -1,6 +1,10 @@
 package com.foodie.boundary;
 
 import javafx.fxml.FXML;
+
+import com.foodie.boundary.components.ViewInfo;
+import com.foodie.boundary.components.ViewLoader;
+
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -39,8 +43,9 @@ public class ContenutoRicettaViewController {
 	}
 	
 	@FXML
-	public void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
-		caricaView.tornaAlLogin(primaryStage);
+	public void tornaAlLogin(MouseEvent event) {  
+		//caricaView.tornaAlLogin(primaryStage);
+		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
 	
 	public Label getNome() { //RESTITUICONO LABEL E INFINE VBOX

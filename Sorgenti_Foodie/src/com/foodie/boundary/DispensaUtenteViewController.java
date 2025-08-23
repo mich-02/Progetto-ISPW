@@ -1,9 +1,13 @@
 package com.foodie.boundary;
 
 import java.util.List;
+
+import com.foodie.boundary.components.ViewInfo;
+import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
 import com.foodie.controller.LoginController;
+import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.controller.TrovaRicettaController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,17 +23,19 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
 import com.foodie.model.AlimentoBean;
 import com.foodie.model.Observer;
 
 public class DispensaUtenteViewController implements Observer {
 	
-	private static DispensaUtenteViewController istanza;  //SINGLETON
+	//private static DispensaUtenteViewController istanza;  //SINGLETON
+	private PubblicaRicettaController controller1 = PubblicaRicettaController.ottieniIstanza();
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 	private TrovaRicettaController controller = TrovaRicettaController.ottieniIstanza();
 	private ControllerAdapter adattatoreTrovaRicettaController = factory.creaTrovaRicettaAdapter();
-	private LoginController controllerLogin = LoginController.ottieniIstanza();
-	private CaricaView caricaView= CaricaView.ottieniIstanza();
+	private LoginController loginController = LoginController.ottieniIstanza(); //tolto singleton
+//	private CaricaView caricaView = CaricaView.ottieniIstanza();
 	private boolean bottoneModifica = true;
 	private static final String FORMATO = "Arial";
 	private static final String DISPENSA = "La mia Dispensa";
@@ -45,6 +51,7 @@ public class DispensaUtenteViewController implements Observer {
 	@FXML
 	private Label labelDispensa;
 	
+	/*
 	private DispensaUtenteViewController() {
 	}
 	
@@ -53,6 +60,14 @@ public class DispensaUtenteViewController implements Observer {
 			istanza=new DispensaUtenteViewController();
 		}
 		return istanza;
+	}
+	*/
+	
+	@FXML
+	public void initialize() {
+		loginController.caricaDispense();
+		controller1.registraOsservatore(this, 1);
+		aggiornaView();
 	}
 	
 	public void setPrimaryStage(Stage primaryStage) { //PASSO LO STAGE
@@ -64,6 +79,7 @@ public class DispensaUtenteViewController implements Observer {
 		controller.svuotaDispensa();
 	}
 	
+	/*
 	@FXML
 	private void caricaViewTrovaRicetta(ActionEvent event) {  //CARICA LA VIEW TROVA RICETTA
 		try {
@@ -85,7 +101,20 @@ public class DispensaUtenteViewController implements Observer {
             e.printStackTrace(); 
         }
 	}
+	*/ //old
 	
+	@FXML
+	private void caricaViewTrovaRicetta(ActionEvent event) {  //CARICA LA VIEW TROVA RICETTA
+		
+			if(!bottoneModifica) { //resettare il bottone modifica se attivo
+				bottoneModifica=true;
+				labelDispensa.setFont(Font.font(FORMATO,30));
+				labelDispensa.setText(DISPENSA);
+			}
+			ViewLoader.caricaView(ViewInfo.TROVA_RICETTE);
+	}
+	
+	/*
 	private void trovaRicette(TrovaRicetteViewController trovaRicetteViewController) {  //AGGIORNO DINAMICAMENTE L'FXML TROVANDO SUBITO LE RICETTE 									//LE RICETTE TROVATE SONO PER TUTTE LE DIFFICOLTA' INIZIALMENTE
 		int count=0;
 		VBox contenitoreRicette=trovaRicetteViewController.getContenitoreRicette();
@@ -105,11 +134,13 @@ public class DispensaUtenteViewController implements Observer {
 			contenitoreRicette.getChildren().add(label);
 		}
 	}
+	*/
 	
 	@FXML
 	private void tornaAlLogin(MouseEvent event) {  //CARICA LA VIEW LOGIN
 		controller.svuotaDispensa();
-		caricaView.tornaAlLogin(primaryStage);
+		//caricaView.tornaAlLogin(primaryStage);
+		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
 	
 	@FXML  
@@ -167,7 +198,7 @@ public class DispensaUtenteViewController implements Observer {
 		if(contenitoreDispensa!=null && !contenitoreDispensa.getChildren().isEmpty()) {
 			contenitoreDispensa.getChildren().clear();
 		}
-		List<AlimentoBean> alimentiBeanDispensa =adattatoreTrovaRicettaController.mostraLaDispensa();
+		List<AlimentoBean> alimentiBeanDispensa = adattatoreTrovaRicettaController.mostraLaDispensa();
 		if(!alimentiBeanDispensa.isEmpty()) {
 			for(AlimentoBean a: alimentiBeanDispensa) {
 				Label labelAlimento = new Label(a.getNome());
@@ -231,7 +262,7 @@ public class DispensaUtenteViewController implements Observer {
 	
 	@FXML
 	private void salvaDispensa(ActionEvent event) {  //SALVA LA DISPENSA
-		controllerLogin.salvaDispensa();
+		loginController.salvaDispensa();
 	}
 	
 }

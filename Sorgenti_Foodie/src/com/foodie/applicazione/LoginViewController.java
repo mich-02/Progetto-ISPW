@@ -18,6 +18,8 @@ import java.util.logging.Logger;
 import com.foodie.boundary.AreaPersonaleViewController;
 import com.foodie.boundary.DispensaUtenteViewController;
 import com.foodie.boundary.ModeratoreViewController;
+import com.foodie.boundary.components.ViewInfo;
+import com.foodie.boundary.components.ViewLoader;
 import com.foodie.boundary2.AggiungiAlimentoView2Controller;
 import com.foodie.boundary2.AreaPersonaleView2Controller;
 import com.foodie.boundary2.ModeratoreView2Controller;
@@ -27,12 +29,13 @@ import com.foodie.model.Dispensa;
 
 public class LoginViewController {
 	
-	private static LoginViewController istanza;  //SINGLETON
+	// private static LoginViewController istanza;  //SINGLETON
 	private int interfaccia;
 	private Stage primaryStage;
-	private LoginController controller = LoginController.ottieniIstanza();
-	private PubblicaRicettaController controller2 = PubblicaRicettaController.ottieniIstanza();
+	//private LoginController controller = LoginController.ottieniIstanza();
+//	private PubblicaRicettaController controller = PubblicaRicettaController.ottieniIstanza();
 	private static final Logger logger = Logger.getLogger(LoginViewController.class.getName());
+	
 	@FXML
 	private Button registratiButton;
 	@FXML
@@ -51,7 +54,10 @@ public class LoginViewController {
     private RadioButton interfaccia2RadioButton;
     @FXML
     private ToggleGroup userTypeToggleGroup;
+    
+    private LoginController loginController = LoginController.ottieniIstanza();
 	
+    /*
     private LoginViewController() {
     }
     
@@ -61,6 +67,8 @@ public class LoginViewController {
 		}
 		return istanza;
 	}
+	MODIFICATO
+	*/ 
     
 	@FXML
     private void initialize() {  //METODO PER INIZIALIZZARE
@@ -78,7 +86,7 @@ public class LoginViewController {
         interfaccia = 1;
     }
 	
-    private void closeApplication() {  //CHIUDI L'APP
+    private void closeApplication() {  // chiusura applicazione
         Stage stage = (Stage)chiudiLabel.getScene().getWindow();
         stage.close();
     }
@@ -95,53 +103,64 @@ public class LoginViewController {
 	}
 	
 	@FXML
-	public void registratiButtonOnAction(ActionEvent event) {  //SE CLICCATO CHIAMO IL METODO
+	public void registratiButtonOnAction(ActionEvent event) {  // operazione invocata alla pressione del tasto Registrati
 		creaAccount();
 	}
 	
 	public void validazioneLogin() {  //METODO PER FARE IL LOGIN E VIENE IMPOSTATO L'UTENTE CORRENTE
-		String username=usernameTextField.getText();
-		String password=enterPasswordField.getText();
-		int tipo=controller.effettuaLogin(username, password);  //CONTROLLO SE CORRETTO
-		String ruolo=""; //TIPO DI UTENTE
-		if(tipo!= -1) {
-			if(tipo==0) {
-				ruolo="Standard";		
+		String username = usernameTextField.getText();
+		String password = enterPasswordField.getText();
+		int tipo = loginController.effettuaLogin(username, password);  //CONTROLLO SE CORRETTO
+		String ruolo = ""; //TIPO DI UTENTE
+		if(tipo != -1) {
+			if(tipo == 0) {
+				ruolo = "Standard";		
 			}
-			else if(tipo==1){
-				ruolo="Chef";
+			else if(tipo == 1){
+				ruolo = "Chef";
 			}
 			else {
-				ruolo="Moderatore";
+				ruolo = "Moderatore";
 			}
 			LoginController.setUtente(username.toLowerCase(), ruolo); //METTO USERNAME IN MINUSCOLE PER EVITARE INCONGRUENZE NEL CARICAMENTO DELLA DISPENSA O AREA PERSONALE
-			if(interfaccia1RadioButton.isSelected()) { //VEDI LA GUI DA AVVIARE
+			
+			if(interfaccia1RadioButton.isSelected()) { // verifico la GUI da attivare 
 				interfaccia = 1;
 			} else {
 				interfaccia = 2;
 			}
+			/*
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource(controller.ottieniView(interfaccia)));  // SFRUTTI POLIMORFISMO NEL CONTROLLER PER OTTENERE LA VIEW CORRETTA	            
 	            caricaViewEController(loader,ruolo); //CARICA VIEW CORRETTA
 	        }catch (IOException e) {
 	            e.printStackTrace();
 	        }
+	        */
+			String viewIniziale = loginController.ottieniView(interfaccia);
+			if(tipo == 0) {
+				Dispensa dispensa = Dispensa.ottieniIstanza();
+            	dispensa.svuotaDispensa();
+            	loginController.caricaDispense();
+			}
+			ViewLoader.caricaView(ViewInfo.fromFxmlPath(viewIniziale));
 		}
+		
 		else {  	//SE TIPO ==-1 ERRORE NEL LOGIN
 			loginMessageLabel.setText("credenziali errate. Se non hai ancora un account, registrati.");
 		}
 	}
-	
+	/*
 	private void caricaViewEController(FXMLLoader loader,String ruolo) throws IOException{ //METODO PER CARICARE LA VIEW CORRETTA  PER EVITARE COMPLESSITA' SMELL       
         Parent root = null;
 		switch (ruolo) { 
             case "Standard":  //SE STANDARD CARICHI LE INTERFACCE RELATIVE PER L'UTENTE STANDARD
             	Dispensa dispensa = Dispensa.ottieniIstanza();
             	dispensa.svuotaDispensa();
-                if (interfaccia == 1) {
+                if (interfaccia == 1) { //risolto
                 	DispensaUtenteViewController controllerDispensa = DispensaUtenteViewController.ottieniIstanza();
                     loader.setController(controllerDispensa);
-                    controller2.registraOsservatore(controllerDispensa, 1);
+                    controller.registraOsservatore(controllerDispensa, 1);
                     root = loader.load();
                     controllerDispensa.setPrimaryStage(primaryStage);
                 } else {
@@ -150,17 +169,17 @@ public class LoginViewController {
                     root = loader.load();
                     controllerAlimenti.setPrimaryStage(primaryStage);
                 }
-                controller.caricaDispense();
+                loginController.caricaDispense();
                 break;
             case "Chef": //SE CHEF CARICHI LE INTERFACCE RELATIVE PER L'UTENTE CHEF
-                if (interfaccia == 1) {
+                if (interfaccia == 1) { //risolto
                 	AreaPersonaleViewController controllerAreaPersonale = AreaPersonaleViewController.ottieniIstanza();
                     loader.setController(controllerAreaPersonale);
                     root = loader.load();
                     controllerAreaPersonale.setPrimaryStage(primaryStage);
                     controllerAreaPersonale.caricaAreaPersonale();
                     controllerAreaPersonale.aggiornaView();
-                } else {
+                } else { //risolto
                     AreaPersonaleView2Controller areaPersonaleController = AreaPersonaleView2Controller.ottieniIstanza();
                     loader.setController(areaPersonaleController);
                     root = loader.load();
@@ -170,17 +189,17 @@ public class LoginViewController {
                 }
                 break;
             case "Moderatore": //SE MODERATORE CARICHI LE INTERFACCE RELATIVE PER L'UTENTE MODERATORE    
-            	if (interfaccia == 1) {
-                	ModeratoreViewController controllerModeratore= ModeratoreViewController.ottieniIstanza();
+            	if (interfaccia == 1) { //risolto
+                	ModeratoreViewController controllerModeratore = ModeratoreViewController.ottieniIstanza();
                     loader.setController(controllerModeratore);
-                    controller2.registraOsservatore(controllerModeratore,3);
+                    controller.registraOsservatore(controllerModeratore,3);
                     root = loader.load();
                     controllerModeratore.setPrimaryStage(primaryStage);
                     controllerModeratore.aggiornaView();
-                } else {
+                } else { 
                 	ModeratoreView2Controller controllerModeratore2= ModeratoreView2Controller.ottieniIstanza();
                     loader.setController(controllerModeratore2);
-                    controller2.registraOsservatore(controllerModeratore2,3);
+                    controller.registraOsservatore(controllerModeratore2,3);
                     root = loader.load();
                     controllerModeratore2.setPrimaryStage(primaryStage);
                     controllerModeratore2.aggiornaView();
@@ -195,11 +214,13 @@ public class LoginViewController {
         primaryStage.setScene(scene);
         primaryStage.show();
 	}
+	*/
 	
-	public void creaAccount() {  //CARICA LA VIEW PER LA PAGINA DI REGISTRAZIONE
+	private void creaAccount() {  //CARICA LA VIEW PER LA PAGINA DI REGISTRAZIONE
+	/*
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("RegistratiView.fxml"));
-			RegistratiViewController controllerRegistrazione= RegistratiViewController.ottieniIstanza();
+			RegistratiViewController controllerRegistrazione = new RegistratiViewController();
 			loader.setController(controllerRegistrazione);
 			Parent root = loader.load();
 			controllerRegistrazione.setPrimaryStage(primaryStage);
@@ -211,6 +232,8 @@ public class LoginViewController {
 			e.printStackTrace();
 			e.getCause();
 		}
+		*/
+		ViewLoader.caricaView(ViewInfo.REGISTRAZIONE_VIEW);
 	}
 	
 	public void setPrimaryStage(Stage primaryStage) { //PASSO LO STAGE

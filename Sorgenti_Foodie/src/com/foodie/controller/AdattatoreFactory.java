@@ -15,6 +15,7 @@ public class AdattatoreFactory {  //SINGLETON, IL FACTORY DEVE AVERE SOLO 1 ISTA
 	}
 	
 	public LoginControllerAdapter creaLoginAdapter() {  //CREA IL PRODOTTO CONCRETO OVVERO LOGIN ADAPTER
+		//return LoginControllerAdapter.ottieniIstanza(LoginController().ottieniIstanza());
 		return LoginControllerAdapter.ottieniIstanza(LoginController.ottieniIstanza());
 	}
 	

@@ -22,7 +22,7 @@ public class AggiungiAlimentoView2Controller {
 	private static AggiungiAlimentoView2Controller istanza;
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 	private ControllerAdapter adattatoreTrovaRicettaController = factory.creaTrovaRicettaAdapter();
-	private LoginController loginController = LoginController.ottieniIstanza();
+	private LoginController loginController = LoginController.ottieniIstanza(); //tolto singleton
 	private CaricaView2 caricaView2= CaricaView2.ottieniIstanza();
 	private Stage primaryStage;
 	@FXML

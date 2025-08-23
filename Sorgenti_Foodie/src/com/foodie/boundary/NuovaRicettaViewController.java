@@ -5,6 +5,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import com.foodie.controller.PubblicaRicettaController;
+import com.foodie.boundary.components.ViewInfo;
+import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
 import com.foodie.model.RicettaBean;
@@ -25,12 +27,12 @@ import javafx.stage.Stage;
 
 public class NuovaRicettaViewController {
 	
-	private static NuovaRicettaViewController istanza;
+	//private static NuovaRicettaViewController istanza;
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
-	private PubblicaRicettaController controller=PubblicaRicettaController.ottieniIstanza();
+	private PubblicaRicettaController controller = PubblicaRicettaController.ottieniIstanza();
 	private ControllerAdapter adattatorePubblicaRicettaController = factory.creaPubblicaRicettaAdapter();
 	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
-	private CaricaView caricaView= CaricaView.ottieniIstanza();
+	//private CaricaView caricaView = CaricaView.ottieniIstanza();
 	private Stage primaryStage;
 	private static final Logger logger = Logger.getLogger(NuovaRicettaViewController.class.getName());
 	@FXML
@@ -48,6 +50,7 @@ public class NuovaRicettaViewController {
 	@FXML
 	private Button pubblica;
 	
+	/*
 	private NuovaRicettaViewController() {
 	}
 	
@@ -57,6 +60,8 @@ public class NuovaRicettaViewController {
 		}
 		return istanza;
 	}
+	*/
+	
 	
 	public void setPrimaryStage(Stage primaryStage) { //PASSO LO STAGE
 		this.primaryStage= primaryStage;
@@ -85,13 +90,8 @@ public class NuovaRicettaViewController {
 	}
 	
 	@FXML
-	private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
-		caricaView.tornaAlLogin(primaryStage);
-	}
-	
-	@FXML
-	private void caricaViewIngredienti(ActionEvent event) {  //CARICA VIEW INGREDIENTI
-		InserisciIngredienteViewController inserisciIngredienteViewController =InserisciIngredienteViewController.ottieniIstanza();
+	private void caricaViewIngredienti(ActionEvent event) {  // tasto in basso a sx
+		InserisciIngredienteViewController inserisciIngredienteViewController = InserisciIngredienteViewController.ottieniIstanza();
 		if(nome.getText()!=null) {  //PASSA LO STATO ATTUALE PER RIPOPOLARLO IN SEGUITO
 			inserisciIngredienteViewController.setNome(nome.getText());
 		}
@@ -108,22 +108,23 @@ public class NuovaRicettaViewController {
 			inserisciIngredienteViewController.setDifficolta(3);
 		}
 		try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("InserisciIngredienteView.fxml"));
-            loader.setController(inserisciIngredienteViewController);
-			controller.registraOsservatore(inserisciIngredienteViewController, 2);
-            Parent root = loader.load();
-            inserisciIngredienteViewController.setPrimaryStage(primaryStage);
-            inserisciIngredienteViewController.aggiornaView();
-            Scene nuovaScena = new Scene(root);
-            primaryStage.setScene(nuovaScena);
-            primaryStage.show();
-        } catch (Exception e) {
-            e.printStackTrace(); 
-        }
+
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("InserisciIngredienteView.fxml"));
+          loader.setController(inserisciIngredienteViewController);
+          controller.registraOsservatore(inserisciIngredienteViewController, 2);
+          Parent root = loader.load();
+          inserisciIngredienteViewController.setPrimaryStage(primaryStage);
+          inserisciIngredienteViewController.aggiornaView();
+          Scene nuovaScena = new Scene(root);
+          primaryStage.setScene(nuovaScena);
+          primaryStage.show();
+		} catch (Exception e) {
+          e.printStackTrace(); 
+      }
 	}
 	
 	@FXML
-	private void compilaRicetta(ActionEvent event) {  //METODO PER COMPILARE RICETTA E RICHIEDERE LA PUBBLICAZIONE
+	private void compilaRicetta(ActionEvent event) {  //tasto Richiedi pubblicazione
 		RicettaBean ricettaBean= new RicettaBean();
 		String testo = nome.getText().trim();
 		if(!testo.isEmpty()) {
@@ -224,7 +225,7 @@ public class NuovaRicettaViewController {
 	}
 	
 	@FXML
-	private void disabilitaPulsanti(ActionEvent event) {  //METODO PER CLICCARE SOLO UNA DIFFICOLTA' PER VOLTA
+	private void disabilitaPulsanti(ActionEvent event) {  //per cliccare solo una difficoltà alla volta 
 		if (facile.isSelected()) {
 		    medio.setDisable(true);
 		    difficile.setDisable(true);
@@ -242,13 +243,21 @@ public class NuovaRicettaViewController {
 	}
 	
 	@FXML
-	private void caricaViewAreaPersonale(ActionEvent event) {  //CARICA VIEW AREA PERSONALE		
-		caricaView.caricaViewAreaPersonale(primaryStage);
+	private void caricaViewAreaPersonale(ActionEvent event) { 	
+		//caricaView.caricaViewAreaPersonale(primaryStage);
+		ViewLoader.caricaView(ViewInfo.AREA_CHEF1);
 	}
 	
 	@FXML
-    private void caricaViewGestisciRicette(ActionEvent event) {  //CARICA VIEW GESTISCI RICETTE
-        caricaView.caricaViewGestisciRicette(primaryStage);
+    private void caricaViewGestisciRicette(ActionEvent event) { 
+		ViewLoader.caricaView(ViewInfo.GESTISCI_RICETTE1);
+		//caricaView.caricaViewGestisciRicette(primaryStage);
     }
+	
+	@FXML
+	private void tornaAlLogin(MouseEvent event) {  
+		//caricaView.tornaAlLogin(primaryStage);
+		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
+	}
 	
 }

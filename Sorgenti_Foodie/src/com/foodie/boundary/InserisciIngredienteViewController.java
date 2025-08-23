@@ -1,6 +1,9 @@
 package com.foodie.boundary;
 
 import java.util.List;
+
+import com.foodie.boundary.components.ViewInfo;
+import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
 import com.foodie.controller.PubblicaRicettaController;
@@ -29,7 +32,7 @@ public class InserisciIngredienteViewController implements Observer{
 	private PubblicaRicettaController controller = PubblicaRicettaController.ottieniIstanza();
 	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
 	private ControllerAdapter adattatorePubblicaRicettaController = PubblicaRicettaControllerAdapter.ottieniIstanza(controller);
-	private CaricaView caricaView= CaricaView.ottieniIstanza();
+//	private CaricaView caricaView = CaricaView.ottieniIstanza();
 	private boolean bottoneModifica = true;
 	private Stage primaryStage;
 	private static final String FORMATO = "Arial";
@@ -48,6 +51,13 @@ public class InserisciIngredienteViewController implements Observer{
 	private String descrizione;
 	private int difficolta;
 	
+	@FXML
+	public void initialize() {
+		controller.registraOsservatore(this, 2);
+		aggiornaView();
+	}
+	
+	
 	private InserisciIngredienteViewController() {
 	}
 	
@@ -57,6 +67,7 @@ public class InserisciIngredienteViewController implements Observer{
 		}
 		return istanza;
 	}
+	
 	
 	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
 		this.primaryStage= primaryStage;
@@ -92,16 +103,18 @@ public class InserisciIngredienteViewController implements Observer{
 			this.quantita.setPromptText("QUANTITA?");
 		}
 	}
-	
+/*
 	@FXML
-	public void caricaViewRicetta(ActionEvent event) {  //CARICA VIEW RICETTA
+	public void caricaViewRicetta(ActionEvent event) {  //tasto Torna alla ricetta
 		try {
 			if(!bottoneModifica) { //resettare il bottone modifica se attivo
 				bottoneModifica=true;
 				labelIngredienti.setFont(Font.font(FORMATO,30));
 				labelIngredienti.setText("La mia Dispensa");
 			}
+			
             FXMLLoader loader = new FXMLLoader(getClass().getResource("NuovaRicettaView.fxml"));
+            NuovaRicettaViewController nuovaRicettaViewController = new NuovaRicettaViewController();
             NuovaRicettaViewController nuovaRicettaViewController= NuovaRicettaViewController.ottieniIstanza();
             loader.setController(nuovaRicettaViewController);
             Parent root = loader.load();
@@ -111,13 +124,26 @@ public class InserisciIngredienteViewController implements Observer{
             primaryStage.setScene(nuovaScena);
             primaryStage.show();
         } catch (Exception e) {
-            e.printStackTrace(); 
-        }
+          e.printStackTrace(); 
+	}
+       
+      }
+*/ //old
+	
+	@FXML
+	public void caricaViewRicetta(ActionEvent event) {  //tasto Torna alla ricetta
+			if(!bottoneModifica) { //resettare il bottone modifica se attivo
+				bottoneModifica=true;
+				labelIngredienti.setFont(Font.font(FORMATO,30));
+				labelIngredienti.setText("La mia Dispensa");
+			}
+			ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
 	}
 	
 	@FXML
-	public void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
-		caricaView.tornaAlLogin(primaryStage);
+	public void tornaAlLogin(MouseEvent event) { 
+		//caricaView.tornaAlLogin(primaryStage);
+		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
 	
 	private void trovaAlimenti() { //GESTISCE IL TROVA ALIMENTI
@@ -198,7 +224,7 @@ public class InserisciIngredienteViewController implements Observer{
 	}
 	
 	@FXML
-	private void modificaIngredienti(ActionEvent e) {  //GESTISCE PULSANTE MODIFICA
+	private void modificaIngredienti(ActionEvent e) {  //tasto Modifica
 		if(bottoneModifica && !contenitoreIngredienti.getChildren().isEmpty()) {
 			bottoneModifica=false;
 			labelIngredienti.setFont(Font.font(FORMATO,20));
@@ -230,13 +256,15 @@ public class InserisciIngredienteViewController implements Observer{
 	}
 	
 	@FXML
-	private void caricaViewAreaPersonale(ActionEvent event) {  //CARICA VIEW AREA PERSONALE
-		caricaView.caricaViewAreaPersonale(primaryStage);
+	private void caricaViewAreaPersonale(ActionEvent event) {  
+		//caricaView.caricaViewAreaPersonale(primaryStage);
+		ViewLoader.caricaView(ViewInfo.AREA_CHEF1);
 	}
 	
 	@FXML
     private void caricaViewGestisciRicette(ActionEvent event) {  //CARICA VIEW GESTISCI RICETTE
-        caricaView.caricaViewGestisciRicette(primaryStage);
+        //caricaView.caricaViewGestisciRicette(primaryStage);
+		ViewLoader.caricaView(ViewInfo.GESTISCI_RICETTE1);
     }
 	
 }

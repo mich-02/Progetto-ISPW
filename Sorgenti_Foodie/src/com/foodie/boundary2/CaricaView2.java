@@ -26,7 +26,7 @@ public class CaricaView2 {
 	public void tornaAlLogin(Stage primaryStage) { //CARICA VIEW LOGIN
         try { 
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/foodie/Applicazione/LoginView.fxml"));
-            LoginViewController loginViewController = LoginViewController.ottieniIstanza();
+            LoginViewController loginViewController = new LoginViewController(); //modificato singleton
             loader.setController(loginViewController);
             Parent root = loader.load();
             loginViewController.setPrimaryStage(primaryStage);
@@ -123,6 +123,7 @@ public class CaricaView2 {
         }
     }
     
+    
 	public void caricaViewAreaPersonale(Stage primaryStage) {  //CARICA VIEW AREA PERSONALE
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("AreaPersonaleView2.fxml"));
 		AreaPersonaleView2Controller controllerAreaPersonale = AreaPersonaleView2Controller.ottieniIstanza();
@@ -142,5 +143,6 @@ public class CaricaView2 {
 			e.printStackTrace();
 		}
 	}
+	
     
 }

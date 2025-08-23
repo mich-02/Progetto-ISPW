@@ -23,7 +23,7 @@ public class DispensaView2Controller implements Observer{
 	private static DispensaView2Controller istanza;
 	private AdattatoreFactory factory= AdattatoreFactory.ottieniIstanza();
 	private TrovaRicettaController controller = TrovaRicettaController.ottieniIstanza();
-	private LoginController loginController= LoginController.ottieniIstanza();
+	private LoginController loginController= LoginController.ottieniIstanza(); //tolto singleton
 	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
 	private CaricaView2 caricaView2= CaricaView2.ottieniIstanza();
 	private Stage primaryStage;
