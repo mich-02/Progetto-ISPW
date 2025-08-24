@@ -22,7 +22,7 @@ public class PubblicaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE 
 	private static PubblicaRicettaController istanza;
 	private static CatalogoRicetteChefDao database;
 	private static Moderatore moderatore;
-	private static Ricetta ricetta=null;
+	private static Ricetta ricetta = new Ricetta();
 	private static final Logger logger = Logger.getLogger(PubblicaRicettaController.class.getName());
 	
 	private PubblicaRicettaController() {

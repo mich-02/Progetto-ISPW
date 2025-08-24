@@ -149,7 +149,7 @@ public class GestisciRicetteViewController {
 				eliminaLabel.setText("");
 			}
 			
-			FXMLLoader loader = ViewLoader.caricaView(ViewInfo.CONTENUTO_RIC);
+			FXMLLoader loader = ViewLoader.caricaView(ViewInfo.CONTENUTO_RIC_CHEF);
 			ContenutoRicettaChefViewController contenutoRicettaChefViewController = loader.getController();
 			
 			// Passiamo il bean al controller tramite initData

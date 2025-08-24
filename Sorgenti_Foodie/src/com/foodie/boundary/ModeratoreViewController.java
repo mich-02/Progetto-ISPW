@@ -21,12 +21,12 @@ import javafx.stage.Stage;
 
 public class ModeratoreViewController implements Observer{
 	
-	private static ModeratoreViewController istanza;
+	//private static ModeratoreViewController istanza;
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 	private PubblicaRicettaController controller = PubblicaRicettaController.ottieniIstanza();
 	private ControllerAdapter adattatorePubblicaRicettaController = factory.creaPubblicaRicettaAdapter();
-	private CaricaView caricaView= CaricaView.ottieniIstanza();
-	private Stage primaryStage;
+	//private CaricaView caricaView= CaricaView.ottieniIstanza();
+	//private Stage primaryStage;
 	private static final String FORMATO = "Arial";
 	private static final String SFONDOBIANCO = "-fx-background-color: white;";
 	@FXML
@@ -131,9 +131,11 @@ public class ModeratoreViewController implements Observer{
 		}
 	}
 	
+	/*
 	public void setPrimaryStage(Stage primaryStage) {  //PASSA LO STAGE
 		this.primaryStage= primaryStage;
 	}
+	*/
 	
 	@FXML  
 	private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN

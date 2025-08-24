@@ -3,6 +3,9 @@ package com.foodie.boundary2;
 
 
 import java.util.List;
+
+import com.foodie.boundary.components.ViewInfo;
+import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
 import com.foodie.model.AlimentoBean;
@@ -19,7 +22,7 @@ import javafx.stage.Stage;
 
 public class TrovaRicettaView2Controller {
 	
-	private static TrovaRicettaView2Controller istanza;
+//	private static TrovaRicettaView2Controller istanza;
 	private AdattatoreFactory factory= AdattatoreFactory.ottieniIstanza();
 	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
 	private CaricaView2 caricaView2= CaricaView2.ottieniIstanza();
@@ -35,6 +38,7 @@ public class TrovaRicettaView2Controller {
 	@FXML
 	private VBox contenitoreRicette;
 	
+	/*
 	private TrovaRicettaView2Controller() {	
 	}
 	
@@ -44,6 +48,7 @@ public class TrovaRicettaView2Controller {
 		}
 		return istanza;
 	}
+	*/
 	
 	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
 		this.primaryStage= primaryStage;
@@ -51,12 +56,14 @@ public class TrovaRicettaView2Controller {
 	
 	@FXML
     private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
-        caricaView2.tornaAlLogin(primaryStage);
+        //caricaView2.tornaAlLogin(primaryStage);
+		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     }
 	
 	@FXML
 	private void caricaViewDispensa(ActionEvent event) {  //CARICA VIEW DISPENSA
-		caricaView2.caricaViewDispensa(primaryStage);
+		//caricaView2.caricaViewDispensa(primaryStage);
+		ViewLoader.caricaView(ViewInfo.DISPENSA2);
 	}
 	
 	@FXML
@@ -79,7 +86,8 @@ public class TrovaRicettaView2Controller {
 	
 	@FXML
     private void caricaViewAlimenti(ActionEvent event) {  //CARICA VIEW TROVA ALIMENTI
-        caricaView2.caricaViewAlimenti(primaryStage);
+        //caricaView2.caricaViewAlimenti(primaryStage);
+		ViewLoader.caricaView(ViewInfo.AGGIUNGI_ALIMENTO);
     }
 	
 	@FXML

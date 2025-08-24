@@ -3,6 +3,8 @@ package com.foodie.boundary2;
 
 import java.util.List;
 
+import com.foodie.boundary.components.ViewInfo;
+import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
 import com.foodie.controller.PubblicaRicettaController;
@@ -58,7 +60,9 @@ public class ModeratoreView2Controller implements Observer{
 	
 	@FXML
 	public void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
-		caricaView2.tornaAlLogin(primaryStage);
+		//caricaView2.tornaAlLogin(primaryStage);
+		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
+
 	}
 
 	@Override

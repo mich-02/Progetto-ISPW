@@ -42,7 +42,7 @@ public class CaricaView {  //CLASSE CON METODI PER CARICARE LE VIEW
     }
     */
 	
-	
+	/*
     public void tornaAlLogin(Stage primaryStage) { //CARICA VIEW LOGIN
         try { 
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/foodie/Applicazione/LoginView.fxml"));
@@ -57,8 +57,9 @@ public class CaricaView {  //CLASSE CON METODI PER CARICARE LE VIEW
             e.printStackTrace(); 
         }
     }
+	*/
     
-	
+	/*
 	public void caricaViewRicetta(Stage primaryStage) {  //CARICA VIEW DELLA RICETTA NUOVA DA CREARE
 		PubblicaRicettaController.creaRicetta(); //QUANDO ENTRO NELLA RICETTA CREO L'ISTANZA DELLA RICETTA
 		try {
@@ -74,6 +75,7 @@ public class CaricaView {  //CLASSE CON METODI PER CARICARE LE VIEW
             e.printStackTrace(); 
         }
 	}
+	*/
 	
 	/*
 	public void caricaViewAreaPersonale(Stage primaryStage) {  //CARICA VIEW AREA PERSONALE	

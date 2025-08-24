@@ -37,7 +37,7 @@ public class CaricaView2 {
             e.printStackTrace(); 
         }
     }
-	
+	/*
 	public void caricaViewDispensa(Stage primaryStage) {  //CARICA VIEW DISPENSA
 		PubblicaRicettaController controller= PubblicaRicettaController.ottieniIstanza();
 		try {
@@ -55,7 +55,9 @@ public class CaricaView2 {
             e.printStackTrace(); 
         }
 	}
+	*/
 	
+	/*
 	public void caricaViewTrovaRicetta(Stage primaryStage) {  //CARICA VIEW TROVA RICETTA
         try {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("TrovaRicettaView2.fxml"));
@@ -71,7 +73,9 @@ public class CaricaView2 {
             e.printStackTrace(); 
         }
     }
+    */
 	
+	/*
     public void caricaViewGestisciRicette(Stage primaryStage) {  //CARICA VIEW GESTISCI RICETTE
         try {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("GestisciRicetteView2.fxml"));
@@ -88,7 +92,9 @@ public class CaricaView2 {
             e.printStackTrace(); 
         }
     }
+    */
 	
+	/*
     public void caricaViewRicetta(Stage primaryStage) {  //CARICA VIEW RICETTA
     	PubblicaRicettaController controller2 = PubblicaRicettaController.ottieniIstanza();
     	PubblicaRicettaController.creaRicetta(); //QUANDO ENTRO NELLA RICETTA CREO L'ISTANZA DELLA RICETTA
@@ -106,7 +112,9 @@ public class CaricaView2 {
             e.printStackTrace(); 
         }
 	}
+	*/
     
+	/*
     public void caricaViewAlimenti(Stage primaryStage) {  //CARICA VIEW TROV ALIMENTI
         try {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("AggiungiAlimentoView2.fxml"));
@@ -122,8 +130,9 @@ public class CaricaView2 {
             e.printStackTrace(); 
         }
     }
+    */
     
-    
+    /*
 	public void caricaViewAreaPersonale(Stage primaryStage) {  //CARICA VIEW AREA PERSONALE
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("AreaPersonaleView2.fxml"));
 		AreaPersonaleView2Controller controllerAreaPersonale = AreaPersonaleView2Controller.ottieniIstanza();
@@ -143,6 +152,7 @@ public class CaricaView2 {
 			e.printStackTrace();
 		}
 	}
+	*/
 	
     
 }

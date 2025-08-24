@@ -211,6 +211,7 @@ public class TrovaRicetteViewController {
 	    });
 	}
 	
+	/*
 	public void caricaViewRicetta(String nomeRicetta,String autoreRicetta) {  //CARICA VIEW CONTENUTO RICETTA
 		RicettaBean ricettaSelezionata = adattatoreTrovaRicettaController.apriLaRicetta(nomeRicetta,autoreRicetta);
 		FXMLLoader loader;
@@ -228,7 +229,18 @@ public class TrovaRicetteViewController {
 			e.printStackTrace();
 		}
 	}
+	*/
 	
+	private void caricaViewRicetta(String nomeRicetta,String autoreRicetta) {  //CARICA VIEW CONTENUTO RICETTA
+		RicettaBean ricettaSelezionata = adattatoreTrovaRicettaController.apriLaRicetta(nomeRicetta,autoreRicetta);
+		FXMLLoader loader =  ViewLoader.caricaView(ViewInfo.CONTENUTO_RIC_UT);
+		ContenutoRicettaViewController contenutoRicettaViewController = loader.getController();
+		contenutoRicettaViewController.initData(ricettaSelezionata);
+	}
+	
+
+	
+	/* //spostata in ContenutoRicettaViewController 
 	private void caricaDatiRicetta(RicettaBean ricettaBean, ContenutoRicettaViewController contenutoRicettaViewController) {  //POPOLA GRAFICAMENTE IL CONTENUTO DELLA RICETTA NEL FXML
 		Label labelNome=contenutoRicettaViewController.getNome();
 		Label labelDescrizione = contenutoRicettaViewController.getDescrizione();
@@ -245,5 +257,6 @@ public class TrovaRicetteViewController {
 			contenitoreIngredienti.getChildren().add(label);
 		}
 	}
+	*/
 	
 }

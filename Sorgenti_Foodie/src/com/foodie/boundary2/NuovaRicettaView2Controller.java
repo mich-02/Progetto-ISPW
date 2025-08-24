@@ -4,8 +4,12 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import com.foodie.boundary.components.ViewInfo;
+import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
+import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.model.AlimentoBean;
 import com.foodie.model.Observer;
 import com.foodie.model.RicettaBean;
@@ -28,13 +32,14 @@ import javafx.stage.Stage;
 
 public class NuovaRicettaView2Controller implements Observer{
 	
-	private static NuovaRicettaView2Controller istanza;
+//	private static NuovaRicettaView2Controller istanza;
 	private AdattatoreFactory factory= AdattatoreFactory.ottieniIstanza();
 	private ControllerAdapter adattatorePubblicaRicettaController= factory.creaPubblicaRicettaAdapter();
 	private ControllerAdapter adattatoreLoginController= factory.creaLoginAdapter();
 	private ControllerAdapter adattatoreTrovaRicettaController=factory.creaTrovaRicettaAdapter();
-	private CaricaView2 caricaView2= CaricaView2.ottieniIstanza();
-	private Stage primaryStage;
+	private PubblicaRicettaController controller = PubblicaRicettaController.ottieniIstanza();
+//	private CaricaView2 caricaView2= CaricaView2.ottieniIstanza();
+//	private Stage primaryStage;
 	private static final String FORMATO = "Arial";
 	private static final String SFONDOBIANCO = "-fx-background-color: white;";
 	@FXML
@@ -60,6 +65,8 @@ public class NuovaRicettaView2Controller implements Observer{
 	@FXML
 	private TextField quantita;
 	
+	
+	/*
 	private NuovaRicettaView2Controller() {
 	}
 	
@@ -70,13 +77,22 @@ public class NuovaRicettaView2Controller implements Observer{
 		return istanza;
 	}
 	
+	
 	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
 		this.primaryStage= primaryStage;
+	}
+	*/
+	
+	@FXML
+	public void initialize() {
+		PubblicaRicettaController.creaRicetta();
+    	controller.registraOsservatore(this, 2);
 	}
 	
 	@FXML
 	private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
-		caricaView2.tornaAlLogin(primaryStage);
+		//caricaView2.tornaAlLogin(primaryStage);
+		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
 	
 	@FXML
@@ -99,12 +115,14 @@ public class NuovaRicettaView2Controller implements Observer{
 	
 	@FXML
 	private void caricaViewAreaPersonale(ActionEvent event) {  //CARICA VIEW AREAPERSONALE
-		caricaView2.caricaViewAreaPersonale(primaryStage);
+		//caricaView2.caricaViewAreaPersonale(primaryStage);
+		ViewLoader.caricaView(ViewInfo.AREA_CHEF2);
 	}
 	
 	@FXML
     private void caricaViewGestisciRicette(ActionEvent event) {  //CARICA VIEW GESTISCI RICETTE
-        caricaView2.caricaViewGestisciRicette(primaryStage);
+        //caricaView2.caricaViewGestisciRicette(primaryStage);
+		ViewLoader.caricaView(ViewInfo.GESTISCI_RICETTE2);
     }
 	
 	@FXML
@@ -265,10 +283,11 @@ public class NuovaRicettaView2Controller implements Observer{
 			contenitoreAlimentiTrovati.getChildren().add(label);
 		}
 	}
+	
 	@Override
 	public void aggiornaView() {  //AGGIORNA GLI INGREDIENTI IN FUNZIONE DEI CAMBIAMENTI DELLA RICETTA
 		ingredienti.getChildren().clear();
-		List<AlimentoBean> alimentiBeanRicetta =adattatorePubblicaRicettaController.mostraIngredientiRicetta();
+		List<AlimentoBean> alimentiBeanRicetta = adattatorePubblicaRicettaController.mostraIngredientiRicetta();
 		if(!alimentiBeanRicetta.isEmpty()) {
 			for(AlimentoBean a: alimentiBeanRicetta) {
 				Label labelAlimento = new Label(a.getNome());

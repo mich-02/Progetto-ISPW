@@ -7,6 +7,7 @@ import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
 import com.foodie.controller.LoginController;
+import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.model.UtenteBean;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,12 +62,14 @@ public class AreaPersonaleView2Controller {
 	
 	@FXML
     private void caricaViewGestisciRicette(ActionEvent event) {  //CARICA VIEW GESTISCI RICETTE
-        caricaView2.caricaViewGestisciRicette(primaryStage);
+        //caricaView2.caricaViewGestisciRicette(primaryStage);
+		ViewLoader.caricaView(ViewInfo.GESTISCI_RICETTE2);
     }
 	
 	@FXML
 	private void caricaViewRicetta(ActionEvent event) {  //CARICA VIEW RICETTA
-		caricaView2.caricaViewRicetta(primaryStage);
+		//caricaView2.caricaViewRicetta(primaryStage);
+		ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA2);
 	}
 	
 	public void aggiornaView() {  //AGGIORNA USERNAME AUTOMATICAMENTE

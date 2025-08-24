@@ -2,6 +2,9 @@ package com.foodie.boundary2;
 
 import java.util.List;
 import java.util.logging.Logger;
+
+import com.foodie.boundary.components.ViewInfo;
+import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
 import com.foodie.controller.PubblicaRicettaController;
@@ -16,7 +19,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class GestisciRicetteView2Controller {
-	private static GestisciRicetteView2Controller istanza;
+	//private static GestisciRicetteView2Controller istanza;
 	private AdattatoreFactory factory= AdattatoreFactory.ottieniIstanza();
 	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
 	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
@@ -30,6 +33,7 @@ public class GestisciRicetteView2Controller {
 	@FXML
 	private Label eliminaLabel;
 	
+	/*
 	private GestisciRicetteView2Controller() {
 	}
 	
@@ -38,6 +42,12 @@ public class GestisciRicetteView2Controller {
 			istanza = new GestisciRicetteView2Controller();
 		}
 		return istanza;
+	}
+	*/
+	
+	@FXML
+	public void initialize() {
+		aggiornaView();
 	}
 	
 	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
@@ -140,17 +150,20 @@ public class GestisciRicetteView2Controller {
 	
 	@FXML
     private void tornaAlLogin() {  //CARICA VIEW LOGIN
-        caricaView2.tornaAlLogin(primaryStage);
+        //caricaView2.tornaAlLogin(primaryStage);
+		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     }
 	
 	@FXML
 	private void caricaViewRicetta() {  //CARICA VIEW RICETTA 
-		caricaView2.caricaViewRicetta(primaryStage);
+		//caricaView2.caricaViewRicetta(primaryStage);
+		ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA2);
 	}
 	
 	@FXML
 	private void caricaViewAreaPersonale() {  //CARICA VIEW AREA PERSONALE
-		caricaView2.caricaViewAreaPersonale(primaryStage);
+		//caricaView2.caricaViewAreaPersonale(primaryStage);
+		ViewLoader.caricaView(ViewInfo.AREA_CHEF2);
 	}
 	
 }

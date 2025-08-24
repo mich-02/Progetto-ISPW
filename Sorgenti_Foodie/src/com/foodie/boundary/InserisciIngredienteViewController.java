@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 
 public class InserisciIngredienteViewController implements Observer{
 	
-	private static InserisciIngredienteViewController istanza;
+//	private static InserisciIngredienteViewController istanza;
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 	private PubblicaRicettaController controller = PubblicaRicettaController.ottieniIstanza();
 	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
@@ -57,7 +57,7 @@ public class InserisciIngredienteViewController implements Observer{
 		aggiornaView();
 	}
 	
-	
+/*	
 	private InserisciIngredienteViewController() {
 	}
 	
@@ -67,6 +67,7 @@ public class InserisciIngredienteViewController implements Observer{
 		}
 		return istanza;
 	}
+*/	
 	
 	
 	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
@@ -137,7 +138,10 @@ public class InserisciIngredienteViewController implements Observer{
 				labelIngredienti.setFont(Font.font(FORMATO,30));
 				labelIngredienti.setText("La mia Dispensa");
 			}
-			ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
+			
+			FXMLLoader loader =  ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
+			NuovaRicettaViewController nuovaRicettaController = loader.getController();
+			nuovaRicettaController.initData(contenitoreIngredienti);
 	}
 	
 	@FXML

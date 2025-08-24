@@ -50,6 +50,13 @@ public class NuovaRicettaViewController {
 	@FXML
 	private Button pubblica;
 	
+	private VBox ingredientiRicetta;
+	
+	
+	public void initData(VBox contenitoreIngredienti) {
+		this.ingredientiRicetta = contenitoreIngredienti;
+	}
+	
 	/*
 	private NuovaRicettaViewController() {
 	}
@@ -89,9 +96,10 @@ public class NuovaRicettaViewController {
 		}
 	}
 	
+	/*
 	@FXML
 	private void caricaViewIngredienti(ActionEvent event) {  // tasto in basso a sx
-		InserisciIngredienteViewController inserisciIngredienteViewController = InserisciIngredienteViewController.ottieniIstanza();
+		InserisciIngredienteViewController inserisciIngredienteViewController = new InserisciIngredienteViewController();
 		if(nome.getText()!=null) {  //PASSA LO STATO ATTUALE PER RIPOPOLARLO IN SEGUITO
 			inserisciIngredienteViewController.setNome(nome.getText());
 		}
@@ -107,8 +115,8 @@ public class NuovaRicettaViewController {
 		else if(difficile.isSelected()) {
 			inserisciIngredienteViewController.setDifficolta(3);
 		}
+		
 		try {
-
           FXMLLoader loader = new FXMLLoader(getClass().getResource("InserisciIngredienteView.fxml"));
           loader.setController(inserisciIngredienteViewController);
           controller.registraOsservatore(inserisciIngredienteViewController, 2);
@@ -120,7 +128,16 @@ public class NuovaRicettaViewController {
           primaryStage.show();
 		} catch (Exception e) {
           e.printStackTrace(); 
-      }
+      }	
+	}
+	*/ //old
+	
+	@FXML
+	private void caricaViewIngredienti(ActionEvent event) {  // tasto in basso a sx
+		
+		//InserisciIngredienteViewController inserisciIngredienteViewController = loader.getController();
+		//inserisciIngredienteViewController.initData();
+		ViewLoader.caricaView(ViewInfo.INSERISCI_INGR);
 	}
 	
 	@FXML
@@ -200,7 +217,8 @@ public class NuovaRicettaViewController {
 		ricettaBean.setDifficolta(diff);
 		UtenteBean utenteBean=adattatoreLoginController.ottieniUtente();
 		ricettaBean.setAutore(utenteBean.getUsername());  //AUTORE PASSATO IN AUTOMATICO
-		VBox ingredienti= InserisciIngredienteViewController.ottieniIstanza().getContenitoreIngredienti();
+		//VBox ingredienti= InserisciIngredienteViewController.ottieniIstanza().getContenitoreIngredienti();
+		VBox ingredienti= ingredientiRicetta;
         if(ingredienti!=null && !(ingredienti.getChildren().isEmpty())) { 
         	adattatorePubblicaRicettaController.compilaLaRicetta(ricettaBean);
         	areaPersonaleButton.fire();  //SE INGREDIENTI MESSI, ALLORA PUBBLICA E SIMULA CLICK PER TORNARE ALL'AREA PERSONALE

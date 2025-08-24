@@ -3,9 +3,13 @@ package com.foodie.boundary2;
 
 
 import java.util.List;
+
+import com.foodie.boundary.components.ViewInfo;
+import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
 import com.foodie.controller.LoginController;
+import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.controller.TrovaRicettaController;
 import com.foodie.model.AlimentoBean;
 import com.foodie.model.Observer;
@@ -20,16 +24,18 @@ import javafx.stage.Stage;
 
 public class DispensaView2Controller implements Observer{
 	
-	private static DispensaView2Controller istanza;
+//	private static DispensaView2Controller istanza;
 	private AdattatoreFactory factory= AdattatoreFactory.ottieniIstanza();
+	PubblicaRicettaController controller1= PubblicaRicettaController.ottieniIstanza();
 	private TrovaRicettaController controller = TrovaRicettaController.ottieniIstanza();
 	private LoginController loginController= LoginController.ottieniIstanza(); //tolto singleton
 	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
-	private CaricaView2 caricaView2= CaricaView2.ottieniIstanza();
+	private CaricaView2 caricaView2 = CaricaView2.ottieniIstanza();
 	private Stage primaryStage;
 	@FXML
 	private VBox contenitoreDispensa;
 	
+	/*
 	private DispensaView2Controller() {	
 	}
 	
@@ -39,6 +45,13 @@ public class DispensaView2Controller implements Observer{
 		}
 		return istanza;
 	}
+	*/
+	
+	@FXML
+	public void initialize() {
+		controller1.registraOsservatore(this, 1);
+		aggiornaView();
+	}
 	
 	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
 		this.primaryStage= primaryStage;
@@ -46,17 +59,21 @@ public class DispensaView2Controller implements Observer{
 	
 	@FXML
     private void tornaAlLogin(MouseEvent event) { //CARICA VIEW LOGIN
-        caricaView2.tornaAlLogin(primaryStage);
+        //caricaView2.tornaAlLogin(primaryStage);
+		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     }
 	
 	@FXML
-    private void caricaViewAlimenti(ActionEvent event) {  //CARICA VIEW TROV ALIMENTI
-        caricaView2.caricaViewAlimenti(primaryStage);
+    private void caricaViewAlimenti(ActionEvent event) {  //CARICA VIEW TROVA ALIMENTI
+        //caricaView2.caricaViewAlimenti(primaryStage);
+		ViewLoader.caricaView(ViewInfo.AGGIUNGI_ALIMENTO);
+
     }
 	
 	@FXML
     private void caricaViewTrovaRicetta(ActionEvent event) {  //CARICA VIEW TROVA RICETTA
-        caricaView2.caricaViewTrovaRicetta(primaryStage);
+        //caricaView2.caricaViewTrovaRicetta(primaryStage);
+		ViewLoader.caricaView(ViewInfo.TROVA_RICETTE2);
     }
 	
 	@FXML
