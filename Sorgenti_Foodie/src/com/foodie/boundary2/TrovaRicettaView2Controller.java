@@ -8,6 +8,7 @@ import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
+import com.foodie.controller.TrovaRicettaController;
 import com.foodie.model.AlimentoBean;
 import com.foodie.model.RicettaBean;
 import javafx.event.ActionEvent;
@@ -23,10 +24,10 @@ import javafx.stage.Stage;
 public class TrovaRicettaView2Controller {
 	
 //	private static TrovaRicettaView2Controller istanza;
-	private AdattatoreFactory factory= AdattatoreFactory.ottieniIstanza();
-	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
-	private CaricaView2 caricaView2= CaricaView2.ottieniIstanza();
-	private Stage primaryStage;
+	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
+//	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
+	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
+
 	private static final String FORMATO = "Arial";
 	private static final String SFONDOGRIGIO = "-fx-background-color: rgba(217, 217, 217, 0.75);-fx-border-color: black;";
 	@FXML
@@ -49,20 +50,14 @@ public class TrovaRicettaView2Controller {
 		return istanza;
 	}
 	*/
-	
-	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
-		this.primaryStage= primaryStage;
-	}
-	
+
 	@FXML
     private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
-        //caricaView2.tornaAlLogin(primaryStage);
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     }
 	
 	@FXML
 	private void caricaViewDispensa(ActionEvent event) {  //CARICA VIEW DISPENSA
-		//caricaView2.caricaViewDispensa(primaryStage);
 		ViewLoader.caricaView(ViewInfo.DISPENSA2);
 	}
 	
@@ -86,7 +81,6 @@ public class TrovaRicettaView2Controller {
 	
 	@FXML
     private void caricaViewAlimenti(ActionEvent event) {  //CARICA VIEW TROVA ALIMENTI
-        //caricaView2.caricaViewAlimenti(primaryStage);
 		ViewLoader.caricaView(ViewInfo.AGGIUNGI_ALIMENTO);
     }
 	
@@ -96,15 +90,15 @@ public class TrovaRicettaView2Controller {
 		List<RicettaBean> ricetteTrovate= null;
 		String difficolta="";
 		if (facile.isSelected()) {
-			ricetteTrovate=adattatoreTrovaRicettaController.trovaLeRicette(1,null);
+			ricetteTrovate = trovaRicettaController.trovaRicette(1,null);
 			difficolta="facile";
 		} 
 		else if (medio.isSelected()) {
-			ricetteTrovate=adattatoreTrovaRicettaController.trovaLeRicette(2,null);
+			ricetteTrovate = trovaRicettaController.trovaRicette(2,null);
 			difficolta="intermedia";
 		} 
 		else if (difficile.isSelected()) {
-			ricetteTrovate=adattatoreTrovaRicettaController.trovaLeRicette(3,null);
+			ricetteTrovate = trovaRicettaController.trovaRicette(3,null);
 			difficolta="difficile";
 		}
 		else {  //SE LA DIFFICOLTA' NON E' SELEZIONATA AVVERTIMENTO !

@@ -28,10 +28,9 @@ public class TrovaRicetteViewController {
 	
 //	private static TrovaRicetteViewController istanza;
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
-	private TrovaRicettaController controller = TrovaRicettaController.ottieniIstanza();
-	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
+	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
+//	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
 //	private CaricaView caricaView = CaricaView.ottieniIstanza();
-	private Stage primaryStage;
 	private static final String FORMATO = "Arial";
 	private static final Logger logger = Logger.getLogger(TrovaRicetteViewController.class.getName());
 	@FXML
@@ -60,17 +59,13 @@ public class TrovaRicetteViewController {
 		trovaRicette();
 	}
 	
-	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
-		this.primaryStage= primaryStage;
-	}
-	
 	public VBox getContenitoreRicette() {  //RESTITUISCO IL VBOX
 		return contenitoreRicette;
 	}
 	
 	@FXML
 	private void tornaAlLogin(MouseEvent event) {  
-		controller.svuotaDispensa();
+		trovaRicettaController.svuotaDispensa();
 		//caricaView.tornaAlLogin(primaryStage);
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
@@ -138,7 +133,7 @@ public class TrovaRicetteViewController {
 	
 	public int creaRicetteTrovate(int difficoltaInt) {  //TROVA LE RICETTE E LE MOSTRA GRAFICAMENTE
 		List<RicettaBean> ricetteTrovate= null;
-		ricetteTrovate=adattatoreTrovaRicettaController.trovaLeRicette(difficoltaInt,null);
+		ricetteTrovate = trovaRicettaController.trovaRicette(difficoltaInt,null);
 		if(!ricetteTrovate.isEmpty()) {
 			for(RicettaBean r: ricetteTrovate) {  //PER OGNI RICETTA CREA PARTI GRAFICHE
 				HBox contenitoreRicettaSingola = new HBox();
@@ -206,7 +201,10 @@ public class TrovaRicetteViewController {
 	                    }
 	                    indiceLabel++;
 	            }
-	            caricaViewRicetta(nomeRicetta, autoreRicetta);  //SE CLICCATA LA APRE
+	            RicettaBean ricettaBean = new RicettaBean();
+	            ricettaBean.setNome(nomeRicetta);
+	            ricettaBean.setAutore(autoreRicetta);
+	            caricaViewRicetta(ricettaBean);  //SE CLICCATA LA APRE
 	        });
 	    });
 	}
@@ -231,8 +229,8 @@ public class TrovaRicetteViewController {
 	}
 	*/
 	
-	private void caricaViewRicetta(String nomeRicetta,String autoreRicetta) {  //CARICA VIEW CONTENUTO RICETTA
-		RicettaBean ricettaSelezionata = adattatoreTrovaRicettaController.apriLaRicetta(nomeRicetta,autoreRicetta);
+	private void caricaViewRicetta(RicettaBean ricettaBean) {  //CARICA VIEW CONTENUTO RICETTA
+		RicettaBean ricettaSelezionata = trovaRicettaController.ottieniRicetta(ricettaBean);
 		FXMLLoader loader =  ViewLoader.caricaView(ViewInfo.CONTENUTO_RIC_UT);
 		ContenutoRicettaViewController contenutoRicettaViewController = loader.getController();
 		contenutoRicettaViewController.initData(ricettaSelezionata);

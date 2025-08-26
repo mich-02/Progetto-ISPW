@@ -8,6 +8,7 @@ import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
 import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.controller.PubblicaRicettaControllerAdapter;
+import com.foodie.controller.TrovaRicettaController;
 import com.foodie.model.AlimentoBean;
 import com.foodie.model.Observer;
 import javafx.event.ActionEvent;
@@ -29,9 +30,10 @@ public class InserisciIngredienteViewController implements Observer{
 	
 //	private static InserisciIngredienteViewController istanza;
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
-	private PubblicaRicettaController controller = PubblicaRicettaController.ottieniIstanza();
-	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
-	private ControllerAdapter adattatorePubblicaRicettaController = PubblicaRicettaControllerAdapter.ottieniIstanza(controller);
+	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
+	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
+//	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
+//	private ControllerAdapter adattatorePubblicaRicettaController = PubblicaRicettaControllerAdapter.ottieniIstanza(controller);
 //	private CaricaView caricaView = CaricaView.ottieniIstanza();
 	private boolean bottoneModifica = true;
 	private Stage primaryStage;
@@ -53,7 +55,7 @@ public class InserisciIngredienteViewController implements Observer{
 	
 	@FXML
 	public void initialize() {
-		controller.registraOsservatore(this, 2);
+		pubblicaRicettaController.registraOsservatore(this, 2);
 		aggiornaView();
 	}
 	
@@ -95,7 +97,7 @@ public class InserisciIngredienteViewController implements Observer{
 		if(!quantita.isEmpty()) {
 			AlimentoBean alimentoBean = new AlimentoBean();
 			alimentoBean.setNome(nomeAlimento);
-			adattatorePubblicaRicettaController.aggiungiIngredienteRicetta(alimentoBean,quantita, 0);
+			pubblicaRicettaController.aggiungiIngredienteRicetta(alimentoBean,quantita);
 			this.quantita.clear();
 			this.quantita.setPromptText("Quantita");
 			eliminaAlimenti();
@@ -152,7 +154,9 @@ public class InserisciIngredienteViewController implements Observer{
 	
 	private void trovaAlimenti() { //GESTISCE IL TROVA ALIMENTI
 		eliminaAlimenti();
-		List<AlimentoBean> alimentiBeanTrovati=adattatoreTrovaRicettaController.trovaGliAlimenti(barraDiRicerca.getText());
+		AlimentoBean alimentoBean = new AlimentoBean();
+		alimentoBean.setNome(barraDiRicerca.getText());
+		List<AlimentoBean> alimentiBeanTrovati = trovaRicettaController.trovaAlimenti(alimentoBean);
 		if(!alimentiBeanTrovati.isEmpty()) {
 			quantita.setDisable(false);
 			for(AlimentoBean a: alimentiBeanTrovati) {
@@ -181,7 +185,7 @@ public class InserisciIngredienteViewController implements Observer{
 	
 	public void aggiornaView() {  //AGGIORNA GLI INGREDIENTI DELLA RICETTA
 		contenitoreIngredienti.getChildren().clear();
-		List<AlimentoBean> alimentiBeanRicetta=adattatorePubblicaRicettaController.mostraIngredientiRicetta();
+		List<AlimentoBean> alimentiBeanRicetta = pubblicaRicettaController.mostraIngredientiRicetta();
 		if(!alimentiBeanRicetta.isEmpty()) {
 			for(AlimentoBean a: alimentiBeanRicetta) {
 				Label labelAlimento = new Label(a.getNome());
@@ -224,7 +228,7 @@ public class InserisciIngredienteViewController implements Observer{
 	private void eliminaAlimento(String nomeAlimento) {  //ELIMINA ALIMENTO RICETTA
 		AlimentoBean alimentoBean = new AlimentoBean();
 		alimentoBean.setNome(nomeAlimento);
-		adattatorePubblicaRicettaController.aggiungiIngredienteRicetta(alimentoBean,null, 1);
+		pubblicaRicettaController.eliminaIngredienteRicetta(alimentoBean);
 	}
 	
 	@FXML

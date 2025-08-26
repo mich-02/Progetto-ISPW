@@ -8,8 +8,9 @@ import com.foodie.model.AlimentoBean;
 import com.foodie.model.Ricetta;
 import com.foodie.model.RicettaBean;
 
-public class PubblicaRicettaControllerAdapter extends ControllerAdapter{  //ADATTATORE CONCRETO DEL CONTROLLER PUBBLICARICETTE
-	
+public class PubblicaRicettaControllerAdapter { //extends ControllerAdapter{  //ADATTATORE CONCRETO DEL CONTROLLER PUBBLICARICETTE
+
+/*
 	private static PubblicaRicettaControllerAdapter istanza;  //SINGLETON
 	private static PubblicaRicettaController adattato; 
 	
@@ -32,7 +33,7 @@ public class PubblicaRicettaControllerAdapter extends ControllerAdapter{  //ADAT
 		ricettaBean.setDescrizione(ricetta.getDescrizione());
 		ricettaBean.setDifficolta(ricetta.getDifficolta());
 		ArrayList<AlimentoBean> alimentiTrovatiBean=new ArrayList<>();
-		List<Alimento> alimentiTrovati=ricetta.getIngredienti();
+		List<Alimento> alimentiTrovati = ricetta.getIngredienti();
 		for(Alimento a:alimentiTrovati) {
 			AlimentoBean alimentoBean= new AlimentoBean();
 			alimentoBean.setNome(a.getNome());
@@ -56,7 +57,7 @@ public class PubblicaRicettaControllerAdapter extends ControllerAdapter{  //ADAT
 	
 	@Override
 	public ArrayList<AlimentoBean> mostraIngredientiRicetta() {
-		List<Alimento> alimentiRicetta=adattato.mostraAlimentiRicetta();
+		List<Alimento> alimentiRicetta = adattato.mostraAlimentiRicetta();
 		if(alimentiRicetta!=null && !alimentiRicetta.isEmpty()) {
 			ArrayList<AlimentoBean> alimentiRicettaBean =new ArrayList<>();
 			for(Alimento a: alimentiRicetta) {
@@ -71,10 +72,11 @@ public class PubblicaRicettaControllerAdapter extends ControllerAdapter{  //ADAT
 		}
 	}
 	
+	
 	@Override
 	public void aggiungiIngredienteRicetta(AlimentoBean alimentoBean,String quantita,int x) {
 		Alimento alimento=new Alimento(alimentoBean.getNome());
-		adattato.aggiungiIngredientiRicetta(alimento, quantita, x);
+		adattato.aggiungiIngredientiRicetta(alimento, quantita);
 	}
 	
 	@Override
@@ -105,5 +107,6 @@ public class PubblicaRicettaControllerAdapter extends ControllerAdapter{  //ADAT
 			return new ArrayList<>();
 		}
 	}
-	
+
+*/
 }

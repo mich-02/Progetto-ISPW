@@ -22,12 +22,10 @@ import javafx.stage.Stage;
 
 public class ModeratoreView2Controller implements Observer{
 	
-	private AdattatoreFactory factory= AdattatoreFactory.ottieniIstanza();
-	private PubblicaRicettaController controller= PubblicaRicettaController.ottieniIstanza();
-	private ControllerAdapter adattatorePubblicaRicettaController= factory.creaPubblicaRicettaAdapter();
+//	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
+	private PubblicaRicettaController controller = new PubblicaRicettaController();
+//	private ControllerAdapter adattatorePubblicaRicettaController= factory.creaPubblicaRicettaAdapter();
 	//private static ModeratoreView2Controller istanza;
-	private CaricaView2 caricaView2= CaricaView2.ottieniIstanza();
-	private Stage primaryStage;
 	private static final String FORMATO = "Arial";
 	@FXML
 	private TextArea descrizioneTextArea;
@@ -54,10 +52,6 @@ public class ModeratoreView2Controller implements Observer{
 		aggiornaView();
 	}
 	
-	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
-		this.primaryStage= primaryStage;
-	}
-	
 	@FXML
 	public void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
 		//caricaView2.tornaAlLogin(primaryStage);
@@ -68,7 +62,7 @@ public class ModeratoreView2Controller implements Observer{
 	@Override
 	public void aggiornaView() {  //AGGIORNA VIEW IN FUZNIONE DELLE RICETTE DA APPROVARE , LE MOSTRA SUBITO COMPLETE 
 		contenitoreRicetteDaApprovare.getChildren().clear();
-		List<RicettaBean> ricetteBean =adattatorePubblicaRicettaController.mostraLeRicetteDaApprovare();
+		List<RicettaBean> ricetteBean = controller.mostraRicetteDaApprovare();
 		if(!ricetteBean.isEmpty()) {
 			for(RicettaBean r: ricetteBean) {
 				VBox contenitoreRicetta = new VBox();

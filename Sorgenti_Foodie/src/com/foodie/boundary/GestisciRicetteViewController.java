@@ -7,7 +7,9 @@ import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
+import com.foodie.controller.LoginController;
 import com.foodie.controller.PubblicaRicettaController;
+import com.foodie.controller.TrovaRicettaController;
 import com.foodie.model.RicettaBean;
 import com.foodie.model.UtenteBean;
 import javafx.event.ActionEvent;
@@ -25,14 +27,13 @@ import javafx.stage.Stage;
 
 public class GestisciRicetteViewController {
 	
-//	private static GestisciRicetteViewController istanza;
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
-	private PubblicaRicettaController controller = PubblicaRicettaController.ottieniIstanza();
-	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
-	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
-//	private CaricaView caricaView= CaricaView.ottieniIstanza();
+	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
+	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
+	private LoginController loginController = new LoginController();
+//	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
+//	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
 	private boolean bottoneModifica = true;
-	private Stage primaryStage;
 	private static final String FORMATO = "Arial";
 	private static final Logger logger = Logger.getLogger(GestisciRicetteViewController.class.getName());
 	@FXML
@@ -57,15 +58,11 @@ public class GestisciRicetteViewController {
 		aggiornaView();
 	}
 	
-	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
-		this.primaryStage= primaryStage;
-	}
-	
 	public void aggiornaView() {  //TROVA TUTTE LE RICETTE DELLO CHEF E LE MOSTRA GRAFICAMENTE
 		List<RicettaBean> ricetteTrovate= null;
 		contenitoreRicette.getChildren().clear();
-		UtenteBean utenteBean = adattatoreLoginController.ottieniUtente();
-		ricetteTrovate = adattatoreTrovaRicettaController.trovaLeRicette(0,utenteBean.getUsername());  //TROVO PER USERNAME CHEF
+		UtenteBean utenteBean = loginController.getUtente();
+		ricetteTrovate = trovaRicettaController.trovaRicette(0,utenteBean);  //TROVO PER USERNAME CHEF
 		if(!ricetteTrovate.isEmpty()) {
 			for(RicettaBean r: ricetteTrovate) {  //CREO VARIE PARTI GRAFICHE
 				HBox contenitoreRicettaSingola = new HBox();
@@ -140,8 +137,11 @@ public class GestisciRicetteViewController {
 	*/
 	
 	private void caricaViewContenutoRicetta(String nomeRicetta) {  //CARICA VIEW CONTENUTO RICETTA
-		UtenteBean utenteBean = adattatoreLoginController.ottieniUtente();
-		RicettaBean ricettaSelezionata = adattatoreTrovaRicettaController.apriLaRicetta(nomeRicetta,utenteBean.getUsername());
+		UtenteBean utenteBean = loginController.getUtente();
+		RicettaBean ricettaBean = new RicettaBean();
+		ricettaBean.setNome(nomeRicetta);
+		ricettaBean.setAutore(utenteBean.getUsername());
+		RicettaBean ricettaSelezionata = trovaRicettaController.ottieniRicetta(ricettaBean);
 		
 			if(!bottoneModifica) { //resettare il bottone modifica se attivo
 				bottoneModifica=true;
@@ -195,7 +195,7 @@ public class GestisciRicetteViewController {
 		if(!contenitoreRicette.getChildren().isEmpty()) {
 			contenitoreRicette.getChildren().clear();
 		}
-		controller.eliminaRicetta(nome, autore);
+		pubblicaRicettaController.eliminaRicetta(nome, autore);
 		aggiornaView();
 	}
 	
@@ -222,7 +222,7 @@ public class GestisciRicetteViewController {
 			HBox hBoxRicetta= (HBox)nodo1;
 			for(Node nodo: hBoxRicetta.getChildren()) {
 				Label labelNome=(Label)nodo;  //PRENDO SOLO IL NOME 
-				UtenteBean utenteBean=adattatoreLoginController.ottieniUtente();
+				UtenteBean utenteBean = loginController.getUtente();
 				hBoxRicetta.setOnMouseClicked(event->eliminaRicetta(labelNome.getText(),utenteBean.getUsername()));
 				if(indice==1) {
 					break;
@@ -248,19 +248,16 @@ public class GestisciRicetteViewController {
 	
 	@FXML
     private void tornaAlLogin() {  // carica view login
-        //caricaView.tornaAlLogin(primaryStage);
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     }
 	
 	@FXML
 	private void caricaViewRicetta() {  // carica view nuova ricetta 
-		//caricaView.caricaViewRicetta(primaryStage);
 		ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
 	}
 	
 	@FXML
 	private void caricaViewAreaPersonale() { // carica view area personale
-		//caricaView.caricaViewAreaPersonale(primaryStage);
 		ViewLoader.caricaView(ViewInfo.AREA_CHEF1);
 	}
 	

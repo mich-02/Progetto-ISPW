@@ -9,6 +9,7 @@ import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
+import com.foodie.controller.LoginController;
 import com.foodie.model.RicettaBean;
 import com.foodie.model.UtenteBean;
 import javafx.application.Platform;
@@ -29,9 +30,10 @@ public class NuovaRicettaViewController {
 	
 	//private static NuovaRicettaViewController istanza;
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
-	private PubblicaRicettaController controller = PubblicaRicettaController.ottieniIstanza();
-	private ControllerAdapter adattatorePubblicaRicettaController = factory.creaPubblicaRicettaAdapter();
-	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
+	private PubblicaRicettaController controller = new PubblicaRicettaController();
+//	private ControllerAdapter adattatorePubblicaRicettaController = factory.creaPubblicaRicettaAdapter();
+//	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
+	private LoginController loginController = new LoginController();
 	//private CaricaView caricaView = CaricaView.ottieniIstanza();
 	private Stage primaryStage;
 	private static final Logger logger = Logger.getLogger(NuovaRicettaViewController.class.getName());
@@ -215,12 +217,12 @@ public class NuovaRicettaViewController {
 	        return;
 		}
 		ricettaBean.setDifficolta(diff);
-		UtenteBean utenteBean=adattatoreLoginController.ottieniUtente();
+		UtenteBean utenteBean = loginController.getUtente();
 		ricettaBean.setAutore(utenteBean.getUsername());  //AUTORE PASSATO IN AUTOMATICO
 		//VBox ingredienti= InserisciIngredienteViewController.ottieniIstanza().getContenitoreIngredienti();
 		VBox ingredienti= ingredientiRicetta;
         if(ingredienti!=null && !(ingredienti.getChildren().isEmpty())) { 
-        	adattatorePubblicaRicettaController.compilaLaRicetta(ricettaBean);
+        	controller.compilaRicetta(ricettaBean);
         	areaPersonaleButton.fire();  //SE INGREDIENTI MESSI, ALLORA PUBBLICA E SIMULA CLICK PER TORNARE ALL'AREA PERSONALE
 		}
 		else {  //MOSTRA GARFICAMENTE L'AVVERTIMENTO PER GLI INGREDIENTI

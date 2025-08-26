@@ -7,7 +7,9 @@ import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
+import com.foodie.controller.LoginController;
 import com.foodie.controller.PubblicaRicettaController;
+import com.foodie.controller.TrovaRicettaController;
 import com.foodie.model.AlimentoBean;
 import com.foodie.model.RicettaBean;
 import com.foodie.model.UtenteBean;
@@ -20,12 +22,12 @@ import javafx.stage.Stage;
 
 public class GestisciRicetteView2Controller {
 	//private static GestisciRicetteView2Controller istanza;
-	private AdattatoreFactory factory= AdattatoreFactory.ottieniIstanza();
-	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
-	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
-	private PubblicaRicettaController controller = PubblicaRicettaController.ottieniIstanza();
-	private CaricaView2 caricaView2= CaricaView2.ottieniIstanza();
-	private Stage primaryStage;
+	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
+//	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
+	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
+//	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
+	private LoginController loginController = new LoginController();
+	private PubblicaRicettaController controller = new PubblicaRicettaController();
 	private static final String FORMATO = "Arial";
 	private static final Logger logger = Logger.getLogger(GestisciRicetteView2Controller.class.getName());
 	@FXML
@@ -50,15 +52,11 @@ public class GestisciRicetteView2Controller {
 		aggiornaView();
 	}
 	
-	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
-		this.primaryStage= primaryStage;
-	}
-	
 	public void aggiornaView() {  //TROVA LE RICETTE DELLO CHEF E LE MOSTRA GIA' CON TUTTO IL CONTENUTO
 		List<RicettaBean> ricetteTrovate= null;
 		contenitoreRicette.getChildren().clear();
-		UtenteBean utenteBean=adattatoreLoginController.ottieniUtente();
-		ricetteTrovate=adattatoreTrovaRicettaController.trovaLeRicette(0,utenteBean.getUsername());
+		UtenteBean utenteBean = loginController.getUtente();
+		ricetteTrovate = trovaRicettaController.trovaRicette(0,utenteBean);
 		if(!ricetteTrovate.isEmpty()) {
 			contenitoreRicette.getChildren().clear();
 			for(RicettaBean r: ricetteTrovate) {

@@ -19,12 +19,10 @@ import javafx.scene.input.MouseEvent;
 
 public class AreaPersonaleViewController{
 	
-//	private static AreaPersonaleViewController istanza; //tolto singletom
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
-	private LoginController controller = LoginController.ottieniIstanza(); //tolto singleton
-	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
-//	private CaricaView caricaView = CaricaView.ottieniIstanza();
-//	private Stage primaryStage;
+	private LoginController controller = new LoginController(); //tolto singleton
+//	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
+
 	@FXML
     private ImageView tornaAlLoginImageView;
 	@FXML
@@ -32,70 +30,50 @@ public class AreaPersonaleViewController{
 	@FXML
 	private Label usernameLabel;
 	
-	
-	/*
-	private AreaPersonaleViewController() {	
-	}
-	
-	public static synchronized AreaPersonaleViewController ottieniIstanza() { //SINGLETON	
-		if(istanza == null) {
-			istanza = new AreaPersonaleViewController();
-		}
-		return istanza;
-	}
-	*/
-	
 	@FXML
 	public void initialize() {
 		caricaAreaPersonale();
 		aggiornaLabel();	
 	}
-/*
-	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
-		this.primaryStage= primaryStage;
-	}
-*/
+
 	@FXML
-    private void tornaAlLogin(MouseEvent event) { // carica view Login
-        //caricaView.tornaAlLogin(primaryStage);
+    private void tornaAlLogin(MouseEvent event) { 
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     }
 	
 	@FXML
-    private void caricaViewGestisciRicette(ActionEvent event) {  // carica view Gestisci ricette
-        //caricaView.caricaViewGestisciRicette(primaryStage);
+    private void caricaViewGestisciRicette(ActionEvent event) {  
 		ViewLoader.caricaView(ViewInfo.GESTISCI_RICETTE1);
     }
 	
 	@FXML
-	private void modificaProfilo(ActionEvent event) {  //PULSANTE MODIFICA
+	private void modificaProfilo(ActionEvent event) {  // pulsante modifica
 		if(!descrizioneTextField.isEditable()) {
 			descrizioneTextField.setEditable(true);
 		}
 		else {
-			descrizioneTextField.setEditable(false);  //QUANDO RIPREMUTO SALVA L'AREA PERSONALE
+			descrizioneTextField.setEditable(false);  //quando ripremuto salva area personale
 			salvaAreaPersonale();
 		}
 	}
 	
 	@FXML
-	private void caricaViewRicetta(ActionEvent event) {  // carica view della nuova ricetta da creare 
+	private void caricaViewRicetta(ActionEvent event) {  
 		PubblicaRicettaController.creaRicetta(); //messo io
-		//caricaView.caricaViewRicetta(primaryStage);
 		ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
 	}
 	
-	public void aggiornaLabel() {  //AGGIORNA LABEL CON IL PROPRIO USERNAME
-		UtenteBean utenteBean = adattatoreLoginController.ottieniUtente();
+	public void aggiornaLabel() {  //aggiorna label con proprio username
+		UtenteBean utenteBean = controller.getUtente();
 		usernameLabel.setText(utenteBean.getUsername());
 	}
 	
-	private void salvaAreaPersonale() {  //SALVA L'AREA PERSONALE(DESCRIZIONE)
+	private void salvaAreaPersonale() {  //salva descrizione area personale
 		controller.salvaAreaPersonale(descrizioneTextField.getText());
 	}
 	
-	public void caricaAreaPersonale() { //CARICA L'AREA PERSONALE(DESCRIZIONE)
-		UtenteBean utenteBean=adattatoreLoginController.ottieniUtente();
+	public void caricaAreaPersonale() { 
+		UtenteBean utenteBean = controller.getUtente();
 		Map<String,String> areaPersonaleMap=controller.caricaAreaPersonale();
 		String descrizione="";
 		if(!areaPersonaleMap.isEmpty()) {

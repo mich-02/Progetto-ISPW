@@ -22,10 +22,9 @@ public class AreaPersonaleView2Controller {
 	
 	//private static AreaPersonaleView2Controller istanza;
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
-	private LoginController controller = LoginController.ottieniIstanza(); //tolto singleton
-	private ControllerAdapter adattatoreLoginController= factory.creaLoginAdapter();
-	private CaricaView2 caricaView2= CaricaView2.ottieniIstanza();
-	private Stage primaryStage;
+	private LoginController controller = new LoginController(); //tolto singleton
+//	private ControllerAdapter adattatoreLoginController= factory.creaLoginAdapter();
+
 	@FXML
 	private TextArea descrizioneTextArea;
 	@FXML
@@ -49,10 +48,6 @@ public class AreaPersonaleView2Controller {
 		caricaAreaPersonale();
 		aggiornaView();	
 	}
-
-	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
-		this.primaryStage= primaryStage;
-	}
 	
 	@FXML
     private void tornaAlLogin(MouseEvent event) { //CARICA VIEW LOGIN
@@ -73,7 +68,7 @@ public class AreaPersonaleView2Controller {
 	}
 	
 	public void aggiornaView() {  //AGGIORNA USERNAME AUTOMATICAMENTE
-		UtenteBean utenteBean= adattatoreLoginController.ottieniUtente();
+		UtenteBean utenteBean = controller.getUtente();
 		usernameLabel.setText(utenteBean.getUsername());
 	}
 
@@ -88,7 +83,7 @@ public class AreaPersonaleView2Controller {
 		Map<String,String> areaPersonaleMap=controller.caricaAreaPersonale();
 		String descrizione="";
 		if(areaPersonaleMap!=null) {
-			UtenteBean utenteBean=adattatoreLoginController.ottieniUtente();
+			UtenteBean utenteBean = controller.getUtente();
 			descrizione= areaPersonaleMap.get(utenteBean.getUsername());
 		}
 		descrizioneTextArea.setText(descrizione);

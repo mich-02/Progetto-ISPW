@@ -1,5 +1,6 @@
 package com.foodie.controller;
 
+
 public class AdattatoreFactory {  //SINGLETON, IL FACTORY DEVE AVERE SOLO 1 ISTANZA!
 	
 	private static AdattatoreFactory istanza=null;  
@@ -14,17 +15,23 @@ public class AdattatoreFactory {  //SINGLETON, IL FACTORY DEVE AVERE SOLO 1 ISTA
 		return istanza;
 	}
 	
+	
 	public LoginControllerAdapter creaLoginAdapter() {  //CREA IL PRODOTTO CONCRETO OVVERO LOGIN ADAPTER
 		//return LoginControllerAdapter.ottieniIstanza(LoginController().ottieniIstanza());
-		return LoginControllerAdapter.ottieniIstanza(LoginController.ottieniIstanza());
+		return LoginControllerAdapter.ottieniIstanza(new LoginController());
 	}
 	
+	
+	/*
 	public PubblicaRicettaControllerAdapter creaPubblicaRicettaAdapter() {  //CREA IL PRODOTTO CONCRETO OVVERO PUBBLICA RICETTA ADAPTER
-		return PubblicaRicettaControllerAdapter.ottieniIstanza(PubblicaRicettaController.ottieniIstanza());
+		return PubblicaRicettaControllerAdapter.ottieniIstanza(new PubblicaRicettaController());
 	}
+	*/
 	
+	/*
 	public TrovaRicettaControllerAdapter creaTrovaRicettaAdapter() {  //CREA IL PRODOTTO CONCRETO OVVERO TROVA RICETTA ADAPTER
-		return TrovaRicettaControllerAdapter.ottieniIstanza(TrovaRicettaController.ottieniIstanza());
+		return TrovaRicettaControllerAdapter.ottieniIstanza(new TrovaRicettaController());
 	}
+	*/
 	
 }

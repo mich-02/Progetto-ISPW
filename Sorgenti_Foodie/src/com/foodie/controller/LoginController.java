@@ -17,18 +17,20 @@ import com.foodie.model.LoginImplementazioneDao;
 import com.foodie.model.Moderatore;
 import com.foodie.model.Standard;
 import com.foodie.model.Utente;
+import com.foodie.model.UtenteBean;
 import com.foodie.model.UtenteEsistenteException;
 
 public class LoginController {
 	
-	private static LoginController istanza;
-	private static Utente utente=null;
+//	private static LoginController istanza;
+	private static Utente utente = null;
 	private static LoginDao database;
 	private static DispensaDao databaseDispensa = DispensaImplementazioneDao.ottieniIstanza();
 	private static AreaPersonaleDao databaseAreaPersonale= AreaPersonaleImplementazioneDao.ottieniIstanza();
 	private static final String MESSAGGIO= "PROBLEMA CON IL DB";
 	private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 	
+	/*
 	private LoginController() {
 		try {
 			database = LoginImplementazioneDao.ottieniIstanza();
@@ -49,6 +51,16 @@ public class LoginController {
 			}
 		}
 		return istanza;
+	}
+	*/
+	
+	public LoginController() {
+		try {
+			database = LoginImplementazioneDao.ottieniIstanza();
+		} catch (IOException e) {
+			logger.severe("Problema nel collegamento con il DB, termino l'applicazione");
+			System.exit(0);
+		}
 	}
 	
 	
@@ -121,8 +133,10 @@ public class LoginController {
 		}
 	}
 	
-	public Utente getUtente() {
-		return utente;
+	public UtenteBean getUtente() {
+		UtenteBean utenteBean = new UtenteBean();
+		utenteBean.setUsername(utente.getUsername());
+		return utenteBean;
 	}
 	
 	public void salvaAreaPersonale(String descrizione) {  //SALVA LA DESCRIZIONE DELL'AREA PERSONALE NEL DB

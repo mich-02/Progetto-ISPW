@@ -7,6 +7,7 @@ import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.ControllerAdapter;
 import com.foodie.controller.LoginController;
+import com.foodie.controller.TrovaRicettaController;
 import com.foodie.model.AlimentoBean;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,10 +25,10 @@ public class AggiungiAlimentoView2Controller {
 	
 	//private static AggiungiAlimentoView2Controller istanza;
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
-	private ControllerAdapter adattatoreTrovaRicettaController = factory.creaTrovaRicettaAdapter();
-	private LoginController loginController = LoginController.ottieniIstanza(); //tolto singleton
-	private CaricaView2 caricaView2= CaricaView2.ottieniIstanza();
-	private Stage primaryStage;
+//	private ControllerAdapter adattatoreTrovaRicettaController = factory.creaTrovaRicettaAdapter();
+	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
+	private LoginController loginController = new LoginController(); //tolto singleton
+
 	@FXML
 	private TextField barraDiRicerca;
 	@FXML
@@ -45,25 +46,18 @@ public class AggiungiAlimentoView2Controller {
 	}	
 	*/
 	
-	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
-		this.primaryStage= primaryStage;
-	}
-	
 	@FXML
     private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
-        //caricaView2.tornaAlLogin(primaryStage);
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     }
 	
 	@FXML
 	private void caricaViewDispensa(ActionEvent event) {  //CARICA VIEW DISPENSA
-		//caricaView2.caricaViewDispensa(primaryStage);
 		ViewLoader.caricaView(ViewInfo.DISPENSA2);
 	}
 	
 	@FXML
     private void caricaViewTrovaRicetta(ActionEvent event) {  //CARICA VIEW TROVA RICETTA
-        //caricaView2.caricaViewTrovaRicetta(primaryStage);
 		ViewLoader.caricaView(ViewInfo.TROVA_RICETTE2);
     }
 	
@@ -79,7 +73,9 @@ public class AggiungiAlimentoView2Controller {
 	
 	private void trovaAlimenti() {  //METODO TROVA ALIMENTI
 		eliminaAlimenti();
-		List<AlimentoBean> alimentiBeanTrovati=adattatoreTrovaRicettaController.trovaGliAlimenti(barraDiRicerca.getText());
+		AlimentoBean alimentoBean = new AlimentoBean();
+		alimentoBean.setNome(barraDiRicerca.getText());
+		List<AlimentoBean> alimentiBeanTrovati = trovaRicettaController.trovaAlimenti(alimentoBean);
 		if(!alimentiBeanTrovati.isEmpty()) {
 			for(AlimentoBean a: alimentiBeanTrovati) {
 				Label labelAlimento = new Label(a.getNome());
@@ -109,7 +105,7 @@ public class AggiungiAlimentoView2Controller {
 	private void salvaAlimento(String nomeAlimento) {  //SALVA ALIMENTO
 		AlimentoBean alimentoBean = new AlimentoBean();
 		alimentoBean.setNome(nomeAlimento);
-		adattatoreTrovaRicettaController.modificaDispensa(alimentoBean, 0);
+		trovaRicettaController.aggiungiInDispensa(alimentoBean);
 		loginController.salvaDispensa(); //SALVO DISPENSA SU FILE IN AUTOMATICO
 		
 	}

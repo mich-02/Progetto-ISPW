@@ -29,19 +29,16 @@ import com.foodie.model.Observer;
 
 public class DispensaUtenteViewController implements Observer {
 	
-	//private static DispensaUtenteViewController istanza;  //SINGLETON
-	private PubblicaRicettaController controller1 = PubblicaRicettaController.ottieniIstanza();
-	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
-	private TrovaRicettaController controller = TrovaRicettaController.ottieniIstanza();
-	private ControllerAdapter adattatoreTrovaRicettaController = factory.creaTrovaRicettaAdapter();
-	private LoginController loginController = LoginController.ottieniIstanza(); //tolto singleton
-//	private CaricaView caricaView = CaricaView.ottieniIstanza();
+	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
+//	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
+	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
+	//private ControllerAdapter adattatoreTrovaRicettaController = factory.creaTrovaRicettaAdapter();
+	private LoginController loginController = new LoginController(); //tolto singleton
 	private boolean bottoneModifica = true;
 	private static final String FORMATO = "Arial";
 	private static final String DISPENSA = "La mia Dispensa";
 	private static final String SFONDOBIANCO = "-fx-background-color: white;";
 	
-	private Stage primaryStage;
 	@FXML
 	private TextField barraDiRicerca;
 	@FXML
@@ -66,17 +63,13 @@ public class DispensaUtenteViewController implements Observer {
 	@FXML
 	public void initialize() {
 		loginController.caricaDispense();
-		controller1.registraOsservatore(this, 1);
+		pubblicaRicettaController.registraOsservatore(this, 1);
 		aggiornaView();
-	}
-	
-	public void setPrimaryStage(Stage primaryStage) { //PASSO LO STAGE
-		this.primaryStage= primaryStage;
 	}
 	
 	@FXML
 	private void svuotaDispensa(ActionEvent event) {  //SVUOTA DISPENSA
-		controller.svuotaDispensa();
+		trovaRicettaController.svuotaDispensa();
 	}
 	
 	/*
@@ -138,7 +131,7 @@ public class DispensaUtenteViewController implements Observer {
 	
 	@FXML
 	private void tornaAlLogin(MouseEvent event) {  //CARICA LA VIEW LOGIN
-		controller.svuotaDispensa();
+		trovaRicettaController.svuotaDispensa();
 		//caricaView.tornaAlLogin(primaryStage);
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
@@ -155,7 +148,9 @@ public class DispensaUtenteViewController implements Observer {
 	
 	private void trovaAlimenti() {  //GESTISCE IL TROVA ALIMENTI
 			eliminaAlimenti();
-			List<AlimentoBean> alimentiBeanTrovati=adattatoreTrovaRicettaController.trovaGliAlimenti(barraDiRicerca.getText());
+			AlimentoBean alimentoBean = new AlimentoBean();
+			alimentoBean.setNome(barraDiRicerca.getText());
+			List<AlimentoBean> alimentiBeanTrovati = trovaRicettaController.trovaAlimenti(alimentoBean);
 			if(!alimentiBeanTrovati.isEmpty()) {
 				for(AlimentoBean a: alimentiBeanTrovati) {
 					Label labelAlimento = new Label(a.getNome());
@@ -185,7 +180,7 @@ public class DispensaUtenteViewController implements Observer {
 	private void salvaAlimento(String nomeAlimento) {  //SALVA ALIMENTO IN DISPENSA
 		AlimentoBean alimentoBean = new AlimentoBean();
 		alimentoBean.setNome(nomeAlimento);
-		adattatoreTrovaRicettaController.modificaDispensa(alimentoBean, 0);
+		trovaRicettaController.aggiungiInDispensa(alimentoBean);
 	}
 	
 	private void eliminaAlimenti() {  //PULISCE GLI ALIMENTI TROVATI
@@ -198,7 +193,7 @@ public class DispensaUtenteViewController implements Observer {
 		if(contenitoreDispensa!=null && !contenitoreDispensa.getChildren().isEmpty()) {
 			contenitoreDispensa.getChildren().clear();
 		}
-		List<AlimentoBean> alimentiBeanDispensa = adattatoreTrovaRicettaController.mostraLaDispensa();
+		List<AlimentoBean> alimentiBeanDispensa = trovaRicettaController.mostraDispensa();
 		if(!alimentiBeanDispensa.isEmpty()) {
 			for(AlimentoBean a: alimentiBeanDispensa) {
 				Label labelAlimento = new Label(a.getNome());
@@ -238,7 +233,7 @@ public class DispensaUtenteViewController implements Observer {
 	private void eliminaAlimento(String nomeAlimento) {  //ELIMINA ALIMENTO DISPENSA
 		AlimentoBean alimentoBean = new AlimentoBean();
 		alimentoBean.setNome(nomeAlimento);
-		adattatoreTrovaRicettaController.modificaDispensa(alimentoBean, 1);
+		trovaRicettaController.rimuoviDallaDispensa(alimentoBean);
 	}
 	
 	private void impostaLabel() {  //IMPOSTA LE LABEL DELLA DISPENSA CLICCABILI

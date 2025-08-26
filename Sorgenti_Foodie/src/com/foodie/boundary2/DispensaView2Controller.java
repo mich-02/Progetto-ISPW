@@ -26,12 +26,11 @@ public class DispensaView2Controller implements Observer{
 	
 //	private static DispensaView2Controller istanza;
 	private AdattatoreFactory factory= AdattatoreFactory.ottieniIstanza();
-	PubblicaRicettaController controller1= PubblicaRicettaController.ottieniIstanza();
-	private TrovaRicettaController controller = TrovaRicettaController.ottieniIstanza();
-	private LoginController loginController= LoginController.ottieniIstanza(); //tolto singleton
-	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
-	private CaricaView2 caricaView2 = CaricaView2.ottieniIstanza();
-	private Stage primaryStage;
+	PubblicaRicettaController controller1 = new PubblicaRicettaController();
+	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
+	private LoginController loginController= new LoginController(); //tolto singleton
+//	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
+	
 	@FXML
 	private VBox contenitoreDispensa;
 	
@@ -53,9 +52,6 @@ public class DispensaView2Controller implements Observer{
 		aggiornaView();
 	}
 	
-	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
-		this.primaryStage= primaryStage;
-	}
 	
 	@FXML
     private void tornaAlLogin(MouseEvent event) { //CARICA VIEW LOGIN
@@ -78,13 +74,13 @@ public class DispensaView2Controller implements Observer{
 	
 	@FXML
 	private void svuotaDispensa(ActionEvent event) {  //SVUOTA DISPENSA
-		controller.svuotaDispensa();
+		trovaRicettaController.svuotaDispensa();
 		loginController.salvaDispensa(); //SALVO DISPENSA SU FILE IN AUTOMATICO
 	}
 	
 	public void aggiornaView() {  //AGGIORNA LA VIEW IN FUNZIONE DELLA DISPENSA
 		contenitoreDispensa.getChildren().clear();
-		List<AlimentoBean> alimentiBeanDispensa =adattatoreTrovaRicettaController.mostraLaDispensa();
+		List<AlimentoBean> alimentiBeanDispensa = trovaRicettaController.mostraDispensa();
 		if(!alimentiBeanDispensa.isEmpty()) {
 			for(AlimentoBean a: alimentiBeanDispensa) {
 				Label labelAlimento = new Label(a.getNome());
@@ -112,7 +108,7 @@ public class DispensaView2Controller implements Observer{
 	private void eliminaAlimento(String nomeAlimento) {  //ELIMINA ALIMENTO DALLA DISPENSA
 		AlimentoBean alimentoBean = new AlimentoBean();
 		alimentoBean.setNome(nomeAlimento);
-		adattatoreTrovaRicettaController.modificaDispensa(alimentoBean, 1);
+		trovaRicettaController.rimuoviDallaDispensa(alimentoBean);
 		loginController.salvaDispensa(); //SALVO DISPENSA SU FILE IN AUTOMATICO
 	}
 	

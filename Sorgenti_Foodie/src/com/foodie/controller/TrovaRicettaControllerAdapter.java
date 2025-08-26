@@ -9,7 +9,7 @@ import com.foodie.model.Ricetta;
 import com.foodie.model.RicettaBean;
 
 public class TrovaRicettaControllerAdapter extends ControllerAdapter{  //ADATTATORE CONCRETO DEL CONTROLLER TROVARICETTE
-	
+/*	
 	private static TrovaRicettaControllerAdapter istanza;  //SINGLETON
 	private static TrovaRicettaController adattato; 
 	
@@ -62,9 +62,9 @@ public class TrovaRicettaControllerAdapter extends ControllerAdapter{  //ADATTAT
 
 	@Override
 	public ArrayList<AlimentoBean> trovaGliAlimenti(String nomeAlimento) {
-		List<Alimento> alimentiTrovati=null;
+		List<Alimento> alimentiTrovati = null;
 		ArrayList<AlimentoBean> alimentiTrovatiBean=null;
-		alimentiTrovati=adattato.trovaAlimenti(nomeAlimento);
+		alimentiTrovati = adattato.trovaAlimenti(nomeAlimento);
 		if(alimentiTrovati!=null && !alimentiTrovati.isEmpty()) {
 			alimentiTrovatiBean=new ArrayList<>();
 			for(Alimento a:alimentiTrovati) {
@@ -122,5 +122,5 @@ public class TrovaRicettaControllerAdapter extends ControllerAdapter{  //ADATTAT
 			return null;
 		}
 	}
-
+*/
 }

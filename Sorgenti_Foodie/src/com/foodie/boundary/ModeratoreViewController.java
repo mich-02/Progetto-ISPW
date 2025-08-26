@@ -21,12 +21,8 @@ import javafx.stage.Stage;
 
 public class ModeratoreViewController implements Observer{
 	
-	//private static ModeratoreViewController istanza;
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
-	private PubblicaRicettaController controller = PubblicaRicettaController.ottieniIstanza();
-	private ControllerAdapter adattatorePubblicaRicettaController = factory.creaPubblicaRicettaAdapter();
-	//private CaricaView caricaView= CaricaView.ottieniIstanza();
-	//private Stage primaryStage;
+	private PubblicaRicettaController controller = new PubblicaRicettaController();
 	private static final String FORMATO = "Arial";
 	private static final String SFONDOBIANCO = "-fx-background-color: white;";
 	@FXML
@@ -56,7 +52,7 @@ public class ModeratoreViewController implements Observer{
 	public void aggiornaView() {  //AGGIORNA VIEW IN BASE ALLE RICHIESTE DA APPROVARE DEL MODERATORE
 		contenitoreRicetteDaApprovare.getChildren().clear();
 		contenitoreContenutoRicetta.getChildren().clear();
-		List<RicettaBean> ricetteBean =adattatorePubblicaRicettaController.mostraLeRicetteDaApprovare();
+		List<RicettaBean> ricetteBean = controller.mostraRicetteDaApprovare();
 		if(!ricetteBean.isEmpty()) {
 			for(RicettaBean r: ricetteBean) {
 				Label labelRicetta = new Label(r.getNome());
@@ -131,15 +127,8 @@ public class ModeratoreViewController implements Observer{
 		}
 	}
 	
-	/*
-	public void setPrimaryStage(Stage primaryStage) {  //PASSA LO STAGE
-		this.primaryStage= primaryStage;
-	}
-	*/
-	
 	@FXML  
 	private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
-		//caricaView.tornaAlLogin(primaryStage);
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 		
 	}

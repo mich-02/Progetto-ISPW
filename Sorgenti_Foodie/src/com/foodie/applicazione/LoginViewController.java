@@ -55,7 +55,7 @@ public class LoginViewController {
     @FXML
     private ToggleGroup userTypeToggleGroup;
     
-    private LoginController loginController = LoginController.ottieniIstanza();
+    private LoginController loginController = new LoginController();
 	
     /*
     private LoginViewController() {

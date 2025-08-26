@@ -25,7 +25,7 @@ public class RegistratiViewController {
 	// Variabile per memorizzare il ruolo, 0 per l'utente base, 1 per lo chef
     private int ruolo;
 	private Stage primaryStage;
-    private LoginController controller = LoginController.ottieniIstanza(); //tolto singleton
+    private LoginController controller = new LoginController(); //tolto singleton
 	@FXML
     private RadioButton baseRadioButton;
     @FXML

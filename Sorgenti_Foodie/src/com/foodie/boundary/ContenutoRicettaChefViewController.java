@@ -15,10 +15,6 @@ import javafx.scene.text.Font;
 
 public class ContenutoRicettaChefViewController {
 	
-//	private static ContenutoRicettaChefViewController istanza;
-//	private Stage primaryStage;
-//	private CaricaView caricaView = CaricaView.ottieniIstanza();
-	
 	private static final String FORMATO = "Arial";
 	@FXML
 	private Label nome;
@@ -38,12 +34,6 @@ public class ContenutoRicettaChefViewController {
 			istanza = new ContenutoRicettaChefViewController();
 		}
 		return istanza;
-	}
-	*/
-	
-	/*
-	public void setPrimaryStage(Stage primaryStage) { //PASSO LO STAGE
-		this.primaryStage= primaryStage;
 	}
 	*/
 	
