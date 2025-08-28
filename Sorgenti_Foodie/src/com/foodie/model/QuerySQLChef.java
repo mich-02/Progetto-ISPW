@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class QuerySQLChef {
-	
+/*	
 	private QuerySQLChef() {
 	}
 	
@@ -109,5 +109,5 @@ public class QuerySQLChef {
 	    	return ps.executeQuery(); 
 	    }
 	}
-		
+*/		
 }

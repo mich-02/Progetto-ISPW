@@ -11,7 +11,7 @@ import java.util.StringJoiner;
 public class QuerySQLUtente {
 	private QuerySQLUtente() {
 	}
-	
+/*	
 	public static ResultSet trovaRicette(Statement dichiarazione, List<Alimento> alimenti, int difficolta) throws SQLException { //old
 		StringBuilder stringBuilder= new StringBuilder();   //QUERY PER OTTENERE LE RICETTE DAL DB CHE HANNO COME INGREDIENTI
 		int indice = 0;										//UN SOTTOINSIEME DI QUELLI CONTENUTI NELLA DISPENSA
@@ -88,5 +88,5 @@ public class QuerySQLUtente {
 	    return ps.executeQuery();
 	}
 
-	
+*/	
 }
