@@ -1,4 +1,4 @@
-package com.foodie.model.dao;
+package com.foodie.model.dao.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +14,7 @@ import com.foodie.model.Alimento;
 import com.foodie.model.Dispensa;
 import com.foodie.model.Ricetta;
 import com.foodie.model.RicettaDuplicataException;
+import com.foodie.model.dao.RicettaDao;
 
 public class RicettaDaoDB implements RicettaDao {
 	private static final Logger logger = Logger.getLogger(UtenteDaoDB.class.getName());

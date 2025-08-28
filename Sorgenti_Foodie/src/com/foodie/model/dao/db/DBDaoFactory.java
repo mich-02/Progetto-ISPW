@@ -1,4 +1,9 @@
-package com.foodie.model.dao;
+package com.foodie.model.dao.db;
+
+import com.foodie.model.dao.DaoFactory;
+import com.foodie.model.dao.DispensaDao;
+import com.foodie.model.dao.RicettaDao;
+import com.foodie.model.dao.UtenteDao;
 
 public class DBDaoFactory extends DaoFactory {
 

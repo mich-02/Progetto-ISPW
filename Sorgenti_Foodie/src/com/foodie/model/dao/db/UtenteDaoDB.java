@@ -1,10 +1,12 @@
-package com.foodie.model.dao;
+package com.foodie.model.dao.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
+
+import com.foodie.model.dao.UtenteDao;
 
 
 
