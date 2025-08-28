@@ -1,6 +1,5 @@
 package com.foodie.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -12,23 +11,25 @@ import com.foodie.model.Alimento;
 import com.foodie.model.AlimentoSerializzabile;
 import com.foodie.model.AreaPersonaleDao;
 import com.foodie.model.DispensaImplementazioneDao;
-import com.foodie.model.LoginDao;
-import com.foodie.model.LoginImplementazioneDao;
 import com.foodie.model.Moderatore;
 import com.foodie.model.Standard;
 import com.foodie.model.Utente;
 import com.foodie.model.UtenteBean;
 import com.foodie.model.UtenteEsistenteException;
+import com.foodie.model.dao.DaoFactory;
+import com.foodie.model.dao.UtenteDao;
 
 public class LoginController {
 	
 //	private static LoginController istanza;
 	private static Utente utente = null;
-	private static LoginDao database;
+//	private static LoginDao database;
 	private static DispensaDao databaseDispensa = DispensaImplementazioneDao.ottieniIstanza();
 	private static AreaPersonaleDao databaseAreaPersonale= AreaPersonaleImplementazioneDao.ottieniIstanza();
 	private static final String MESSAGGIO= "PROBLEMA CON IL DB";
 	private static final Logger logger = Logger.getLogger(LoginController.class.getName());
+	
+	private UtenteDao utenteDao;
 	
 	/*
 	private LoginController() {
@@ -55,12 +56,8 @@ public class LoginController {
 	*/
 	
 	public LoginController() {
-		try {
-			database = LoginImplementazioneDao.ottieniIstanza();
-		} catch (IOException e) {
-			logger.severe("Problema nel collegamento con il DB, termino l'applicazione");
-			System.exit(0);
-		}
+		utenteDao = DaoFactory.ottieniIstanza().creaUtenteDao();
+		//database = LoginImplementazioneDao.ottieniIstanza();
 	}
 	
 	
@@ -80,18 +77,16 @@ public class LoginController {
 	
 	public int effettuaLogin(String username, String pwd) {  //EFFETTUA IL LOGIN
 		try {
-			return database.validazioneLogin(username, pwd);
+			return utenteDao.validazioneLogin(username, pwd);
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.severe("errore nella fase di login");
-			logger.info(MESSAGGIO);
+			logger.severe("Errore durante la fase di login.");
 			return -1;
 		}
 	}
 	
 	public int controllaUsername(String username) {  //CONTROLLA L'USERNAME SE ESISTE
 		try {
-			if(database.controllaUsername(username)==0) {
+			if(utenteDao.controllaUsername(username)==0) {
 				throw new UtenteEsistenteException("Ricetta già esistente nel database!");
 			}
 			return 1;
@@ -109,7 +104,7 @@ public class LoginController {
 	
 	public void registraUtente(String nome,String cognome,String username,int ruolo,String password) {  //REGISTRA L'UTENTE SUL DB
 		try {
-			database.registraUtente(nome, cognome, username, ruolo, password);
+			utenteDao.registraUtente(nome, cognome, username, ruolo, password);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.severe("ERRORE NELLA REGISTRAZIONE DELL'UTENTE");

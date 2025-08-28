@@ -17,15 +17,20 @@ import com.foodie.model.Observer;
 import com.foodie.model.Ricetta;
 import com.foodie.model.RicettaBean;
 import com.foodie.model.RicettaDuplicataException;
+import com.foodie.model.dao.DaoFactory;
+import com.foodie.model.dao.RicettaDao;
 
 @SuppressWarnings("unused")
 public class PubblicaRicettaController {  
 	
 //	private static PubblicaRicettaController istanza;
-	private static CatalogoRicetteChefDao database;
+//	private static CatalogoRicetteChefDao database;
+//	private CatalogoRicetteChefDao database;
 	private static Moderatore moderatore;
 	private static Ricetta ricetta = new Ricetta();
 	private static final Logger logger = Logger.getLogger(PubblicaRicettaController.class.getName());
+	
+	private RicettaDao ricettaDao;
 	
 	/*
 	private PubblicaRicettaController() {
@@ -45,11 +50,11 @@ public class PubblicaRicettaController {
 		}
 		return istanza;
 	}
-	*/
 	
 	public PubblicaRicettaController() {
 		try {
-			database= CatalogoRicetteImplementazioneDao.ottieniIstanza();
+			database = CatalogoRicetteImplementazioneDao.ottieniIstanza();
+			//database = new CatalogoRicetteImplementazioneDao();
 		} catch (IOException e) {
 			logger.severe("PROBLEMA CON IL COLLEGAMENTO DEL DB! TERMINO L'APPLICAZIONE");
 			System.exit(0);
@@ -57,6 +62,13 @@ public class PubblicaRicettaController {
 		//database = CatalogoRicetteImplementazione2Dao.ottieniIstanza(); //SU FILE
 		moderatore=Moderatore.ottieniIstanza();
 	}
+	*/
+	public PubblicaRicettaController() {
+		ricettaDao = DaoFactory.ottieniIstanza().creaRicettaDao();
+		moderatore = Moderatore.ottieniIstanza();
+	}
+	
+	
 	
 	public static void creaRicetta() {  //CREA LA RICETTA
 		ricetta=new Ricetta();
@@ -141,7 +153,7 @@ public class PubblicaRicettaController {
 		Ricetta ricettaDaPubblicare=Moderatore.ottieniRicetta(nome, autore);
 		try {
 			if(bool) {
-				database.aggiungiRicetta(ricettaDaPubblicare);
+				ricettaDao.aggiungiRicetta(ricettaDaPubblicare);
 			}
 			moderatore.ricettaVerificata(ricettaDaPubblicare);
 			notificaChef(bool);
@@ -158,7 +170,7 @@ public class PubblicaRicettaController {
 	public void eliminaRicetta(String nome, String autore) {    //ELIMINA LA RICETTA DAL DATABASE
 		
 		try {
-			database.eliminaRicetta(nome,autore);
+			ricettaDao.eliminaRicetta(nome,autore);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.severe("ERRORE NELL'ELIMINAZIONE DELLA RICETTA");

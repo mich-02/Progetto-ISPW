@@ -26,7 +26,7 @@ public class Client extends Application {
 		//primaryStage.setScene(scene);
 		//primaryStage.show(); 
 		ViewLoader.setStage(primaryStage);
-		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
+		ViewLoader.caricaView(ViewInfo.CONFIGURAZIONE);
 	}
 
 	public static void main(String[] args) {

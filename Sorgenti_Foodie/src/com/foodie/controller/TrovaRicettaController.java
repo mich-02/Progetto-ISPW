@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import com.foodie.model.Alimento;
 import com.foodie.model.AlimentoBean;
 import com.foodie.model.CatalogoAlimentiDao;
@@ -17,15 +16,21 @@ import com.foodie.model.Dispensa;
 import com.foodie.model.Ricetta;
 import com.foodie.model.RicettaBean;
 import com.foodie.model.UtenteBean;
+import com.foodie.model.dao.ChefDao;
+import com.foodie.model.dao.DaoFactory;
+import com.foodie.model.dao.RicettaDao;
 
 @SuppressWarnings("unused")
 public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOLO 1 ISTANZA!
 	
 //	private static TrovaRicettaController istanza;
 	private static Dispensa dispensa;
-	private static CatalogoRicetteChefDao database;
+//	private static CatalogoRicetteChefDao database;
+//	private CatalogoRicetteChefDao database;
 	private static CatalogoAlimentiDao databaseAlimenti;
 	private static final Logger logger = Logger.getLogger(TrovaRicettaController.class.getName());
+	
+	private RicettaDao ricettaDao;
 	
 	/*
 	private TrovaRicettaController() {
@@ -48,10 +53,12 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 	}
 	*/
 	
+	/*
 	public TrovaRicettaController() {
-		dispensa= Dispensa.ottieniIstanza();
+		dispensa = Dispensa.ottieniIstanza();
 		try {
-			database= CatalogoRicetteImplementazioneDao.ottieniIstanza();
+			//database = new CatalogoRicetteImplementazioneDao();
+			database = CatalogoRicetteImplementazioneDao.ottieniIstanza();
 		} catch (IOException e) {
 			logger.severe("PROBLEMA CON IL COLLEGAMENTO DEL DB! TERMINO L'APPLICAZIONE");
 			System.exit(0);
@@ -59,6 +66,13 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 		//database= CatalogoRicetteImplementazione2Dao.ottieniIstanza(); //SU FILE
 		databaseAlimenti=CatalogoAlimentiNutrixionixImplementazioneDao.ottieniIstanza();
 	}
+	*/
+	public TrovaRicettaController() {
+		dispensa = Dispensa.ottieniIstanza();
+		ricettaDao = DaoFactory.ottieniIstanza().creaRicettaDao();
+		databaseAlimenti = CatalogoAlimentiNutrixionixImplementazioneDao.ottieniIstanza();
+	}
+	
 	
 	
 	public void aggiornaDispensa(Alimento alimento,int x) {  //old
@@ -86,10 +100,10 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 		List<Ricetta> ricetteTrovate= null;
 		try {
 			if(autore==null) {  //SE NON PASSO L'AUTORE VOGLIO EFFETTUARE LA RICERCA PER ALIMENTI-DIFFICOLTA'
-				ricetteTrovate = database.trovaRicette(dispensa, difficolta, null);
+				ricetteTrovate = ricettaDao.trovaRicette(dispensa, difficolta, null);
 			}
 			else {  //SE PASSO L'AUTORE VOGLIO EFFETTUARE LA RICERCA PER AUTORE
-				ricetteTrovate=database.trovaRicette(null,0,autore);
+				ricetteTrovate = ricettaDao.trovaRicette(null,0,autore);
 			}
 			if(ricetteTrovate!=null) {
 				mostraRicette(ricetteTrovate);
@@ -111,10 +125,10 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 		try {
 			//if(utenteBean.getUsername() == null) { //SE NON PASSO L'AUTORE VOGLIO EFFETTUARE LA RICERCA PER ALIMENTI-DIFFICOLTA'
 			if (utenteBean == null) {
-				ricetteTrovate = database.trovaRicette(dispensa, difficolta, null);
+				ricetteTrovate = ricettaDao.trovaRicette(dispensa, difficolta, null);
 			}
 			else {  //SE PASSO L'AUTORE VOGLIO EFFETTUARE LA RICERCA PER AUTORE
-				ricetteTrovate=database.trovaRicette(null, 0, utenteBean.getUsername());
+				ricetteTrovate = ricettaDao.trovaRicette(null, 0, utenteBean.getUsername());
 			}	
 		
 			if(ricetteTrovate!=null) {
@@ -233,7 +247,7 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 	public Ricetta ottieniRicetta(String nome,String autore) {  //METODO PER OTTENERE I DATI DI UNA RICETTA IN FUNZIONE DEL NOME-AUTORE
 		Ricetta ricetta=null; 
 		try {
-			ricetta=database.ottieniDatiRicetta(nome,autore);
+			ricetta = ricettaDao.ottieniDatiRicetta(nome,autore);
 			if(ricetta!=null) {
 				return ricetta;
 			}
@@ -250,7 +264,7 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 	public RicettaBean ottieniRicetta(RicettaBean ricettaBean) { //METODO PER OTTENERE I DATI DI UNA RICETTA IN FUNZIONE DEL NOME-AUTORE
 		Ricetta ricetta = null;
 		try {
-			ricetta = database.ottieniDatiRicetta(ricettaBean.getNome(), ricettaBean.getAutore());
+			ricetta = ricettaDao.ottieniDatiRicetta(ricettaBean.getNome(), ricettaBean.getAutore());
 			if(ricetta!=null) {
 				ricettaBean.setNome(ricetta.getNome());
 				ricettaBean.setDescrizione(ricetta.getDescrizione());

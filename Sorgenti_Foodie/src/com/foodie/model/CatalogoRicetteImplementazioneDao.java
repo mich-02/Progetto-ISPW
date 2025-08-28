@@ -9,16 +9,20 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import com.foodie.model.dao.DBConnection;
+
+
 public class CatalogoRicetteImplementazioneDao implements CatalogoRicetteChefDao{   //DAO PER LA CONNESSIONE CON MYSQL
 	
 	private static CatalogoRicetteImplementazioneDao istanza;    //SINGLETON
 	private static String utente;
     private static String password; 
-    private static final String DATABASEURL = "jdbc:mysql://localhost:3306/ricette";
+    private static final String DATABASEURL = "jdbc:mysql://localhost:3306/foodie";
     @SuppressWarnings("unused")
 	private static final String DRIVERMYSQL = "com.mysql.jdbc.Driver";
 	private static final String COLONNA_AUTORE= "autore";
 	private static final Logger logger = Logger.getLogger(CatalogoRicetteImplementazioneDao.class.getName());
+	
 	
     private CatalogoRicetteImplementazioneDao(){
 	}
@@ -38,6 +42,7 @@ public class CatalogoRicetteImplementazioneDao implements CatalogoRicetteChefDao
 		}
 		return istanza;
 	}
+	
 	
 	private static void provaConnessione() throws IOException {
 		int i=0;
@@ -59,7 +64,8 @@ public class CatalogoRicetteImplementazioneDao implements CatalogoRicetteChefDao
 				}
 			}
 		}
-	}  
+	} 
+	
 	
 	@Override
 	public ArrayList<Ricetta> trovaRicette(Dispensa dispensa, int difficolta, String autore2) throws SQLException,ClassNotFoundException{ //TROVA LE RICETTE NEL DB O PER ALIMENTI-DIFFICOLTA' O PER AUTORE
@@ -162,6 +168,19 @@ public class CatalogoRicetteImplementazioneDao implements CatalogoRicetteChefDao
                 if (dichiarazione != null)
                     dichiarazione.close();
         }
+	}
+	
+	//@Override
+	public void eliminaRicettaNew(String nome, String autore) throws SQLException,ClassNotFoundException {
+		Connection connessione = DBConnection.ottieniIstanza().getConnection();
+		Statement dichiarazione = connessione.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+		if(QuerySQLChef.rimuoviRicetta(dichiarazione, nome,autore)>0) {  //QUERY PER ELIMINARE LA RICETTA DAL DB
+			logger.info("Ricetta eliminata dal database");  
+        }
+        else {
+         	logger.info("Ricetta non eliminata dal database o non presente");
+        }
+        dichiarazione.close();
 	}
 
 	@Override

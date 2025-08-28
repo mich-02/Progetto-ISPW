@@ -1,6 +1,7 @@
 package com.foodie.boundary.components;
 
 public enum ViewInfo {
+	CONFIGURAZIONE("/com/foodie/applicazione/ConfigurazioneView.fxml"),
 	LOGIN_VIEW("/com/foodie/applicazione/LoginView.fxml"),
 	REGISTRAZIONE_VIEW("/com/foodie/applicazione/RegistratiView.fxml"),
 	AREA_CHEF1("/com/foodie/boundary/AreaPersonaleView.fxml"),

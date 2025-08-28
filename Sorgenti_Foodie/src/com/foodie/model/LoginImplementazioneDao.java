@@ -12,12 +12,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Logger;
 
-public class LoginImplementazioneDao implements LoginDao{
-	
+public class LoginImplementazioneDao { //implements LoginDao{
+/*	
 	private static LoginImplementazioneDao istanza;
 	private static String utente;
     private static String password; 
-    private static final String DATABASEURL = "jdbc:mysql://localhost:3306/user_credentials";
+    private static final String DATABASEURL = "jdbc:mysql://localhost:3306/foodie";
     @SuppressWarnings("unused")
 	private static final String DRIVERMYSQL = "com.mysql.jdbc.Driver";
     private static final Logger logger = Logger.getLogger(LoginImplementazioneDao.class.getName());
@@ -125,7 +125,7 @@ public class LoginImplementazioneDao implements LoginDao{
         }
 	}
 	
-	public void registraUtente(String nome,String cognome,String username,int ruolo,String pwd) throws SQLException,ClassNotFoundException {  //REGISTRA L'UTENTE
+	public void registraUtente(String nome, String cognome, String username, int ruolo, String pwd) throws SQLException,ClassNotFoundException {  //REGISTRA L'UTENTE
 		Statement dichiarazione = null;
         try(Connection connessione = DriverManager.getConnection(DATABASEURL, utente, password)) {
             dichiarazione = connessione.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -141,4 +141,5 @@ public class LoginImplementazioneDao implements LoginDao{
                     dichiarazione.close();
         }
 	}
+	*/
 }

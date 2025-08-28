@@ -4,7 +4,7 @@ import com.foodie.model.Utente;
 import com.foodie.model.UtenteBean;
 
 public class LoginControllerAdapter extends ControllerAdapter{  //ADATTATORE CONCRETO DEL CONTROLLER LOGIN
-	
+/*	
 	private static LoginControllerAdapter istanza;  //SINGLETON
 	private static LoginController adattato; 
 	
@@ -26,5 +26,5 @@ public class LoginControllerAdapter extends ControllerAdapter{  //ADATTATORE CON
 		utenteBean.setUsername(utente.getUsername());
 		return utenteBean;
 	}
-	
+*/
 }

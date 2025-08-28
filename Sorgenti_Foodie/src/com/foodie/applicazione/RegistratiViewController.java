@@ -24,7 +24,6 @@ public class RegistratiViewController {
 	// private static RegistratiViewController istanza;  //SINGLETON
 	// Variabile per memorizzare il ruolo, 0 per l'utente base, 1 per lo chef
     private int ruolo;
-	private Stage primaryStage;
     private LoginController controller = new LoginController(); //tolto singleton
 	@FXML
     private RadioButton baseRadioButton;
@@ -139,22 +138,7 @@ public class RegistratiViewController {
     	esitoRegistrazioneLabel.setText("Registrazione andata a buon fine.");
     	PauseTransition pause = new PauseTransition(Duration.seconds(2));
     	pause.setOnFinished(event -> {
-    		
-    		try {
-    			LoginViewController loginViewController= new LoginViewController(); //modificato singleton
-    			FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginView.fxml"));
-                loader.setController(loginViewController);
-    			Parent root = loader.load();
-                loginViewController.setPrimaryStage(primaryStage);
-                Scene nuovaScena = new Scene(root);
-                primaryStage.setScene(nuovaScena);
-                primaryStage.show();
-        		
-        	} catch (Exception e) {
-        		e.printStackTrace();
-        		e.getCause();
-        	}
-    	
+    		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     	});
     
     		pause.play();
@@ -162,10 +146,6 @@ public class RegistratiViewController {
 
 	private int usernameEsistente(String username) {  //METODO CHE CONTROLLA SE L'USERNAME E' ESISTENTE
 		return controller.controllaUsername(username);
-	}
-	
-	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
-		this.primaryStage=primaryStage;
 	}
 	
 }
