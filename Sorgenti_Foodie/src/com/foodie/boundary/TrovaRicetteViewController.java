@@ -133,7 +133,7 @@ public class TrovaRicetteViewController {
 	
 	public int creaRicetteTrovate(int difficoltaInt) {  //TROVA LE RICETTE E LE MOSTRA GRAFICAMENTE
 		List<RicettaBean> ricetteTrovate= null;
-		ricetteTrovate = trovaRicettaController.trovaRicette(difficoltaInt,null);
+		ricetteTrovate = trovaRicettaController.trovaRicetteUtente(difficoltaInt);
 		if(!ricetteTrovate.isEmpty()) {
 			for(RicettaBean r: ricetteTrovate) {  //PER OGNI RICETTA CREA PARTI GRAFICHE
 				HBox contenitoreRicettaSingola = new HBox();

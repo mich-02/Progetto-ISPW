@@ -79,7 +79,8 @@ public class RicettaDaoDB implements RicettaDao {
 	    return ricetteTrovate;
 	}
 	*/
-	@Override
+	
+	/*
 	public List<Ricetta> trovaRicette(Dispensa dispensa, int difficolta, String autore) throws SQLException {
 	    List<Ricetta> ricetteTrovate = new ArrayList<>();
 
@@ -141,6 +142,80 @@ public class RicettaDaoDB implements RicettaDao {
 
 	    return ricetteTrovate;
 	}
+	*/
+	
+	public List<Ricetta> trovaRicettePerDispensa(Dispensa dispensa, int difficolta) throws SQLException {
+	    List<Ricetta> ricetteTrovate = new ArrayList<>();
+
+	    if (dispensa == null || dispensa.getAlimenti() == null || dispensa.getAlimenti().isEmpty()) {
+	        logger.info("Dispensa vuota. Aggiungi alimenti prima della ricerca.");
+	        return ricetteTrovate;
+	    }
+
+	    String placeholders = generaPlaceholders(dispensa.getAlimenti().size());
+
+	    String query =
+	        "SELECT r.nome, r.descrizione, r.difficolta, r.autore, i.alimento, i.quantita " +
+	        "FROM Ricette r " +
+	        "JOIN Ingredienti i ON r.nome = i.nome_ricetta AND r.autore = i.autore_ricetta " +
+	        "WHERE r.nome NOT IN ( " +
+	        "  SELECT nome_ricetta FROM Ingredienti WHERE alimento NOT IN (" + placeholders + ") " +
+	        ") AND r.difficolta = ?";
+
+	    Connection conn = DBConnection.ottieniIstanza().getConnection();
+	    try (PreparedStatement ps = conn.prepareStatement(query)) {
+	        int idx = 1;
+	        for (Alimento a : dispensa.getAlimenti()) {
+	            ps.setString(idx++, a.getNome());
+	        }
+	        ps.setInt(idx, difficolta);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            popolaListaRicette(rs, ricetteTrovate);
+	        }
+	    }
+
+	    if (ricetteTrovate.isEmpty()) {
+	        logger.info("Nessuna ricetta trovata con gli alimenti della dispensa.");
+	    } else {
+	        logger.info("Ricette trovate: " + ricetteTrovate.size());
+	    }
+
+	    return ricetteTrovate;
+	}
+	// Helper "Sonar-friendly": genera la stringa "?, ?, ?, ..."
+	private String generaPlaceholders(int count) {
+	    return String.join(",", java.util.Collections.nCopies(count, "?"));
+	}
+	
+	public List<Ricetta> trovaRicettePerAutore(String autore) throws SQLException {
+	    List<Ricetta> ricetteTrovate = new ArrayList<>();
+
+	    String query =
+	        "SELECT r.nome, r.descrizione, r.difficolta, r.autore, i.alimento, i.quantita " +
+	        "FROM ricette r " +
+	        "LEFT JOIN ingredienti i ON r.nome = i.nome_ricetta AND r.autore = i.autore_ricetta " +
+	        "WHERE r.autore = ?";
+
+	    Connection conn = DBConnection.ottieniIstanza().getConnection();
+
+	    try (PreparedStatement ps = conn.prepareStatement(query)) {
+	        ps.setString(1, autore);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            popolaListaRicette(rs, ricetteTrovate);
+	        }
+	    }
+
+	    if (ricetteTrovate.isEmpty()) {
+	        logger.info("Nessuna ricetta trovata per autore: " + autore);
+	    } else {
+	        logger.info("Ricette trovate per autore " + autore + ": " + ricetteTrovate.size());
+	    }
+
+	    return ricetteTrovate;
+	}
+
 
 	// Metodo per popolare la lista di ricette dal ResultSet
 	private void popolaListaRicette(ResultSet rs, List<Ricetta> lista) throws SQLException {

@@ -122,16 +122,94 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 		}
 	}
 	*/
+	public ArrayList<RicettaBean> trovaRicetteChef(UtenteBean utenteBean) {
+		List<Ricetta> ricetteTrovate = null;
+		try {
+			ricetteTrovate = ricettaDao.trovaRicettePerAutore(utenteBean.getUsername());
+			if(ricetteTrovate!=null) {
+				ArrayList<RicettaBean> ricetteTrovateBean= new ArrayList<>();
+				for(Ricetta r:ricetteTrovate) {
+					RicettaBean ricettaBean=new RicettaBean();
+					ricettaBean.setNome(r.getNome());
+					ricettaBean.setDescrizione(r.getDescrizione());
+					ricettaBean.setDifficolta(r.getDifficolta());
+					ArrayList<AlimentoBean> alimentiTrovatiBean=new ArrayList<>();
+					List<Alimento> alimentiTrovati=r.getIngredienti();
+					for(Alimento a:alimentiTrovati) {
+						AlimentoBean alimentoBean= new AlimentoBean();
+						alimentoBean.setNome(a.getNome());
+						alimentiTrovatiBean.add(alimentoBean);
+					}
+					ricettaBean.setIngredienti(alimentiTrovatiBean);
+					ricettaBean.setAutore(r.getAutore());
+					ricettaBean.setQuantita(r.getQuantita());
+					ricetteTrovateBean.add(ricettaBean);
+				}	
+				mostraRicette(ricetteTrovate);
+				return ricetteTrovateBean;
+			}
+			else {
+				return new ArrayList<>();
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.severe("ERRORE NELL'OTTENIMENTO DELLE RICETTE");
+			logger.info("Problema con il DB");
+			return new ArrayList<>();
+		}
+	}
 	
+	public ArrayList<RicettaBean> trovaRicetteUtente(int difficolta) {
+		List<Ricetta> ricetteTrovate = null;
+		try {
+			ricetteTrovate = ricettaDao.trovaRicettePerDispensa(dispensa, difficolta);
+			if(ricetteTrovate!=null) {
+				ArrayList<RicettaBean> ricetteTrovateBean= new ArrayList<>();
+				for(Ricetta r:ricetteTrovate) {
+					RicettaBean ricettaBean=new RicettaBean();
+					ricettaBean.setNome(r.getNome());
+					ricettaBean.setDescrizione(r.getDescrizione());
+					ricettaBean.setDifficolta(r.getDifficolta());
+					ArrayList<AlimentoBean> alimentiTrovatiBean=new ArrayList<>();
+					List<Alimento> alimentiTrovati=r.getIngredienti();
+					for(Alimento a:alimentiTrovati) {
+						AlimentoBean alimentoBean= new AlimentoBean();
+						alimentoBean.setNome(a.getNome());
+						alimentiTrovatiBean.add(alimentoBean);
+					}
+					ricettaBean.setIngredienti(alimentiTrovatiBean);
+					ricettaBean.setAutore(r.getAutore());
+					ricettaBean.setQuantita(r.getQuantita());
+					ricetteTrovateBean.add(ricettaBean);
+				}	
+				mostraRicette(ricetteTrovate);
+				return ricetteTrovateBean;
+			}
+			else {
+				return new ArrayList<>();
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.severe("ERRORE NELL'OTTENIMENTO DELLE RICETTE");
+			logger.info("Problema con il DB");
+			return new ArrayList<>();
+		}
+	}
+	
+	
+	/*
 	public ArrayList<RicettaBean> trovaRicette(int difficolta, UtenteBean utenteBean) {
 		List<Ricetta> ricetteTrovate = null;
 		try {
 			//if(utenteBean.getUsername() == null) { //SE NON PASSO L'AUTORE VOGLIO EFFETTUARE LA RICERCA PER ALIMENTI-DIFFICOLTA'
 			if (utenteBean == null) {
-				ricetteTrovate = ricettaDao.trovaRicette(dispensa, difficolta, null);
+				//ricetteTrovate = ricettaDao.trovaRicette(dispensa, difficolta, null);
+				ricetteTrovate = ricettaDao.trovaRicettePerDispensa(dispensa, difficolta);
 			}
 			else {  //SE PASSO L'AUTORE VOGLIO EFFETTUARE LA RICERCA PER AUTORE
-				ricetteTrovate = ricettaDao.trovaRicette(null, 0, utenteBean.getUsername());
+				ricetteTrovate = ricettaDao.trovaRicettePerAutore(utenteBean.getUsername());
 			}	
 		
 			if(ricetteTrovate!=null) {
@@ -167,6 +245,8 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 			return new ArrayList<>();
 		}
 	}
+	*/
+	
 	
 	private void mostraRicette(List<Ricetta> ricette) {  //METODO PRIVATO PER STAMPARE SU CONSOLE TUTTE LE RICETTE
 		for(Ricetta r: ricette) {  //UTILIZZATO PER COMODITA' NEL PROGETTO

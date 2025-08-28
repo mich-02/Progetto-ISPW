@@ -62,7 +62,7 @@ public class GestisciRicetteViewController {
 		List<RicettaBean> ricetteTrovate= null;
 		contenitoreRicette.getChildren().clear();
 		UtenteBean utenteBean = loginController.getUtente();
-		ricetteTrovate = trovaRicettaController.trovaRicette(0,utenteBean);  //TROVO PER USERNAME CHEF
+		ricetteTrovate = trovaRicettaController.trovaRicetteChef(utenteBean);  //TROVO PER USERNAME CHEF
 		if(!ricetteTrovate.isEmpty()) {
 			for(RicettaBean r: ricetteTrovate) {  //CREO VARIE PARTI GRAFICHE
 				HBox contenitoreRicettaSingola = new HBox();

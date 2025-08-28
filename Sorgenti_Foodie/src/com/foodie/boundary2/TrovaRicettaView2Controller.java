@@ -90,15 +90,15 @@ public class TrovaRicettaView2Controller {
 		List<RicettaBean> ricetteTrovate= null;
 		String difficolta="";
 		if (facile.isSelected()) {
-			ricetteTrovate = trovaRicettaController.trovaRicette(1,null);
+			ricetteTrovate = trovaRicettaController.trovaRicetteUtente(1);
 			difficolta="facile";
 		} 
 		else if (medio.isSelected()) {
-			ricetteTrovate = trovaRicettaController.trovaRicette(2,null);
+			ricetteTrovate = trovaRicettaController.trovaRicetteUtente(2);
 			difficolta="intermedia";
 		} 
 		else if (difficile.isSelected()) {
-			ricetteTrovate = trovaRicettaController.trovaRicette(3,null);
+			ricetteTrovate = trovaRicettaController.trovaRicetteUtente(3);
 			difficolta="difficile";
 		}
 		else {  //SE LA DIFFICOLTA' NON E' SELEZIONATA AVVERTIMENTO !

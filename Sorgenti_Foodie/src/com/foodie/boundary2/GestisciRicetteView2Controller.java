@@ -56,7 +56,7 @@ public class GestisciRicetteView2Controller {
 		List<RicettaBean> ricetteTrovate= null;
 		contenitoreRicette.getChildren().clear();
 		UtenteBean utenteBean = loginController.getUtente();
-		ricetteTrovate = trovaRicettaController.trovaRicette(0,utenteBean);
+		ricetteTrovate = trovaRicettaController.trovaRicetteChef(utenteBean);
 		if(!ricetteTrovate.isEmpty()) {
 			contenitoreRicette.getChildren().clear();
 			for(RicettaBean r: ricetteTrovate) {
