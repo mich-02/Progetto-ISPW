@@ -47,10 +47,10 @@ public class DispensaImplementazioneDao implements DispensaDao{  //IMPLEMENTAZIO
 		if((dispensaMap=caricaDispense())==null) {  //FALSE SIGNIFICA CHE NON DEVE RICARICARE LA DISPENSA(EVITI LOOP)
 			dispensaMap=new HashMap<>();
 		}
-		Dispensa dispensa=Dispensa.ottieniIstanza();
+		Dispensa dispensa = Dispensa.ottieniIstanza();
 		if(dispensa.getAlimenti()!=null && !dispensa.getAlimenti().isEmpty()) {
 			for(Alimento a: dispensa.getAlimenti()) {
-				AlimentoSerializzabile alimento=new AlimentoSerializzabile();
+				AlimentoSerializzabile alimento = new AlimentoSerializzabile();
 				alimento.setNome(a.getNome());
 				alimentiSerializzabili.add(alimento);
 			}

@@ -1,12 +1,13 @@
 package com.foodie.controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import com.foodie.model.AreaPersonaleImplementazioneDao;
 import com.foodie.model.Chef;
 import com.foodie.model.Dispensa;
-import com.foodie.model.DispensaDao;
 import com.foodie.model.Alimento;
 import com.foodie.model.AlimentoSerializzabile;
 import com.foodie.model.AreaPersonaleDao;
@@ -17,6 +18,7 @@ import com.foodie.model.Utente;
 import com.foodie.model.UtenteBean;
 import com.foodie.model.UtenteEsistenteException;
 import com.foodie.model.dao.DaoFactoryProvider;
+import com.foodie.model.dao.DispensaDao;
 import com.foodie.model.dao.UtenteDao;
 
 public class LoginController {
@@ -24,12 +26,12 @@ public class LoginController {
 //	private static LoginController istanza;
 	private static Utente utente = null;
 //	private static LoginDao database;
-	private static DispensaDao databaseDispensa = DispensaImplementazioneDao.ottieniIstanza();
+//	private static DispensaDao databaseDispensa = DispensaImplementazioneDao.ottieniIstanza();
 	private static AreaPersonaleDao databaseAreaPersonale= AreaPersonaleImplementazioneDao.ottieniIstanza();
 	private static final String MESSAGGIO= "PROBLEMA CON IL DB";
 	private static final Logger logger = Logger.getLogger(LoginController.class.getName());
-	
 	private UtenteDao utenteDao;
+	private DispensaDao dispensaDao;
 	
 	/*
 	private LoginController() {
@@ -57,6 +59,7 @@ public class LoginController {
 	
 	public LoginController() {
 		utenteDao = DaoFactoryProvider.ottieniIstanza().creaUtenteDao();
+		dispensaDao = DaoFactoryProvider.ottieniIstanza().creaDispensaDao();
 		//database = LoginImplementazioneDao.ottieniIstanza();
 	}
 	
@@ -112,20 +115,54 @@ public class LoginController {
 		}
 	}
 	
+	/*
 	public void salvaDispensa() {  //SALVA GLI INGREDIENTI DELLA DISPENSA NEL DB
 		databaseDispensa.salvaDispensa(utente.getUsername());
 	}
+	*/
+	public void salvaDispensa() {  //SALVA GLI INGREDIENTI DELLA DISPENSA NEL DB
+		try {
+			dispensaDao.salvaDispensa(utente.getUsername());
+		} catch (SQLException e) {
+			logger.severe("Errore durante il salvataggio della dispensa: " + e.getMessage());
+		}
+	}
 	
+	/*
 	public void caricaDispense() {  //CARICA GLI INGREDIENTI DELLA DISPENSA DA DB
-		Map<String, ArrayList<AlimentoSerializzabile>> dispensaMap=databaseDispensa.caricaDispense(); 
-		Dispensa dispensa= Dispensa.ottieniIstanza();
-		ArrayList<AlimentoSerializzabile> dispensaOld=dispensaMap.get(utente.getUsername());
+		Dispensa dispensa = Dispensa.ottieniIstanza();
+    	dispensa.svuotaDispensa();
+		Map<String, ArrayList<AlimentoSerializzabile>> dispensaMap = databaseDispensa.caricaDispense(); 
+		//Dispensa dispensa = Dispensa.ottieniIstanza();
+		ArrayList<AlimentoSerializzabile> dispensaOld = dispensaMap.get(utente.getUsername());
 		if(dispensaOld!=null) {
 			for(AlimentoSerializzabile a: dispensaOld) {
 				dispensa.aggiungiAlimento(new Alimento(a.getNome()));
 			}
 			logger.info("dispensa caricata");
 		}
+	}
+	*/
+	public void caricaDispense() {  //CARICA GLI INGREDIENTI DELLA DISPENSA DA DB
+		Dispensa dispensa = Dispensa.ottieniIstanza();
+	    dispensa.svuotaDispensa(); // svuota prima di ricaricare
+
+	    List<Alimento> alimentiDispensa;
+	    try {
+	        alimentiDispensa = dispensaDao.caricaDispensa(utente.getUsername());
+	    } catch (SQLException e) {
+	    	logger.severe("Errore durante il caricamento della dispensa: " + e.getMessage());
+	        return; // esce dal metodo se c'è un errore
+	    }
+
+	    if (alimentiDispensa != null && !alimentiDispensa.isEmpty()) {
+	        for (Alimento a : alimentiDispensa) {
+	            dispensa.aggiungiAlimento(a); // usa direttamente l'oggetto recuperato
+	        }
+	        logger.info("Dispensa caricata con successo per l'utente: " + utente.getUsername());
+	    } else {
+	        logger.info("La dispensa dell'utente " + utente.getUsername() + " è vuota.");
+	    }
 	}
 	
 	public UtenteBean getUtente() {

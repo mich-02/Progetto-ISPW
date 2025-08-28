@@ -10,6 +10,7 @@ public class Dispensa extends SubjectPatternObserver { //SINGLETON, LA DISPENSA 
 	private static ArrayList<Alimento> lista;
 	private static final Logger logger = Logger.getLogger(Dispensa.class.getName());
 	
+	
 	private Dispensa(){
 	}
 	
@@ -20,6 +21,8 @@ public class Dispensa extends SubjectPatternObserver { //SINGLETON, LA DISPENSA 
 		}
 		return istanza;
 	}
+	
+
 	
 	public void aggiungiAlimento(Alimento alimento) { //AGGIUNGI L'ALIMENTO ALLA DISPENSA SE NON PRESENTE
 		if(!lista.contains(alimento)) {

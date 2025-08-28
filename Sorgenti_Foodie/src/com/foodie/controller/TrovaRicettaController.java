@@ -74,7 +74,7 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 	}
 	
 	
-	
+	/*
 	public void aggiornaDispensa(Alimento alimento,int x) {  //old
 		if(x==0) {
 			dispensa.aggiungiAlimento(alimento);  //SE X E' 0 AGGIUNGO
@@ -83,6 +83,7 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 			dispensa.eliminaAlimento(alimento);  //SE X E' 1 ELIMINO
 		}
 	}
+	*/
 	public void aggiungiInDispensa(AlimentoBean alimentoBean) {  
 		Alimento alimento = new Alimento(alimentoBean.getNome());
 		dispensa.aggiungiAlimento(alimento);
@@ -96,6 +97,7 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 		dispensa.svuotaDispensa();
 	}
 	
+	/*
 	public List<Ricetta> trovaLeRicette(int difficolta, String autore){  //METODO PER TROVARE LE RICETTE
 		List<Ricetta> ricetteTrovate= null;
 		try {
@@ -119,9 +121,10 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 			return new ArrayList<>();
 		}
 	}
+	*/
 	
 	public ArrayList<RicettaBean> trovaRicette(int difficolta, UtenteBean utenteBean) {
-		List<Ricetta> ricetteTrovate= null;
+		List<Ricetta> ricetteTrovate = null;
 		try {
 			//if(utenteBean.getUsername() == null) { //SE NON PASSO L'AUTORE VOGLIO EFFETTUARE LA RICERCA PER ALIMENTI-DIFFICOLTA'
 			if (utenteBean == null) {
@@ -179,7 +182,7 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 	}
 	
 	
-	//old
+	/*
 	public List<Alimento> trovaAlimentiOld(String nomeAlimento) {  //tolto string e messo bean
 		List<Alimento> alimentiTrovati=null;
 		alimentiTrovati=databaseAlimenti.trovaAlimenti(nomeAlimento); 
@@ -191,6 +194,7 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 			return new ArrayList<>();
 		}
 	}
+	*/
 	public ArrayList<AlimentoBean> trovaAlimenti(AlimentoBean alimentoBeanInserito) {
 		List<Alimento> alimentiTrovati = null;
 		ArrayList<AlimentoBean> alimentiTrovatiBean = null;
@@ -217,7 +221,7 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 	}
 	
 	public List<Alimento> mostraLaDispensa(){  //METODO PER OTTENERE GLI ALIMENTI NELLA DISPENSA
-		List<Alimento> alimentiInDispensa=null;
+		List<Alimento> alimentiInDispensa = null;
 		alimentiInDispensa = dispensa.getAlimenti();
 		if(alimentiInDispensa!=null && !alimentiInDispensa.isEmpty()) {
 			return alimentiInDispensa;
@@ -228,12 +232,12 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 	}
 	
 	public ArrayList<AlimentoBean> mostraDispensa() {
-		List<Alimento> alimentiInDispensa=null;
+		List<Alimento> alimentiInDispensa = null;
 		alimentiInDispensa = dispensa.getAlimenti();
-		if(alimentiInDispensa!=null && !alimentiInDispensa.isEmpty()) {
-			ArrayList<AlimentoBean> alimentiInDispensaBean =new ArrayList<>();
+		if(alimentiInDispensa != null && !alimentiInDispensa.isEmpty()) {
+			ArrayList<AlimentoBean> alimentiInDispensaBean = new ArrayList<>();
 			for(Alimento a: alimentiInDispensa) {
-				AlimentoBean alimentoBean=new AlimentoBean();
+				AlimentoBean alimentoBean = new AlimentoBean();
 				alimentoBean.setNome(a.getNome());
 				alimentiInDispensaBean.add(alimentoBean);
 			}

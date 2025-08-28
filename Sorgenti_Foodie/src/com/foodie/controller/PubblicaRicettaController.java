@@ -231,7 +231,7 @@ public class PubblicaRicettaController {
 	}
 	
 	private void registraOsservatoreDispensa(Observer observer) {
-		Dispensa dispensa= Dispensa.ottieniIstanza();
+		Dispensa dispensa = Dispensa.ottieniIstanza();
 		dispensa.registra(observer);
 	}
 	

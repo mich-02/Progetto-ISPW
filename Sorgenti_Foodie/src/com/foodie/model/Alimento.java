@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 // @JsonIgnoreProperties({"serving_unit", "tag_name", "serving_qty", "common_type", "tag_id", "photo", "locale"})
 
-public class Alimento{  //VIENE CREATO ATTRAVERSO LA LIBRERIA JSON DATABIND
+public class Alimento {  //VIENE CREATO ATTRAVERSO LA LIBRERIA JSON DATABIND
 	
 	@JsonProperty("food_name")  //MI INTERESSA SOLO QUESTO CAMPO
     private String nome;

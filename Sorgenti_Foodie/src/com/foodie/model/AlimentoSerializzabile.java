@@ -11,7 +11,7 @@ public class AlimentoSerializzabile implements Serializable{  //COME CLASSE ALIM
 	private String nome;
 	
 	public void setNome(String nome) {
-		this.nome=nome;
+		this.nome = nome;
 	}
 	
 	public String getNome() {

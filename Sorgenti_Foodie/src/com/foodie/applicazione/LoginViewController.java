@@ -139,8 +139,8 @@ public class LoginViewController {
 	        */
 			String viewIniziale = loginController.ottieniView(interfaccia);
 			if(tipo == 0) {
-				Dispensa dispensa = Dispensa.ottieniIstanza();
-            	dispensa.svuotaDispensa();
+				//Dispensa dispensa = Dispensa.ottieniIstanza();
+            	//dispensa.svuotaDispensa();
             	loginController.caricaDispense();
 			}
 			ViewLoader.caricaView(ViewInfo.fromFxmlPath(viewIniziale));
