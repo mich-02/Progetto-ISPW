@@ -3,7 +3,8 @@ package com.foodie.model;
 import java.sql.*;
 
 public class QuerySQLLogin {  
-	
+
+
 //	private static final String FROM = "FROM user_account ";
 //	private static final String WHERE = "WHERE username = '";
 	
@@ -19,13 +20,14 @@ public class QuerySQLLogin {
 		String sqlQuery=String.format(query);
 		return dichiarazione.executeQuery(sqlQuery);  //QUERY PER EFFETTUARE IL LOGIN SE REGISTRATO
 	}
-	*/
+	
 	public static ResultSet effettuaLogin(Connection conn, String username, String password) throws SQLException {
 		String query = "SELECT COUNT(1) FROM user_account WHERE username = ? AND password = ?";
-	    PreparedStatement ps = conn.prepareStatement(query);
-	    ps.setString(1, username);
-	    ps.setString(2, password);
-	    return ps.executeQuery(); 
+	    try (PreparedStatement ps = conn.prepareStatement(query)) {
+	    	ps.setString(1, username);
+	    	ps.setString(2, password);
+	    	return ps.executeQuery(); 
+	    }
 	}
 	
 	/*
@@ -36,7 +38,7 @@ public class QuerySQLLogin {
 		String sqlQuery= String.format(query);
 		return dichiarazione.executeQuery(sqlQuery);  //QUERY PER CONTROLLARE L'USERNAME SE REGISTRATO
 	}
-	*/
+	
 	
 	public static ResultSet controllaUsername(Connection conn, String username) throws SQLException {
 		String query = "SELECT COUNT(*) FROM user_account WHERE username = ?";
@@ -54,7 +56,7 @@ public class QuerySQLLogin {
     	String sqlInsert = String.format(query);
     	return dichiarazione.executeUpdate(sqlInsert);  //QUERY PER REGISTRARE L'UTENTE
 	}
-	*/
+	
 	public static int registraUtente(Connection conn, String nome,String cognome,String username,int ruolo,String password) throws SQLException {
 		String query = "INSERT INTO user_account (nome, cognome, username, ruolo, password) VALUES (?, ?, ?, ?, ?)";
 
@@ -75,9 +77,9 @@ public class QuerySQLLogin {
 		String sqlQuery= String.format(query);
 		return dichiarazione.executeQuery(sqlQuery);  //QUERY PER OTTENERE IL TIPO D'UTENTE CHE SI è LOGGATO
 	}
-	*/
 	
-	/*
+	
+	
 	public static int controllaTipo(Connection conn, String username) throws SQLException {
 		String query = "SELECT ruolo FROM user_account WHERE username = ?";
 		PreparedStatement ps = conn.prepareStatement(query)){
@@ -85,7 +87,7 @@ public class QuerySQLLogin {
 		return ps.executeQuery();
 		}	
 	}
-	*/
+	
 	public static int controllaTipo(Connection conn, String username) throws SQLException {
 	    String query = "SELECT ruolo FROM user_account WHERE username = ?";
 	    try (PreparedStatement ps = conn.prepareStatement(query)) {
@@ -98,6 +100,6 @@ public class QuerySQLLogin {
 	    }
 	    return -1; // se non trovato
 	}
-	
+	*/
 	
 }

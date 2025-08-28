@@ -17,8 +17,9 @@ public class QuerySQLChef {
 	}
 	public static ResultSet selezionaRicetteDalNomeAutore(Connection conn) throws SQLException{
 		String sqlQuery = "SELECT nome, autore FROM ricette";
-	    Statement stmt = conn.createStatement();
-	    return stmt.executeQuery(sqlQuery);
+	    try (Statement stmt = conn.createStatement()){
+	    	return stmt.executeQuery(sqlQuery);
+	    }
 	}
 	
 	
@@ -103,10 +104,10 @@ public class QuerySQLChef {
 	                    + "FROM ricette a "
 	                    + "LEFT JOIN ingredienti b ON a.nome = b.nome_ricetta AND a.autore = b.autore_ricetta "
 	                    + "WHERE a.autore = ?";
-
-	    PreparedStatement ps = conn.prepareStatement(sqlQuery);
-	    ps.setString(1, username);
-	    return ps.executeQuery(); 
+	    try (PreparedStatement ps = conn.prepareStatement(sqlQuery)){
+	    	ps.setString(1, username);
+	    	return ps.executeQuery(); 
+	    }
 	}
 		
 }

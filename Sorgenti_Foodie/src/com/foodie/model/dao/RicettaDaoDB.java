@@ -100,6 +100,9 @@ public class RicettaDaoDB implements RicettaDao {
             logger.info("Ricetta aggiunta al database solo parzialmente-->procedo a eliminarla");
         }
 	}
+	
+	public void aggiungiRicettaNew(Ricetta ricetta) throws SQLException, RicettaDuplicataException {
+	}
 
 	@Override
 	public void eliminaRicetta(String nome, String autore) throws SQLException { 
