@@ -17,7 +17,7 @@ import com.foodie.model.Ricetta;
 import com.foodie.model.RicettaBean;
 import com.foodie.model.UtenteBean;
 import com.foodie.model.dao.ChefDao;
-import com.foodie.model.dao.DaoFactory;
+import com.foodie.model.dao.DaoFactoryProvider;
 import com.foodie.model.dao.RicettaDao;
 
 @SuppressWarnings("unused")
@@ -69,7 +69,7 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 	*/
 	public TrovaRicettaController() {
 		dispensa = Dispensa.ottieniIstanza();
-		ricettaDao = DaoFactory.ottieniIstanza().creaRicettaDao();
+		ricettaDao = DaoFactoryProvider.ottieniIstanza().creaRicettaDao();
 		databaseAlimenti = CatalogoAlimentiNutrixionixImplementazioneDao.ottieniIstanza();
 	}
 	

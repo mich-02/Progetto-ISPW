@@ -14,6 +14,7 @@ import com.foodie.model.Alimento;
 import com.foodie.model.Dispensa;
 import com.foodie.model.Ricetta;
 import com.foodie.model.RicettaDuplicataException;
+import com.foodie.model.dao.DBConnection;
 import com.foodie.model.dao.RicettaDao;
 
 public class RicettaDaoDB implements RicettaDao {

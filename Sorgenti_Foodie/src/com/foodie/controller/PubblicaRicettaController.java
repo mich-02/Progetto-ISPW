@@ -17,7 +17,7 @@ import com.foodie.model.Observer;
 import com.foodie.model.Ricetta;
 import com.foodie.model.RicettaBean;
 import com.foodie.model.RicettaDuplicataException;
-import com.foodie.model.dao.DaoFactory;
+import com.foodie.model.dao.DaoFactoryProvider;
 import com.foodie.model.dao.RicettaDao;
 
 @SuppressWarnings("unused")
@@ -64,7 +64,7 @@ public class PubblicaRicettaController {
 	}
 	*/
 	public PubblicaRicettaController() {
-		ricettaDao = DaoFactory.ottieniIstanza().creaRicettaDao();
+		ricettaDao = DaoFactoryProvider.ottieniIstanza().creaRicettaDao();
 		moderatore = Moderatore.ottieniIstanza();
 	}
 	

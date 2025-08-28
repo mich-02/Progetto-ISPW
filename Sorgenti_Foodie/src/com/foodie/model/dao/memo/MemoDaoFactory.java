@@ -8,7 +8,7 @@ import com.foodie.model.dao.db.DispensaDaoDB;
 import com.foodie.model.dao.db.RicettaDaoDB;
 import com.foodie.model.dao.db.UtenteDaoDB;
 
-public class MemoDaoFactory extends DaoFactory { //finché non ho aggiungo la demo creo sempre i Dao DB
+public class MemoDaoFactory implements DaoFactory { //finché non ho aggiungo la demo creo sempre i Dao DB
 
 	@Override
 	public UtenteDao creaUtenteDao() {

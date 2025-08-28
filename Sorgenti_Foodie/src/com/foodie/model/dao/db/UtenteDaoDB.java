@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
+import com.foodie.model.dao.DBConnection;
 import com.foodie.model.dao.UtenteDao;
 
 

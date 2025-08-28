@@ -16,7 +16,7 @@ import com.foodie.model.Standard;
 import com.foodie.model.Utente;
 import com.foodie.model.UtenteBean;
 import com.foodie.model.UtenteEsistenteException;
-import com.foodie.model.dao.DaoFactory;
+import com.foodie.model.dao.DaoFactoryProvider;
 import com.foodie.model.dao.UtenteDao;
 
 public class LoginController {
@@ -56,7 +56,7 @@ public class LoginController {
 	*/
 	
 	public LoginController() {
-		utenteDao = DaoFactory.ottieniIstanza().creaUtenteDao();
+		utenteDao = DaoFactoryProvider.ottieniIstanza().creaUtenteDao();
 		//database = LoginImplementazioneDao.ottieniIstanza();
 	}
 	
