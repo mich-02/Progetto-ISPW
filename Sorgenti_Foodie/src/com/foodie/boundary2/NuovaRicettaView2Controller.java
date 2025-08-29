@@ -35,7 +35,6 @@ import javafx.stage.Stage;
 public class NuovaRicettaView2Controller implements Observer{
 	
 //	private static NuovaRicettaView2Controller istanza;
-	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 //	private ControllerAdapter adattatorePubblicaRicettaController= factory.creaPubblicaRicettaAdapter();
 //	private ControllerAdapter adattatoreLoginController= factory.creaLoginAdapter();
 	private LoginController loginController = new LoginController();
@@ -46,7 +45,7 @@ public class NuovaRicettaView2Controller implements Observer{
 	private static final String FORMATO = "Arial";
 	private static final String SFONDOBIANCO = "-fx-background-color: white;";
 	@FXML
-	private Button areaPersonaleButton;
+	private Button gestisciRicetteButton;
 	@FXML
 	private RadioButton facile;
 	@FXML
@@ -88,7 +87,7 @@ public class NuovaRicettaView2Controller implements Observer{
 	
 	@FXML
 	public void initialize() {
-		PubblicaRicettaController.creaRicetta();
+		//PubblicaRicettaController.creaRicetta();
 		pubblicaRicettaController.registraOsservatoreRicetta(this);
 	}
 	
@@ -114,12 +113,6 @@ public class NuovaRicettaView2Controller implements Observer{
 		    difficile.setDisable(false);
 		    facile.setDisable(false);
 		}
-	}
-	
-	@FXML
-	private void caricaViewAreaPersonale(ActionEvent event) {  //CARICA VIEW AREAPERSONALE
-		//caricaView2.caricaViewAreaPersonale(primaryStage);
-		ViewLoader.caricaView(ViewInfo.AREA_CHEF2);
 	}
 	
 	@FXML
@@ -207,7 +200,7 @@ public class NuovaRicettaView2Controller implements Observer{
 		ricettaBean.setAutore(utenteBean.getUsername()); //NOME CHEF PRESO IN AUTOMATICO
         if(ingredienti!=null && !(ingredienti.getChildren().isEmpty())) { 
         	pubblicaRicettaController.compilaRicetta(ricettaBean); //RICHIESTA PUBBLICAZIONE
-        	areaPersonaleButton.fire();  //SIMULA CLICK AREA PERSONALE
+        	gestisciRicetteButton.fire();  //SIMULA CLICK AREA PERSONALE
         	
 		}
 		else {  //AVVERTIMENTO GRAFICO INGREDIENTI

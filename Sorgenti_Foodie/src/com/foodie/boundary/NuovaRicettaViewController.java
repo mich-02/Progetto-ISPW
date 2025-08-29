@@ -1,5 +1,6 @@
 package com.foodie.boundary;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -9,6 +10,8 @@ import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.LoginController;
+import com.foodie.model.AlimentoBean;
+import com.foodie.model.Observer;
 import com.foodie.model.RicettaBean;
 import com.foodie.model.UtenteBean;
 import javafx.application.Platform;
@@ -24,15 +27,12 @@ import javafx.stage.Stage;
 
 public class NuovaRicettaViewController {
 	
-	//private static NuovaRicettaViewController istanza;
-	private PubblicaRicettaController controller = new PubblicaRicettaController();
-//	private ControllerAdapter adattatorePubblicaRicettaController = factory.creaPubblicaRicettaAdapter();
-//	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
+	private PubblicaRicettaController pubblicaRicettacontroller = new PubblicaRicettaController();
 	private LoginController loginController = new LoginController();
-	//private CaricaView caricaView = CaricaView.ottieniIstanza();
 	private static final Logger logger = Logger.getLogger(NuovaRicettaViewController.class.getName());
+	
 	@FXML
-	private Button areaPersonaleButton;
+	private Button gestisciRicetteButton;
 	@FXML
 	private RadioButton facile;
 	@FXML
@@ -46,12 +46,13 @@ public class NuovaRicettaViewController {
 	@FXML
 	private Button pubblica;
 	
-	private VBox ingredientiRicetta;
+	//private VBox ingredientiRicetta;
 	
-	
+	/*
 	public void initData(VBox contenitoreIngredienti) {
 		this.ingredientiRicetta = contenitoreIngredienti;
 	}
+	*/
 	
 	/*
 	private NuovaRicettaViewController() {
@@ -65,6 +66,7 @@ public class NuovaRicettaViewController {
 	}
 	*/
 	
+	/*
 	public void aggiornaView(String nome, String descrizione, int diff) {  //AGGIORNA I VARI CAMPI
 		this.nome.setText(nome);
 		this.descrizione.setText(descrizione);
@@ -86,6 +88,7 @@ public class NuovaRicettaViewController {
 			disabilitaPulsanti(null);
 		}
 	}
+	*/
 	
 	/*
 	@FXML
@@ -125,7 +128,6 @@ public class NuovaRicettaViewController {
 	
 	@FXML
 	private void caricaViewIngredienti(ActionEvent event) {  // tasto in basso a sx
-		
 		//InserisciIngredienteViewController inserisciIngredienteViewController = loader.getController();
 		//inserisciIngredienteViewController.initData();
 		ViewLoader.caricaView(ViewInfo.INSERISCI_INGR);
@@ -133,7 +135,7 @@ public class NuovaRicettaViewController {
 	
 	@FXML
 	private void compilaRicetta(ActionEvent event) {  //tasto Richiedi pubblicazione
-		RicettaBean ricettaBean= new RicettaBean();
+		RicettaBean ricettaBean = new RicettaBean();
 		String testo = nome.getText().trim();
 		if(!testo.isEmpty()) {
 			ricettaBean.setNome(nome.getText());
@@ -207,13 +209,16 @@ public class NuovaRicettaViewController {
 		}
 		ricettaBean.setDifficolta(diff);
 		UtenteBean utenteBean = loginController.getUtente();
-		ricettaBean.setAutore(utenteBean.getUsername());  //AUTORE PASSATO IN AUTOMATICO
+		ricettaBean.setAutore(utenteBean.getUsername());
 		//VBox ingredienti= InserisciIngredienteViewController.ottieniIstanza().getContenitoreIngredienti();
-		VBox ingredienti = ingredientiRicetta;
-        if(ingredienti!=null && !(ingredienti.getChildren().isEmpty())) { 
-        	
-        	controller.compilaRicetta(ricettaBean);
-        	areaPersonaleButton.fire();  //SE INGREDIENTI MESSI, ALLORA PUBBLICA E SIMULA CLICK PER TORNARE ALL'AREA PERSONALE
+		//VBox ingredienti = ingredientiRicetta;
+		ArrayList<AlimentoBean> alimentiBean = pubblicaRicettacontroller.mostraIngredientiRicetta();
+		if(!alimentiBean.isEmpty()) {
+		
+        //if(ingredienti!=null && !(ingredienti.getChildren().isEmpty())) { 
+			ricettaBean.setIngredienti(alimentiBean);
+        	pubblicaRicettacontroller.compilaRicetta(ricettaBean);
+        	gestisciRicetteButton.fire();  //SE INGREDIENTI MESSI, ALLORA PUBBLICA E SIMULA CLICK PER TORNARE ALL'AREA PERSONALE
 		}
 		else {  //MOSTRA GARFICAMENTE L'AVVERTIMENTO PER GLI INGREDIENTI
 			pubblica.setText("INGREDIENTI?");
@@ -253,21 +258,13 @@ public class NuovaRicettaViewController {
 	}
 	
 	@FXML
-	private void caricaViewAreaPersonale(ActionEvent event) { 	
-		//caricaView.caricaViewAreaPersonale(primaryStage);
-		ViewLoader.caricaView(ViewInfo.AREA_CHEF1);
-	}
-	
-	@FXML
     private void caricaViewGestisciRicette(ActionEvent event) { 
 		ViewLoader.caricaView(ViewInfo.GESTISCI_RICETTE1);
-		//caricaView.caricaViewGestisciRicette(primaryStage);
     }
 	
 	@FXML
 	private void tornaAlLogin(MouseEvent event) {  
-		//caricaView.tornaAlLogin(primaryStage);
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
-	
+
 }

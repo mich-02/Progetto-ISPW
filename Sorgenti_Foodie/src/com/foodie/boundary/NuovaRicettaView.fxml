@@ -25,12 +25,7 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="1024.0" spacing="10.0">
                <children>
-                  <Button fx:id="areaPersonaleButton" lineSpacing="10.0" mnemonicParsing="false" onAction="#caricaViewAreaPersonale" style="-fx-background-color: transparent;" text="Area personale" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="26.0" />
-                     </font>
-                  </Button>
-                  <Button lineSpacing="10.0" mnemonicParsing="false" onAction="#caricaViewGestisciRicette" style="-fx-background-color: transparent;" text="Gestisci ricette" textFill="WHITE">
+                  <Button fx:id="gestisciRicetteButton" lineSpacing="10.0" mnemonicParsing="false" onAction="#caricaViewGestisciRicette" style="-fx-background-color: transparent;" text="Gestisci ricette" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="26.0" />
                      </font>

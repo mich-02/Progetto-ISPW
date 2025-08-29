@@ -21,7 +21,6 @@ import javafx.stage.Stage;
 
 public class ModeratoreViewController implements Observer{
 	
-	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 	private PubblicaRicettaController controller = new PubblicaRicettaController();
 	private static final String FORMATO = "Arial";
 	private static final String SFONDOBIANCO = "-fx-background-color: white;";

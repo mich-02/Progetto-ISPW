@@ -74,6 +74,7 @@ public class PubblicaRicettaController {
 		moderatore = Moderatore.ottieniIstanza();
 	}
 	
+	/*
 	public void salvaAreaPersonale(String descrizione) {  //SALVA LA DESCRIZIONE DELL'AREA PERSONALE NEL DB
 		String username = LoggedUser.ottieniIstanza().getUsername();
 		databaseAreaPersonale.salvaAreaPersonale(username, descrizione);
@@ -82,6 +83,7 @@ public class PubblicaRicettaController {
 	public Map<String,String> caricaAreaPersonale() {  //CARICA LA DESCRIZIONE DELL'AREA PERSONALE DA DB
 		return databaseAreaPersonale.caricaAreaPersonale();
     }
+    */
 	
 	public static void creaRicetta() {  //CREA LA RICETTA
 		ricetta = new Ricetta();
@@ -90,6 +92,7 @@ public class PubblicaRicettaController {
 	public Ricetta getRicetta() {  //RESTITUISCE L'ISTANZA DELLA RICETTA
 		return ricetta;
 	}
+	
 	
 	/*
 	public void compilaRicetta(Ricetta ricettaCompilata) {  //COMPILA LA RICETTA
@@ -103,13 +106,20 @@ public class PubblicaRicettaController {
 	}
 	*/
 	
-	public void compilaRicetta(RicettaBean ricettaBean) {
+	public void compilaRicetta(RicettaBean ricettaBean) { //old
 		ricetta.setNome(ricettaBean.getNome());
 		ricetta.setDescrizione(ricettaBean.getDescrizione());
 		ricetta.setDifficolta(ricettaBean.getDifficolta());
 		ricetta.setAutore(ricettaBean.getAutore());
 		notificaModeratore();
 }
+	public void compilaRicettaNew(RicettaBean ricettaBean) { //old
+		ricetta.setNome(ricettaBean.getNome());
+		ricetta.setDescrizione(ricettaBean.getDescrizione());
+		ricetta.setDifficolta(ricettaBean.getDifficolta());
+		ricetta.setAutore(ricettaBean.getAutore());
+		notificaModeratore();
+	}
 	
 	
 	/*
@@ -311,19 +321,6 @@ public class PubblicaRicettaController {
 			}
 		}
 	}
-	/*
-	public void registraOsservatore(Observer observer, int i) {  //REGISTRA GLI OSSERVATORI O ALLA DISPENSA O ALLA RICETTA O AL MODERATORE
-		if(i==1) {
-			registraOsservatoreDispensa(observer);
-		}
-		else if(i==2) {
-			registraOsservatoreRicetta(observer);
-		}
-		else {
-			registraOsservatoreModeratore(observer);
-		}
-	}
-	*/
 	
 	public void registraOsservatoreRicetta(Observer observer) {
 		ricetta.registra(observer);

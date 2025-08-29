@@ -67,11 +67,6 @@ public class ContenutoRicettaChefViewController {
 		ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
 	}
 	
-	@FXML
-	private void caricaViewAreaPersonale(ActionEvent event) {  //CARICA VIEW AREA PERSONALE	
-		//caricaView.caricaViewAreaPersonale(primaryStage);
-		ViewLoader.caricaView(ViewInfo.AREA_CHEF1);
-	}
 	
 	private void caricaDatiRicetta(RicettaBean ricettaBean) {  //METODO PER POPOLARE GRAFICAMENTE I DATI DELLA RICETTA
 		Label labelNome = getNome();

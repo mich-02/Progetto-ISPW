@@ -28,12 +28,9 @@ import javafx.stage.Stage;
 
 public class InserisciIngredienteViewController implements Observer{
 	
-//	private static InserisciIngredienteViewController istanza;
+
 	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
-//	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
-//	private ControllerAdapter adattatorePubblicaRicettaController = PubblicaRicettaControllerAdapter.ottieniIstanza(controller);
-//	private CaricaView caricaView = CaricaView.ottieniIstanza();
 	private boolean bottoneModifica = true;
 	private static final String FORMATO = "Arial";
 	private static final String SFONDOBIANCO = "-fx-background-color: white;";
@@ -136,7 +133,7 @@ public class InserisciIngredienteViewController implements Observer{
 			
 			FXMLLoader loader =  ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
 			NuovaRicettaViewController nuovaRicettaController = loader.getController();
-			nuovaRicettaController.initData(contenitoreIngredienti);
+			//nuovaRicettaController.initData(contenitoreIngredienti);
 	}
 	
 	@FXML
@@ -176,6 +173,7 @@ public class InserisciIngredienteViewController implements Observer{
 		}
 	}
 	
+	@Override
 	public void aggiornaView() {  //AGGIORNA GLI INGREDIENTI DELLA RICETTA
 		contenitoreIngredienti.getChildren().clear();
 		List<AlimentoBean> alimentiBeanRicetta = pubblicaRicettaController.mostraIngredientiRicetta();
@@ -256,15 +254,9 @@ public class InserisciIngredienteViewController implements Observer{
 		return contenitoreIngredienti;
 	}
 	
-	@FXML
-	private void caricaViewAreaPersonale(ActionEvent event) {  
-		//caricaView.caricaViewAreaPersonale(primaryStage);
-		ViewLoader.caricaView(ViewInfo.AREA_CHEF1);
-	}
 	
 	@FXML
     private void caricaViewGestisciRicette(ActionEvent event) {  //CARICA VIEW GESTISCI RICETTE
-        //caricaView.caricaViewGestisciRicette(primaryStage);
 		ViewLoader.caricaView(ViewInfo.GESTISCI_RICETTE1);
     }
 	

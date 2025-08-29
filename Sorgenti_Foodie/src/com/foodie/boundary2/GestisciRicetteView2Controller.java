@@ -157,11 +157,6 @@ public class GestisciRicetteView2Controller {
 		//caricaView2.caricaViewRicetta(primaryStage);
 		ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA2);
 	}
-	
-	@FXML
-	private void caricaViewAreaPersonale() {  //CARICA VIEW AREA PERSONALE
-		//caricaView2.caricaViewAreaPersonale(primaryStage);
-		ViewLoader.caricaView(ViewInfo.AREA_CHEF2);
-	}
+
 	
 }

@@ -14,15 +14,16 @@ import java.util.logging.Logger;
 
 public class CatalogoRicetteImplementazione2Dao implements CatalogoRicetteChefDao{  //DAO CON FILE SYSTEM
 	
-	private static CatalogoRicetteImplementazione2Dao istanza;    //SINGLETON
+	//private static CatalogoRicetteImplementazione2Dao istanza;    //SINGLETON
 	private static Path currentPath = Paths.get("");
 	private static Path projectPath = currentPath.toAbsolutePath().normalize();
 	private static Path otherDirectory = projectPath.resolve("CatalogoRicette");
 	private static Path filePath = otherDirectory.resolve("CatalogoRicette.txt");
 	private static final String PATH = filePath.toString();
-	private static final String MESSAGGIO= "ERRORE NELL'APERTURA DEL CATALOGO DELLE RICETTE (FILE)";
+	private static final String MESSAGGIO = "ERRORE NELL'APERTURA DEL CATALOGO DELLE RICETTE (FILE)";
 	private static final Logger logger = Logger.getLogger(CatalogoRicetteImplementazione2Dao.class.getName());
 	
+	/*
 	private CatalogoRicetteImplementazione2Dao(){
 	}
 	
@@ -32,6 +33,7 @@ public class CatalogoRicetteImplementazione2Dao implements CatalogoRicetteChefDa
 		}
 		return istanza;
 	}
+	*/
 	
 	@Override
 	public ArrayList<Ricetta> trovaRicette(Dispensa dispensa, int difficolta, String autore) throws SQLException,ClassNotFoundException { //TROVA LE RICETTE NEL FILE O PER ALIMENTI-DIFFICOLTA' O PER AUTORE

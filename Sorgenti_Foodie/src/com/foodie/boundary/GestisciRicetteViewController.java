@@ -5,11 +5,8 @@ import java.util.logging.Logger;
 
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
-import com.foodie.controller.AdattatoreFactory;
-import com.foodie.controller.ControllerAdapter;
 import com.foodie.controller.LoginController;
 import com.foodie.controller.PubblicaRicettaController;
-import com.foodie.controller.TrovaRicettaController;
 import com.foodie.model.RicettaBean;
 import com.foodie.model.UtenteBean;
 import javafx.event.ActionEvent;
@@ -17,21 +14,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 public class GestisciRicetteViewController {
 	
 	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
-//	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
 	private LoginController loginController = new LoginController();
-//	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
-//	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
 	private boolean bottoneModifica = true;
 	private static final String FORMATO = "Arial";
 	private static final Logger logger = Logger.getLogger(GestisciRicetteViewController.class.getName());
@@ -40,17 +31,7 @@ public class GestisciRicetteViewController {
 	@FXML
 	private Label eliminaLabel;
 	
-	/*
-	private GestisciRicetteViewController() {		
-	}
-	
-	public static GestisciRicetteViewController ottieniIstanza() { //SINGLETON
-		if(istanza == null) {
-			istanza = new GestisciRicetteViewController();
-		}
-		return istanza;
-	}
-	*/
+
 	
 	@FXML
 	public void initialize() {
@@ -58,7 +39,7 @@ public class GestisciRicetteViewController {
 	}
 	
 	public void aggiornaView() {  //TROVA TUTTE LE RICETTE DELLO CHEF E LE MOSTRA GRAFICAMENTE
-		List<RicettaBean> ricetteTrovate= null;
+		List<RicettaBean> ricetteTrovate = null;
 		contenitoreRicette.getChildren().clear();
 		UtenteBean utenteBean = loginController.getUtente();
 		ricetteTrovate = pubblicaRicettaController.trovaRicetteChef(utenteBean);  //TROVO PER USERNAME CHEF
@@ -77,13 +58,13 @@ public class GestisciRicetteViewController {
 				String difficolta="";
 				switch(r.getDifficolta()) {
 					case 1:
-						difficolta="facile";
+						difficolta = "facile";
 						break;
 					case 2:
-						difficolta="intermedio";
+						difficolta = "intermedio";
 						break;
 					case 3:
-						difficolta="difficile";
+						difficolta = "difficile";
 						break;
 					default:
 						logger.severe("difficoltà non riconosciuta");
@@ -232,11 +213,11 @@ public class GestisciRicetteViewController {
 	}
 	
 	private void popolaLabel(int indiceLabel,HBox contenitoreRicetta) {
-		String nomeRicetta="";
+		String nomeRicetta = "";
 		for (Node labelNode : contenitoreRicetta.getChildren()) {	  //POPOLA LABEL USATO PER EVITARE SMELL COMPLESSITA'        
             Label label = (Label) labelNode;
             if(indiceLabel==1)
-            	nomeRicetta=label.getText();
+            	nomeRicetta = label.getText();
             else {
             	break;
             }
@@ -255,9 +236,5 @@ public class GestisciRicetteViewController {
 		ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
 	}
 	
-	@FXML
-	private void caricaViewAreaPersonale() { // carica view area personale
-		ViewLoader.caricaView(ViewInfo.AREA_CHEF1);
-	}
 	
 }
