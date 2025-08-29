@@ -23,6 +23,7 @@ public class AreaPersonaleView2Controller {
 	//private static AreaPersonaleView2Controller istanza;
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 	private LoginController controller = new LoginController(); //tolto singleton
+	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
 //	private ControllerAdapter adattatoreLoginController= factory.creaLoginAdapter();
 
 	@FXML
@@ -75,12 +76,12 @@ public class AreaPersonaleView2Controller {
 	@FXML
 	private void salvaAreaPersonale(KeyEvent event) {  //PREMUTO ENTER SALVA AREA PERSONALE(DESCRIZIONE)
 		if(event.getCode() == KeyCode.ENTER) {
-			controller.salvaAreaPersonale(descrizioneTextArea.getText());
+			pubblicaRicettaController.salvaAreaPersonale(descrizioneTextArea.getText());
 		}
 	}
 	
 	public void caricaAreaPersonale() {  //CARICA AREA PERSONALE(DESCRIZIONE)
-		Map<String,String> areaPersonaleMap=controller.caricaAreaPersonale();
+		Map<String,String> areaPersonaleMap = pubblicaRicettaController.caricaAreaPersonale();
 		String descrizione="";
 		if(areaPersonaleMap!=null) {
 			UtenteBean utenteBean = controller.getUtente();

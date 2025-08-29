@@ -122,7 +122,7 @@ public class LoginViewController {
 			else {
 				ruolo = "Moderatore";
 			}
-			LoginController.setUtente(username.toLowerCase(), ruolo); //METTO USERNAME IN MINUSCOLE PER EVITARE INCONGRUENZE NEL CARICAMENTO DELLA DISPENSA O AREA PERSONALE
+			loginController.setUtente(username.toLowerCase(), ruolo); //METTO USERNAME IN MINUSCOLE PER EVITARE INCONGRUENZE NEL CARICAMENTO DELLA DISPENSA O AREA PERSONALE
 			
 			if(interfaccia1RadioButton.isSelected()) { // verifico la GUI da attivare 
 				interfaccia = 1;
@@ -141,7 +141,7 @@ public class LoginViewController {
 			if(tipo == 0) {
 				//Dispensa dispensa = Dispensa.ottieniIstanza();
             	//dispensa.svuotaDispensa();
-            	loginController.caricaDispense();
+            //	loginController.caricaDispense();
 			}
 			ViewLoader.caricaView(ViewInfo.fromFxmlPath(viewIniziale));
 		}

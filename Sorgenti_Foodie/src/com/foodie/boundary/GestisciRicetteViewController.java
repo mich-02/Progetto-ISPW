@@ -27,9 +27,8 @@ import javafx.stage.Stage;
 
 public class GestisciRicetteViewController {
 	
-	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
-	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
+//	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
 	private LoginController loginController = new LoginController();
 //	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
 //	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
@@ -62,7 +61,7 @@ public class GestisciRicetteViewController {
 		List<RicettaBean> ricetteTrovate= null;
 		contenitoreRicette.getChildren().clear();
 		UtenteBean utenteBean = loginController.getUtente();
-		ricetteTrovate = trovaRicettaController.trovaRicetteChef(utenteBean);  //TROVO PER USERNAME CHEF
+		ricetteTrovate = pubblicaRicettaController.trovaRicetteChef(utenteBean);  //TROVO PER USERNAME CHEF
 		if(!ricetteTrovate.isEmpty()) {
 			for(RicettaBean r: ricetteTrovate) {  //CREO VARIE PARTI GRAFICHE
 				HBox contenitoreRicettaSingola = new HBox();
@@ -141,7 +140,7 @@ public class GestisciRicetteViewController {
 		RicettaBean ricettaBean = new RicettaBean();
 		ricettaBean.setNome(nomeRicetta);
 		ricettaBean.setAutore(utenteBean.getUsername());
-		RicettaBean ricettaSelezionata = trovaRicettaController.ottieniRicetta(ricettaBean);
+		RicettaBean ricettaSelezionata = pubblicaRicettaController.ottieniRicetta(ricettaBean);
 		
 			if(!bottoneModifica) { //resettare il bottone modifica se attivo
 				bottoneModifica=true;

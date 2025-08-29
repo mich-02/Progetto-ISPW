@@ -29,14 +29,12 @@ import javafx.stage.Stage;
 public class InserisciIngredienteViewController implements Observer{
 	
 //	private static InserisciIngredienteViewController istanza;
-	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
 //	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
 //	private ControllerAdapter adattatorePubblicaRicettaController = PubblicaRicettaControllerAdapter.ottieniIstanza(controller);
 //	private CaricaView caricaView = CaricaView.ottieniIstanza();
 	private boolean bottoneModifica = true;
-	private Stage primaryStage;
 	private static final String FORMATO = "Arial";
 	private static final String SFONDOBIANCO = "-fx-background-color: white;";
 	@FXML
@@ -55,7 +53,7 @@ public class InserisciIngredienteViewController implements Observer{
 	
 	@FXML
 	public void initialize() {
-		pubblicaRicettaController.registraOsservatore(this, 2);
+		pubblicaRicettaController.registraOsservatoreRicetta(this);
 		aggiornaView();
 	}
 	
@@ -70,11 +68,6 @@ public class InserisciIngredienteViewController implements Observer{
 		return istanza;
 	}
 */	
-	
-	
-	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
-		this.primaryStage= primaryStage;
-	}
 	
 	@FXML
 	private void gestioneRisultati(KeyEvent event) {  //GESTISCE LA BARRA DI RICERCA DEGLI ALIMENTI

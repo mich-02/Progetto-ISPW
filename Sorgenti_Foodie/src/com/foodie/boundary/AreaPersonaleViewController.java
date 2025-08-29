@@ -3,6 +3,7 @@ package com.foodie.boundary;
 import java.util.Map;
 import com.foodie.controller.LoginController;
 import com.foodie.controller.PubblicaRicettaController;
+import com.foodie.controller.TrovaRicettaController;
 import com.foodie.model.UtenteBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
@@ -19,9 +20,9 @@ import javafx.scene.input.MouseEvent;
 
 public class AreaPersonaleViewController{
 	
-	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
-	private LoginController controller = new LoginController(); //tolto singleton
-//	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
+	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
+	private LoginController controller = new LoginController();
+
 
 	@FXML
     private ImageView tornaAlLoginImageView;
@@ -69,12 +70,12 @@ public class AreaPersonaleViewController{
 	}
 	
 	private void salvaAreaPersonale() {  //salva descrizione area personale
-		controller.salvaAreaPersonale(descrizioneTextField.getText());
+		pubblicaRicettaController.salvaAreaPersonale(descrizioneTextField.getText());
 	}
 	
 	public void caricaAreaPersonale() { 
 		UtenteBean utenteBean = controller.getUtente();
-		Map<String,String> areaPersonaleMap=controller.caricaAreaPersonale();
+		Map<String,String> areaPersonaleMap = pubblicaRicettaController.caricaAreaPersonale();
 		String descrizione="";
 		if(!areaPersonaleMap.isEmpty()) {
 			descrizione= areaPersonaleMap.get(utenteBean.getUsername());

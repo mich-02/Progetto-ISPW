@@ -29,11 +29,11 @@ import com.foodie.model.Observer;
 
 public class DispensaUtenteViewController implements Observer {
 	
-	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
+//	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
 //	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
 	//private ControllerAdapter adattatoreTrovaRicettaController = factory.creaTrovaRicettaAdapter();
-	private LoginController loginController = new LoginController(); //tolto singleton
+//	private LoginController loginController = new LoginController(); //tolto singleton
 	private boolean bottoneModifica = true;
 	private static final String FORMATO = "Arial";
 	private static final String DISPENSA = "La mia Dispensa";
@@ -62,8 +62,8 @@ public class DispensaUtenteViewController implements Observer {
 	
 	@FXML
 	public void initialize() {
-		loginController.caricaDispense();
-		pubblicaRicettaController.registraOsservatore(this, 1);
+		trovaRicettaController.caricaDispense();
+		trovaRicettaController.registraOsservatoreDispensa(this);
 		aggiornaView();
 	}
 	
@@ -257,7 +257,7 @@ public class DispensaUtenteViewController implements Observer {
 	
 	@FXML
 	private void salvaDispensa(ActionEvent event) {  //SALVA LA DISPENSA
-		loginController.salvaDispensa();
+		trovaRicettaController.salvaDispensa();
 	}
 	
 }

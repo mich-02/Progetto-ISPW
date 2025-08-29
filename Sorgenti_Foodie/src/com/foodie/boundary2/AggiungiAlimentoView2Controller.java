@@ -27,7 +27,7 @@ public class AggiungiAlimentoView2Controller {
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 //	private ControllerAdapter adattatoreTrovaRicettaController = factory.creaTrovaRicettaAdapter();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
-	private LoginController loginController = new LoginController(); //tolto singleton
+//	private LoginController loginController = new LoginController(); //tolto singleton
 
 	@FXML
 	private TextField barraDiRicerca;
@@ -106,7 +106,7 @@ public class AggiungiAlimentoView2Controller {
 		AlimentoBean alimentoBean = new AlimentoBean();
 		alimentoBean.setNome(nomeAlimento);
 		trovaRicettaController.aggiungiInDispensa(alimentoBean);
-		loginController.salvaDispensa(); //SALVO DISPENSA SU FILE IN AUTOMATICO
+		trovaRicettaController.salvaDispensa(); //SALVO DISPENSA SU FILE IN AUTOMATICO
 		
 	}
 	

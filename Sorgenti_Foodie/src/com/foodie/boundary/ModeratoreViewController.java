@@ -44,7 +44,7 @@ public class ModeratoreViewController implements Observer{
 	
 	@FXML
 	public void initialize() {
-		controller.registraOsservatore(this,3);
+		controller.registraOsservatoreModeratore(this);
 		aggiornaView();
 	}
 	

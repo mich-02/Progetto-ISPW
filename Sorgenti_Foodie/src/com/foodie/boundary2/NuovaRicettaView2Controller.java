@@ -35,13 +35,13 @@ import javafx.stage.Stage;
 public class NuovaRicettaView2Controller implements Observer{
 	
 //	private static NuovaRicettaView2Controller istanza;
-	private AdattatoreFactory factory= AdattatoreFactory.ottieniIstanza();
+	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 //	private ControllerAdapter adattatorePubblicaRicettaController= factory.creaPubblicaRicettaAdapter();
 //	private ControllerAdapter adattatoreLoginController= factory.creaLoginAdapter();
 	private LoginController loginController = new LoginController();
 //	private ControllerAdapter adattatoreTrovaRicettaController=factory.creaTrovaRicettaAdapter();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
-	private PubblicaRicettaController controller = new PubblicaRicettaController();
+	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
 
 	private static final String FORMATO = "Arial";
 	private static final String SFONDOBIANCO = "-fx-background-color: white;";
@@ -89,7 +89,7 @@ public class NuovaRicettaView2Controller implements Observer{
 	@FXML
 	public void initialize() {
 		PubblicaRicettaController.creaRicetta();
-    	controller.registraOsservatore(this, 2);
+		pubblicaRicettaController.registraOsservatoreRicetta(this);
 	}
 	
 	@FXML
@@ -206,7 +206,7 @@ public class NuovaRicettaView2Controller implements Observer{
 		UtenteBean utenteBean = loginController.getUtente();
 		ricettaBean.setAutore(utenteBean.getUsername()); //NOME CHEF PRESO IN AUTOMATICO
         if(ingredienti!=null && !(ingredienti.getChildren().isEmpty())) { 
-        	controller.compilaRicetta(ricettaBean); //RICHIESTA PUBBLICAZIONE
+        	pubblicaRicettaController.compilaRicetta(ricettaBean); //RICHIESTA PUBBLICAZIONE
         	areaPersonaleButton.fire();  //SIMULA CLICK AREA PERSONALE
         	
 		}
@@ -248,7 +248,7 @@ public class NuovaRicettaView2Controller implements Observer{
 		if(!quantita.isEmpty()) {
 			AlimentoBean alimentoBean = new AlimentoBean();
 			alimentoBean.setNome(nomeAlimento);
-			controller.aggiungiIngredienteRicetta(alimentoBean,quantita);
+			pubblicaRicettaController.aggiungiIngredienteRicetta(alimentoBean,quantita);
 			this.quantita.clear();
 			this.quantita.setPromptText("Quantita");
 			eliminaAlimenti();
@@ -292,7 +292,7 @@ public class NuovaRicettaView2Controller implements Observer{
 	@Override
 	public void aggiornaView() {  //AGGIORNA GLI INGREDIENTI IN FUNZIONE DEI CAMBIAMENTI DELLA RICETTA
 		ingredienti.getChildren().clear();
-		List<AlimentoBean> alimentiBeanRicetta = controller.mostraIngredientiRicetta();
+		List<AlimentoBean> alimentiBeanRicetta = pubblicaRicettaController.mostraIngredientiRicetta();
 		if(!alimentiBeanRicetta.isEmpty()) {
 			for(AlimentoBean a: alimentiBeanRicetta) {
 				Label labelAlimento = new Label(a.getNome());
@@ -320,7 +320,7 @@ public class NuovaRicettaView2Controller implements Observer{
 	private void eliminaAlimento(String nomeAlimento) {   //ELIMINA INGREDIENTE DALLA RICETTA 
 		AlimentoBean alimentoBean = new AlimentoBean();
 		alimentoBean.setNome(nomeAlimento);
-		controller.eliminaIngredienteRicetta(alimentoBean);
+		pubblicaRicettaController.eliminaIngredienteRicetta(alimentoBean);
 	}
 	
 }

@@ -8,16 +8,12 @@ import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.AdattatoreFactory;
-import com.foodie.controller.ControllerAdapter;
 import com.foodie.controller.LoginController;
 import com.foodie.model.RicettaBean;
 import com.foodie.model.UtenteBean;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
@@ -29,13 +25,11 @@ import javafx.stage.Stage;
 public class NuovaRicettaViewController {
 	
 	//private static NuovaRicettaViewController istanza;
-	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 	private PubblicaRicettaController controller = new PubblicaRicettaController();
 //	private ControllerAdapter adattatorePubblicaRicettaController = factory.creaPubblicaRicettaAdapter();
 //	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
 	private LoginController loginController = new LoginController();
 	//private CaricaView caricaView = CaricaView.ottieniIstanza();
-	private Stage primaryStage;
 	private static final Logger logger = Logger.getLogger(NuovaRicettaViewController.class.getName());
 	@FXML
 	private Button areaPersonaleButton;
@@ -70,11 +64,6 @@ public class NuovaRicettaViewController {
 		return istanza;
 	}
 	*/
-	
-	
-	public void setPrimaryStage(Stage primaryStage) { //PASSO LO STAGE
-		this.primaryStage= primaryStage;
-	}
 	
 	public void aggiornaView(String nome, String descrizione, int diff) {  //AGGIORNA I VARI CAMPI
 		this.nome.setText(nome);
@@ -220,8 +209,9 @@ public class NuovaRicettaViewController {
 		UtenteBean utenteBean = loginController.getUtente();
 		ricettaBean.setAutore(utenteBean.getUsername());  //AUTORE PASSATO IN AUTOMATICO
 		//VBox ingredienti= InserisciIngredienteViewController.ottieniIstanza().getContenitoreIngredienti();
-		VBox ingredienti= ingredientiRicetta;
+		VBox ingredienti = ingredientiRicetta;
         if(ingredienti!=null && !(ingredienti.getChildren().isEmpty())) { 
+        	
         	controller.compilaRicetta(ricettaBean);
         	areaPersonaleButton.fire();  //SE INGREDIENTI MESSI, ALLORA PUBBLICA E SIMULA CLICK PER TORNARE ALL'AREA PERSONALE
 		}

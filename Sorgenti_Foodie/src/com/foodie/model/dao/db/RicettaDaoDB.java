@@ -144,6 +144,45 @@ public class RicettaDaoDB implements RicettaDao {
 	}
 	*/
 	
+	public List<Ricetta> trovaRicettePerDispensa(int difficolta, String username) throws SQLException {
+	    List<Ricetta> ricetteTrovate = new ArrayList<>();
+
+	    String query =
+	        "SELECT r.nome, r.descrizione, r.difficolta, r.autore, i.alimento, i.quantita " +
+	        "FROM ricette r " +
+	        "JOIN ingredienti i ON r.nome = i.nome_ricetta AND r.autore = i.autore_ricetta " +
+	        "WHERE r.difficolta = ? " +
+	        "AND NOT EXISTS ( " +
+	        "    SELECT 1 " +
+	        "    FROM ingredienti ing " +
+	        "    WHERE ing.nome_ricetta = r.nome " +
+	        "      AND ing.autore_ricetta = r.autore " +
+	        "      AND ing.alimento NOT IN ( " +
+	        "          SELECT d.alimento FROM dispense d WHERE d.username = ? " +
+	        "      ) " +
+	        ")";
+
+	    Connection conn = DBConnection.ottieniIstanza().getConnection();
+
+	    try (PreparedStatement ps = conn.prepareStatement(query)) {
+	        ps.setInt(1, difficolta);
+	        ps.setString(2, username);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            popolaListaRicette(rs, ricetteTrovate);
+	        }
+	    }
+
+	    if (ricetteTrovate.isEmpty()) {
+	        logger.info("Nessuna ricetta trovata per utente " + username);
+	    } else {
+	        logger.info("Ricette trovate: " + ricetteTrovate.size() + " per utente " + username);
+	    }
+
+	    return ricetteTrovate;
+	}
+	
+	/*
 	public List<Ricetta> trovaRicettePerDispensa(Dispensa dispensa, int difficolta) throws SQLException {
 	    List<Ricetta> ricetteTrovate = new ArrayList<>();
 
@@ -187,6 +226,7 @@ public class RicettaDaoDB implements RicettaDao {
 	private String generaPlaceholders(int count) {
 	    return String.join(",", java.util.Collections.nCopies(count, "?"));
 	}
+	*/
 	
 	public List<Ricetta> trovaRicettePerAutore(String autore) throws SQLException {
 	    List<Ricetta> ricetteTrovate = new ArrayList<>();
@@ -272,6 +312,7 @@ public class RicettaDaoDB implements RicettaDao {
         }
 	}
 	*/
+	/*
 	@Override
 	public void aggiungiRicetta(Ricetta ricetta) throws SQLException, RicettaDuplicataException {
 		String sqlSeleziona = "SELECT nome, autore FROM ricette";
@@ -313,6 +354,77 @@ public class RicettaDaoDB implements RicettaDao {
 	        eliminaRicetta(ricetta.getNome(), ricetta.getAutore());
 	        logger.info("Ricetta aggiunta al database solo parzialmente --> procedo a eliminarla");
 	    }    
+	}
+	*/
+	@Override
+	public void aggiungiRicetta(Ricetta ricetta) throws SQLException, RicettaDuplicataException {
+	    String sqlInserisci = "INSERT INTO ricette (nome, descrizione, difficolta, autore) VALUES (?, ?, ?, ?)";
+	    String sqlInserisciIngrediente = "INSERT INTO ingredienti (nome_ricetta, autore_ricetta, alimento, quantita) VALUES (?, ?, ?, ?)";
+
+	    Connection connessione = DBConnection.ottieniIstanza().getConnection();
+
+	    try {
+	        // Inizio transazione
+	        connessione.setAutoCommit(false);
+
+	        // Controllo se esiste già la ricetta
+	        try (PreparedStatement ps = connessione.prepareStatement(
+	                "SELECT 1 FROM ricette WHERE nome = ? AND autore = ?")) {
+	            ps.setString(1, ricetta.getNome());
+	            ps.setString(2, ricetta.getAutore());
+	            try (ResultSet rs = ps.executeQuery()) {
+	                if (rs.next()) {
+	                    throw new RicettaDuplicataException("Ricetta già esistente nel database!");
+	                }
+	            }
+	        }
+
+	        // Inserimento della ricetta
+	        try (PreparedStatement ps = connessione.prepareStatement(sqlInserisci)) {
+	            ps.setString(1, ricetta.getNome());
+	            ps.setString(2, ricetta.getDescrizione());
+	            ps.setInt(3, ricetta.getDifficolta());
+	            ps.setString(4, ricetta.getAutore());
+	            ps.executeUpdate();
+	        }
+
+	        // Inserimento degli ingredienti
+	        try (PreparedStatement psIng = connessione.prepareStatement(sqlInserisciIngrediente)) {
+	            for (int i = 0; i < ricetta.getIngredienti().size(); i++) {
+	                psIng.setString(1, ricetta.getNome());
+	                psIng.setString(2, ricetta.getAutore());
+	                psIng.setString(3, ricetta.getIngredienti().get(i).getNome());
+	                psIng.setString(4, ricetta.getQuantita().get(i));
+	                psIng.addBatch();
+	            }
+	            psIng.executeBatch();
+	        }
+
+	        // Commit della transazione
+	        connessione.commit();
+	        logger.info("Ricetta e ingredienti aggiunti con successo");
+
+	    } catch (SQLException | RicettaDuplicataException ex) {
+	        // Rollback in caso di errore
+	        if (connessione != null) {
+	            try {
+	                connessione.rollback();
+	                logger.info("Transazione annullata: rollback eseguito");
+	            } catch (SQLException e) {
+	                logger.severe("Errore durante il rollback: " + e.getMessage());
+	            }
+	        }
+	        throw ex; // rilancio l'eccezione
+	    } finally {
+	        // Riattiva l'auto-commit
+	        if (connessione != null) {
+	            try {
+	                connessione.setAutoCommit(true);
+	            } catch (SQLException e) {
+	                logger.severe("Errore nel ripristinare auto-commit: " + e.getMessage());
+	            }
+	        }
+	    }
 	}
 	
 	/*

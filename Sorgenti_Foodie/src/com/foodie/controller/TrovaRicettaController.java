@@ -2,6 +2,7 @@ package com.foodie.controller;
 
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -13,11 +14,14 @@ import com.foodie.model.CatalogoRicetteChefDao;
 import com.foodie.model.CatalogoRicetteImplementazione2Dao;
 import com.foodie.model.CatalogoRicetteImplementazioneDao;
 import com.foodie.model.Dispensa;
+import com.foodie.model.LoggedUser;
+import com.foodie.model.Observer;
 import com.foodie.model.Ricetta;
 import com.foodie.model.RicettaBean;
 import com.foodie.model.UtenteBean;
 import com.foodie.model.dao.ChefDao;
 import com.foodie.model.dao.DaoFactoryProvider;
+import com.foodie.model.dao.DispensaDao;
 import com.foodie.model.dao.RicettaDao;
 
 @SuppressWarnings("unused")
@@ -31,6 +35,7 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 	private static final Logger logger = Logger.getLogger(TrovaRicettaController.class.getName());
 	
 	private RicettaDao ricettaDao;
+	private DispensaDao dispensaDao;
 	
 	/*
 	private TrovaRicettaController() {
@@ -69,6 +74,7 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 	*/
 	public TrovaRicettaController() {
 		dispensa = Dispensa.ottieniIstanza();
+		dispensaDao = DaoFactoryProvider.ottieniIstanza().creaDispensaDao();
 		ricettaDao = DaoFactoryProvider.ottieniIstanza().creaRicettaDao();
 		databaseAlimenti = CatalogoAlimentiNutrixionixImplementazioneDao.ottieniIstanza();
 	}
@@ -122,6 +128,7 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 		}
 	}
 	*/
+	/*
 	public ArrayList<RicettaBean> trovaRicetteChef(UtenteBean utenteBean) {
 		List<Ricetta> ricetteTrovate = null;
 		try {
@@ -159,22 +166,24 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 			return new ArrayList<>();
 		}
 	}
+	*/
 	
 	public ArrayList<RicettaBean> trovaRicetteUtente(int difficolta) {
 		List<Ricetta> ricetteTrovate = null;
+		LoggedUser utente = LoggedUser.ottieniIstanza();
 		try {
-			ricetteTrovate = ricettaDao.trovaRicettePerDispensa(dispensa, difficolta);
+			ricetteTrovate = ricettaDao.trovaRicettePerDispensa(difficolta, utente.getUsername());
 			if(ricetteTrovate!=null) {
-				ArrayList<RicettaBean> ricetteTrovateBean= new ArrayList<>();
+				ArrayList<RicettaBean> ricetteTrovateBean = new ArrayList<>();
 				for(Ricetta r:ricetteTrovate) {
-					RicettaBean ricettaBean=new RicettaBean();
+					RicettaBean ricettaBean = new RicettaBean();
 					ricettaBean.setNome(r.getNome());
 					ricettaBean.setDescrizione(r.getDescrizione());
 					ricettaBean.setDifficolta(r.getDifficolta());
-					ArrayList<AlimentoBean> alimentiTrovatiBean=new ArrayList<>();
-					List<Alimento> alimentiTrovati=r.getIngredienti();
+					ArrayList<AlimentoBean> alimentiTrovatiBean = new ArrayList<>();
+					List<Alimento> alimentiTrovati = r.getIngredienti();
 					for(Alimento a:alimentiTrovati) {
-						AlimentoBean alimentoBean= new AlimentoBean();
+						AlimentoBean alimentoBean = new AlimentoBean();
 						alimentoBean.setNome(a.getNome());
 						alimentiTrovatiBean.add(alimentoBean);
 					}
@@ -195,6 +204,38 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 			logger.severe("ERRORE NELL'OTTENIMENTO DELLE RICETTE");
 			logger.info("Problema con il DB");
 			return new ArrayList<>();
+		}
+	}
+	
+	public void caricaDispense() {  //CARICA GLI INGREDIENTI DELLA DISPENSA DA DB
+		Dispensa dispensa = Dispensa.ottieniIstanza();
+	    dispensa.svuotaDispensa(); // svuota prima di ricaricare
+	    LoggedUser utente = LoggedUser.ottieniIstanza();
+
+	    List<Alimento> alimentiDispensa;
+	    try {
+	        alimentiDispensa = dispensaDao.caricaDispensa(utente.getUsername());
+	    } catch (SQLException e) {
+	    	logger.severe("Errore durante il caricamento della dispensa: " + e.getMessage());
+	        return; // esce dal metodo se c'è un errore
+	    }
+
+	    if (alimentiDispensa != null && !alimentiDispensa.isEmpty()) {
+	        for (Alimento a : alimentiDispensa) {
+	            dispensa.aggiungiAlimento(a); // usa direttamente l'oggetto recuperato
+	        }
+	        logger.info("Dispensa caricata con successo per l'utente: " + utente.getUsername());
+	    } else {
+	        logger.info("La dispensa dell'utente " + utente.getUsername() + " è vuota.");
+	    }
+	}
+	
+	public void salvaDispensa() {//SALVA GLI INGREDIENTI DELLA DISPENSA NEL DB
+		LoggedUser utente = LoggedUser.ottieniIstanza();
+		try {
+			dispensaDao.salvaDispensa(utente.getUsername());
+		} catch (SQLException e) {
+			logger.severe("Errore durante il salvataggio della dispensa: " + e.getMessage());
 		}
 	}
 	
@@ -328,6 +369,7 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 		}
 	}
 	
+	/*
 	public Ricetta ottieniRicetta(String nome,String autore) {  //METODO PER OTTENERE I DATI DI UNA RICETTA IN FUNZIONE DEL NOME-AUTORE
 		Ricetta ricetta=null; 
 		try {
@@ -345,6 +387,8 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 			return null;
 		}
 	}
+	*/
+	
 	public RicettaBean ottieniRicetta(RicettaBean ricettaBean) { //METODO PER OTTENERE I DATI DI UNA RICETTA IN FUNZIONE DEL NOME-AUTORE
 		Ricetta ricetta = null;
 		try {
@@ -374,6 +418,11 @@ public class TrovaRicettaController {  //SINGLETON, IL CONTROLLER DEVE AVERE SOL
 			logger.info("Problema con il DB");
 			return null;
 		}
+	}
+	
+	public void registraOsservatoreDispensa(Observer observer) {
+		Dispensa dispensa = Dispensa.ottieniIstanza();
+		dispensa.registra(observer);
 	}
 	
 	

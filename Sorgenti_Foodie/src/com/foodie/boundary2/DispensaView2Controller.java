@@ -26,9 +26,9 @@ public class DispensaView2Controller implements Observer{
 	
 //	private static DispensaView2Controller istanza;
 	private AdattatoreFactory factory= AdattatoreFactory.ottieniIstanza();
-	PubblicaRicettaController controller1 = new PubblicaRicettaController();
+//	PubblicaRicettaController controller1 = new PubblicaRicettaController();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
-	private LoginController loginController= new LoginController(); //tolto singleton
+//	private LoginController loginController= new LoginController(); //tolto singleton
 //	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
 	
 	@FXML
@@ -48,7 +48,7 @@ public class DispensaView2Controller implements Observer{
 	
 	@FXML
 	public void initialize() {
-		controller1.registraOsservatore(this, 1);
+		trovaRicettaController.registraOsservatoreDispensa(this);
 		aggiornaView();
 	}
 	
@@ -75,7 +75,7 @@ public class DispensaView2Controller implements Observer{
 	@FXML
 	private void svuotaDispensa(ActionEvent event) {  //SVUOTA DISPENSA
 		trovaRicettaController.svuotaDispensa();
-		loginController.salvaDispensa(); //SALVO DISPENSA SU FILE IN AUTOMATICO
+		trovaRicettaController.salvaDispensa(); //SALVO DISPENSA SU FILE IN AUTOMATICO
 	}
 	
 	public void aggiornaView() {  //AGGIORNA LA VIEW IN FUNZIONE DELLA DISPENSA
@@ -109,7 +109,7 @@ public class DispensaView2Controller implements Observer{
 		AlimentoBean alimentoBean = new AlimentoBean();
 		alimentoBean.setNome(nomeAlimento);
 		trovaRicettaController.rimuoviDallaDispensa(alimentoBean);
-		loginController.salvaDispensa(); //SALVO DISPENSA SU FILE IN AUTOMATICO
+		trovaRicettaController.salvaDispensa(); //SALVO DISPENSA SU FILE IN AUTOMATICO
 	}
 	
 }

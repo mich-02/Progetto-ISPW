@@ -1,37 +1,29 @@
 package com.foodie.controller;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
-import com.foodie.model.AreaPersonaleImplementazioneDao;
 import com.foodie.model.Chef;
-import com.foodie.model.Dispensa;
-import com.foodie.model.Alimento;
-import com.foodie.model.AlimentoSerializzabile;
-import com.foodie.model.AreaPersonaleDao;
-import com.foodie.model.DispensaImplementazioneDao;
+import com.foodie.model.LoggedUser;
 import com.foodie.model.Moderatore;
 import com.foodie.model.Standard;
 import com.foodie.model.Utente;
 import com.foodie.model.UtenteBean;
 import com.foodie.model.UtenteEsistenteException;
 import com.foodie.model.dao.DaoFactoryProvider;
-import com.foodie.model.dao.DispensaDao;
 import com.foodie.model.dao.UtenteDao;
+
 
 public class LoginController {
 	
-//	private static LoginController istanza;
-	private static Utente utente = null;
+//	private static Utente utente = null;
 //	private static LoginDao database;
 //	private static DispensaDao databaseDispensa = DispensaImplementazioneDao.ottieniIstanza();
-	private static AreaPersonaleDao databaseAreaPersonale= AreaPersonaleImplementazioneDao.ottieniIstanza();
+//	private static AreaPersonaleDao databaseAreaPersonale = AreaPersonaleImplementazioneDao.ottieniIstanza();
 	private static final String MESSAGGIO= "PROBLEMA CON IL DB";
 	private static final Logger logger = Logger.getLogger(LoginController.class.getName());
+	private LoggedUser utenteCorrente = LoggedUser.ottieniIstanza();
+	private Utente utente;
 	private UtenteDao utenteDao;
-	private DispensaDao dispensaDao;
+//	private DispensaDao dispensaDao;
 	
 	/*
 	private LoginController() {
@@ -59,12 +51,12 @@ public class LoginController {
 	
 	public LoginController() {
 		utenteDao = DaoFactoryProvider.ottieniIstanza().creaUtenteDao();
-		dispensaDao = DaoFactoryProvider.ottieniIstanza().creaDispensaDao();
+		//dispensaDao = DaoFactoryProvider.ottieniIstanza().creaDispensaDao();
 		//database = LoginImplementazioneDao.ottieniIstanza();
 	}
 	
 	
-	public static void setUtente(String username, String tipo) {  //ISTANZIA L'UTENTE IN FUNZIONE DEL TIPO
+	public void setUtente(String username, String tipo) {  //ISTANZIA L'UTENTE IN FUNZIONE DEL TIPO
 		if(tipo.equals("Standard")) {
 			utente = new Standard(username);
 		}
@@ -72,8 +64,9 @@ public class LoginController {
 			utente = new Chef(username);
 		}
 		else {
-			utente= Moderatore.ottieniIstanza(username);
+			utente = Moderatore.ottieniIstanza(username);
 		}
+		utenteCorrente.setUtente(utente);
 		logger.info(username);
 	}
 	
@@ -120,6 +113,7 @@ public class LoginController {
 		databaseDispensa.salvaDispensa(utente.getUsername());
 	}
 	*/
+	/*
 	public void salvaDispensa() {  //SALVA GLI INGREDIENTI DELLA DISPENSA NEL DB
 		try {
 			dispensaDao.salvaDispensa(utente.getUsername());
@@ -127,6 +121,7 @@ public class LoginController {
 			logger.severe("Errore durante il salvataggio della dispensa: " + e.getMessage());
 		}
 	}
+	*/
 	
 	/*
 	public void caricaDispense() {  //CARICA GLI INGREDIENTI DELLA DISPENSA DA DB
@@ -143,6 +138,7 @@ public class LoginController {
 		}
 	}
 	*/
+	/*
 	public void caricaDispense() {  //CARICA GLI INGREDIENTI DELLA DISPENSA DA DB
 		Dispensa dispensa = Dispensa.ottieniIstanza();
 	    dispensa.svuotaDispensa(); // svuota prima di ricaricare
@@ -164,13 +160,18 @@ public class LoginController {
 	        logger.info("La dispensa dell'utente " + utente.getUsername() + " è vuota.");
 	    }
 	}
+	*/
+	
 	
 	public UtenteBean getUtente() {
 		UtenteBean utenteBean = new UtenteBean();
-		utenteBean.setUsername(utente.getUsername());
+		utenteBean.setUsername(LoggedUser.ottieniIstanza().getUsername());
 		return utenteBean;
 	}
 	
+	
+	
+	/*
 	public void salvaAreaPersonale(String descrizione) {  //SALVA LA DESCRIZIONE DELL'AREA PERSONALE NEL DB
 		databaseAreaPersonale.salvaAreaPersonale(utente.getUsername(), descrizione);
 	}
@@ -178,6 +179,7 @@ public class LoginController {
 	public Map<String,String> caricaAreaPersonale() {  //CARICA LA DESCRIZIONE DELL'AREA PERSONALE DA DB
 		return databaseAreaPersonale.caricaAreaPersonale();
     }
+    */
 	
 	public String ottieniView(int interfacciaSelezionata) {  // restituisce la view iniziale da caricare
 		return utente.getViewIniziale(interfacciaSelezionata);

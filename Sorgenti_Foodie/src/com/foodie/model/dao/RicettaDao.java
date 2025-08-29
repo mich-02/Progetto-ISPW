@@ -9,7 +9,7 @@ import com.foodie.model.RicettaDuplicataException;
 public interface RicettaDao {
 	
 	//public List<Ricetta> trovaRicette(Dispensa dispensa, int difficolta, String autore) throws SQLException;
-	public List<Ricetta> trovaRicettePerDispensa(Dispensa dispensa, int difficolta) throws SQLException;
+	public List<Ricetta> trovaRicettePerDispensa(int difficolta, String username) throws SQLException;
 	public List<Ricetta> trovaRicettePerAutore(String autore) throws SQLException;
 	
 	

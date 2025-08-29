@@ -24,10 +24,10 @@ public class GestisciRicetteView2Controller {
 	//private static GestisciRicetteView2Controller istanza;
 	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 //	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
-	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
+//	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
 //	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
 	private LoginController loginController = new LoginController();
-	private PubblicaRicettaController controller = new PubblicaRicettaController();
+	private PubblicaRicettaController pubblicaRicettaontroller = new PubblicaRicettaController();
 	private static final String FORMATO = "Arial";
 	private static final Logger logger = Logger.getLogger(GestisciRicetteView2Controller.class.getName());
 	@FXML
@@ -56,7 +56,7 @@ public class GestisciRicetteView2Controller {
 		List<RicettaBean> ricetteTrovate= null;
 		contenitoreRicette.getChildren().clear();
 		UtenteBean utenteBean = loginController.getUtente();
-		ricetteTrovate = trovaRicettaController.trovaRicetteChef(utenteBean);
+		ricetteTrovate = pubblicaRicettaontroller.trovaRicetteChef(utenteBean);
 		if(!ricetteTrovate.isEmpty()) {
 			contenitoreRicette.getChildren().clear();
 			for(RicettaBean r: ricetteTrovate) {
@@ -133,7 +133,7 @@ public class GestisciRicetteView2Controller {
 			}
 			index++;
 		}
-		controller.eliminaRicetta(nome, autore);
+		pubblicaRicettaontroller.eliminaRicetta(nome, autore);
 		aggiornaView();
 	}
 	
