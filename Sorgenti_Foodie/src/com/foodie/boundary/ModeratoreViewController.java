@@ -19,7 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class ModeratoreViewController implements Observer{
+public class ModeratoreViewController implements Observer {
 	
 	private PubblicaRicettaController controller = new PubblicaRicettaController();
 	private static final String FORMATO = "Arial";
@@ -104,7 +104,11 @@ public class ModeratoreViewController implements Observer{
                 	autore=label.getText();
                 indiceLabel++;
 			}
-			controller.pubblicaRicetta(nome,autore,true);
+			RicettaBean ricettaBean = new RicettaBean();
+			ricettaBean.setNome(nome);
+			ricettaBean.setAutore(autore);
+			ricettaBean.setPublish(true);
+			controller.pubblicaRicetta(ricettaBean);
 		}
 	}
 	
@@ -122,7 +126,11 @@ public class ModeratoreViewController implements Observer{
                 	autore=label.getText();
                 indiceLabel++;
 			}
-			controller.pubblicaRicetta(nome,autore,false);
+			RicettaBean ricettaBean = new RicettaBean();
+			ricettaBean.setNome(nome);
+			ricettaBean.setAutore(autore);
+			ricettaBean.setPublish(false);
+			controller.pubblicaRicetta(ricettaBean);
 		}
 	}
 	

@@ -10,6 +10,7 @@ public class RicettaBean {  //BEAN DELLA CLASSE RICETTA
 	private List<AlimentoBean> ingredienti;
 	private String autore;
 	private List<String> quantita;
+    private Boolean publish;   //MODIFICATO DA BALDUZ
 	
 	public String getNome() {  //GETTERS E SETTERS DEGLI ATTRIBUTI
 		return nome;
@@ -58,5 +59,12 @@ public class RicettaBean {  //BEAN DELLA CLASSE RICETTA
 	public void setQuantita(List<String> quantita) {
 		this.quantita = quantita;
 	}
-	
+
+    public Boolean getPublish() {  //MODIFICATO DA BALDUZ
+        return publish;
+    }   //AGGIUNTO DA BALDUZ
+
+    public void setPublish(Boolean publish) {  //MODIFICATO DA BALDUZ
+        this.publish = publish;
+    }   //AGGIUNTO DA BALDUZ
 }

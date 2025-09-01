@@ -114,7 +114,11 @@ public class ModeratoreView2Controller implements Observer{
 			}
 			index++;
 		}
-		controller.pubblicaRicetta(nome,autore,true); 
+		RicettaBean ricettaBean = new RicettaBean();
+		ricettaBean.setNome(nome);
+		ricettaBean.setAutore(autore);
+		ricettaBean.setPublish(true);
+		controller.pubblicaRicetta(ricettaBean);
 	}
 	
 	@FXML
@@ -139,7 +143,11 @@ public class ModeratoreView2Controller implements Observer{
 				}
 				index++;
 			}
-			controller.pubblicaRicetta(nome,autore,false);
+			RicettaBean ricettaBean = new RicettaBean();
+			ricettaBean.setNome(nome);
+			ricettaBean.setAutore(autore);
+			ricettaBean.setPublish(false);
+			controller.pubblicaRicetta(ricettaBean);
 		}
 	}
 	

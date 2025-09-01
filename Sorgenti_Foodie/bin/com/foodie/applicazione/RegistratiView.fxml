@@ -71,31 +71,29 @@
                   <Region prefHeight="10.0" prefWidth="458.0" />
                   <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="364.0" spacing="84.0">
                      <children>
-                        <Label text="REGISTRATI COME:">
+                        <Label prefHeight="18.0" prefWidth="121.0" text="REGISTRATI COME:">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
                         <VBox prefHeight="200.0" prefWidth="160.0">
                            <children>
-                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="54.0">
+                              <HBox prefHeight="100.0" prefWidth="170.0" spacing="54.0">
                                  <children>
-                                    <Label text="UTENTE BASE">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Label>
+                                    <Label prefHeight="17.0" prefWidth="102.0" text="UTENTE BASE" />
                                     <RadioButton fx:id="baseRadioButton" mnemonicParsing="false" />
                                  </children>
                               </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="107.0">
+                              <HBox prefHeight="100.0" prefWidth="176.0" spacing="107.0">
                                  <children>
-                                    <Label text="CHEF">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Label>
+                                    <Label prefHeight="17.0" prefWidth="59.0" text="CHEF" />
                                     <RadioButton fx:id="chefRadioButton" mnemonicParsing="false" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="176.0" spacing="54.0">
+                                 <children>
+                                    <Label prefHeight="18.0" prefWidth="118.0" text="MODERATORE" />
+                                    <RadioButton fx:id="moderatoreRadioButton" mnemonicParsing="false" prefHeight="18.0" prefWidth="0.0" />
                                  </children>
                               </HBox>
                            </children>

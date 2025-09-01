@@ -87,7 +87,8 @@ public class InserisciIngredienteViewController implements Observer{
 		if(!quantita.isEmpty()) {
 			AlimentoBean alimentoBean = new AlimentoBean();
 			alimentoBean.setNome(nomeAlimento);
-			pubblicaRicettaController.aggiungiIngredienteRicetta(alimentoBean,quantita);
+			alimentoBean.setQuantita(quantita);
+			pubblicaRicettaController.aggiungiIngredienteRicetta(alimentoBean);
 			this.quantita.clear();
 			this.quantita.setPromptText("Quantita");
 			eliminaAlimenti();

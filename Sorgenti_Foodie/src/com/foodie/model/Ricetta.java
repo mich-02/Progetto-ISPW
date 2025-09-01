@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-public class Ricetta extends SubjectPatternObserver{  //OSSERVATO CONCRETO, ESTENDE SUBJECT PATTERN OBSERVER
-	
+public class Ricetta extends SubjectPatternObserver {  //OSSERVATO CONCRETO, ESTENDE SUBJECT PATTERN OBSERVER
+
 	private String nome;
 	private String descrizione;
 	private int difficolta;
@@ -14,6 +14,7 @@ public class Ricetta extends SubjectPatternObserver{  //OSSERVATO CONCRETO, ESTE
 	private String autore;
 	private List<String> quantita;
 	private static final Logger logger = Logger.getLogger(Ricetta.class.getName());
+
 	
 	public Ricetta() {
 		this.ingredienti= new ArrayList<>();

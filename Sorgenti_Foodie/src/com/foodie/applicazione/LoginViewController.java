@@ -1,7 +1,6 @@
 package com.foodie.applicazione;
 
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -11,17 +10,12 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import java.io.IOException;
 import java.util.logging.Logger;
-
-import com.foodie.boundary.AreaPersonaleViewController;
 import com.foodie.boundary.DispensaUtenteViewController;
 import com.foodie.boundary.ModeratoreViewController;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.boundary2.AggiungiAlimentoView2Controller;
-import com.foodie.boundary2.AreaPersonaleView2Controller;
 import com.foodie.boundary2.ModeratoreView2Controller;
 import com.foodie.controller.LoginController;
 import com.foodie.controller.PubblicaRicettaController;
@@ -29,12 +23,7 @@ import com.foodie.model.Dispensa;
 
 public class LoginViewController {
 	
-	// private static LoginViewController istanza;  //SINGLETON
 	private int interfaccia;
-	private Stage primaryStage;
-	//private LoginController controller = LoginController.ottieniIstanza();
-//	private PubblicaRicettaController controller = PubblicaRicettaController.ottieniIstanza();
-	private static final Logger logger = Logger.getLogger(LoginViewController.class.getName());
 	
 	@FXML
 	private Button registratiButton;
@@ -235,9 +224,4 @@ public class LoginViewController {
 		*/
 		ViewLoader.caricaView(ViewInfo.REGISTRAZIONE_VIEW);
 	}
-	
-	public void setPrimaryStage(Stage primaryStage) { //PASSO LO STAGE
-		this.primaryStage=primaryStage;
-	}
-	
 }

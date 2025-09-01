@@ -175,7 +175,10 @@ public class GestisciRicetteViewController {
 		if(!contenitoreRicette.getChildren().isEmpty()) {
 			contenitoreRicette.getChildren().clear();
 		}
-		pubblicaRicettaController.eliminaRicetta(nome, autore);
+		RicettaBean ricettaBean = new RicettaBean();
+		ricettaBean.setNome(nome);
+		ricettaBean.setAutore(autore);
+		pubblicaRicettaController.eliminaRicetta(ricettaBean);
 		aggiornaView();
 	}
 	

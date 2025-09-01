@@ -15,9 +15,6 @@ import com.foodie.model.dao.UtenteDao;
 public class LoginController {
 	
 //	private static Utente utente = null;
-//	private static LoginDao database;
-//	private static DispensaDao databaseDispensa = DispensaImplementazioneDao.ottieniIstanza();
-//	private static AreaPersonaleDao databaseAreaPersonale = AreaPersonaleImplementazioneDao.ottieniIstanza();
 	private static final String MESSAGGIO= "PROBLEMA CON IL DB";
 	private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 	private LoggedUser utenteCorrente = LoggedUser.ottieniIstanza();
@@ -51,8 +48,6 @@ public class LoginController {
 	
 	public LoginController() {
 		utenteDao = DaoFactoryProvider.ottieniIstanza().creaUtenteDao();
-		//dispensaDao = DaoFactoryProvider.ottieniIstanza().creaDispensaDao();
-		//database = LoginImplementazioneDao.ottieniIstanza();
 	}
 	
 	
@@ -64,7 +59,8 @@ public class LoginController {
 			utente = new Chef(username);
 		}
 		else {
-			utente = Moderatore.ottieniIstanza(username);
+			//utente = Moderatore.ottieniIstanza(username);
+			utente = new Moderatore(username);
 		}
 		utenteCorrente.setUtente(utente);
 		logger.info(username);
@@ -82,7 +78,7 @@ public class LoginController {
 	
 	public int controllaUsername(String username) {  //CONTROLLA L'USERNAME SE ESISTE
 		try {
-			if(utenteDao.controllaUsername(username)==0) {
+			if(utenteDao.controllaUsername(username) == 0) {
 				throw new UtenteEsistenteException("Ricetta già esistente nel database!");
 			}
 			return 1;
@@ -168,18 +164,6 @@ public class LoginController {
 		utenteBean.setUsername(LoggedUser.ottieniIstanza().getUsername());
 		return utenteBean;
 	}
-	
-	
-	
-	/*
-	public void salvaAreaPersonale(String descrizione) {  //SALVA LA DESCRIZIONE DELL'AREA PERSONALE NEL DB
-		databaseAreaPersonale.salvaAreaPersonale(utente.getUsername(), descrizione);
-	}
-	
-	public Map<String,String> caricaAreaPersonale() {  //CARICA LA DESCRIZIONE DELL'AREA PERSONALE DA DB
-		return databaseAreaPersonale.caricaAreaPersonale();
-    }
-    */
 	
 	public String ottieniView(int interfacciaSelezionata) {  // restituisce la view iniziale da caricare
 		return utente.getViewIniziale(interfacciaSelezionata);

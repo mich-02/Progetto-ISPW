@@ -21,15 +21,19 @@ import com.foodie.controller.LoginController;
 
 public class RegistratiViewController {
 	
-	// private static RegistratiViewController istanza;  //SINGLETON
-	// Variabile per memorizzare il ruolo, 0 per l'utente base, 1 per lo chef
+
+	// Variabile per memorizzare il ruolo, 0 per l'utente base, 1 per lo chef, 2 per il moderatore
     private int ruolo;
     private LoginController controller = new LoginController(); //tolto singleton
 	@FXML
     private RadioButton baseRadioButton;
     @FXML
     private RadioButton chefRadioButton;
+    @FXML
+    private RadioButton moderatoreRadioButton;
+    
     private ToggleGroup userTypeToggleGroup;
+    
     @FXML
     private Button indietroButton;
     @FXML
@@ -66,6 +70,7 @@ public class RegistratiViewController {
     	// Associazione dei Radio Button al Toggle Group
     	baseRadioButton.setToggleGroup(userTypeToggleGroup);
         chefRadioButton.setToggleGroup(userTypeToggleGroup);
+        moderatoreRadioButton.setToggleGroup(userTypeToggleGroup);
         
         // Imposto primo bottone come quello selezionato di default
         userTypeToggleGroup.selectToggle(baseRadioButton);
@@ -82,26 +87,13 @@ public class RegistratiViewController {
         	} else if (selectedRadioButton == chefRadioButton) {
         		ruolo = 1;
         	}
+        	else {
+        		ruolo = 2;
+        	}
         }
     
     @FXML
     public void indietroButtonOnAction(ActionEvent event) {  //RITORNA AL LOGIN
-    	/*
-    	try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginView.fxml"));
-			LoginViewController loginViewController= new LoginViewController(); //modificato singleton
-			loader.setController(loginViewController);
-            Parent root = loader.load();
-            loginViewController.setPrimaryStage(primaryStage);
-            Scene nuovaScena = new Scene(root);
-            primaryStage.setScene(nuovaScena);
-            primaryStage.show();
-    		
-    	}catch (Exception e) {
-    		e.printStackTrace();
-    		e.getCause();
-    	}
-    	*/
     	ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     	
    }

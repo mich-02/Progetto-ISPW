@@ -12,7 +12,6 @@ public interface RicettaDao {
 	public List<Ricetta> trovaRicettePerDispensa(int difficolta, String username) throws SQLException;
 	public List<Ricetta> trovaRicettePerAutore(String autore) throws SQLException;
 	
-	
 	public void aggiungiRicetta(Ricetta ricetta) throws SQLException,RicettaDuplicataException;
 	
 	public void eliminaRicetta(String nome, String autore) throws SQLException;

@@ -1,6 +1,7 @@
 package com.foodie.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,22 +22,31 @@ import com.foodie.model.Observer;
 import com.foodie.model.Ricetta;
 import com.foodie.model.RicettaBean;
 import com.foodie.model.RicettaDuplicataException;
+import com.foodie.model.RicetteDaApprovare;
 import com.foodie.model.UtenteBean;
 import com.foodie.model.dao.DaoFactoryProvider;
 import com.foodie.model.dao.RicettaDao;
+import com.foodie.model.dao.RicetteDaApprovareDao;
 
 @SuppressWarnings("unused")
 public class PubblicaRicettaController {  
-	
+
+    //BALDUZ
+    //ORA LA CLASSE MODERATORE QUI NON SERVE A NULLA, DEVI MODIFCARE LA CLASSE PER RICORDARTI DI CARICARE PRIMA LO STATO DELLE
+    //RICETTE DA APPROVARE E POI CI LAVORI OGNI VOLTA CHE NE AGGIUNGI UNA O RIMUOVI UNA , POI OGNI VOLTA SALVA LO STATO SU EPRSISTENZAM, COSì HAI SIA
+    //CONSISTENZA IN RAM SIA SU FILE CONTEMPORANEAMENTE
+
+
 //	private static PubblicaRicettaController istanza;
 //	private static CatalogoRicetteChefDao database;
 //	private CatalogoRicetteChefDao database;
-	private static Moderatore moderatore;
+//	private static Moderatore moderatore;  //BALDUZ QUESTA INTENDO !!!
 	private static Ricetta ricetta = new Ricetta();
 	private static final Logger logger = Logger.getLogger(PubblicaRicettaController.class.getName());
-	
+	private static RicetteDaApprovare ricetteDaApprovare;
+	private RicetteDaApprovareDao ricetteDaApprovareDao;
 	private RicettaDao ricettaDao;
-	private static AreaPersonaleDao databaseAreaPersonale = AreaPersonaleImplementazioneDao.ottieniIstanza(); 
+//	private static AreaPersonaleDao databaseAreaPersonale = AreaPersonaleImplementazioneDao.ottieniIstanza(); 
 	
 	/*
 	private PubblicaRicettaController() {
@@ -71,7 +81,10 @@ public class PubblicaRicettaController {
 	*/
 	public PubblicaRicettaController() {
 		ricettaDao = DaoFactoryProvider.ottieniIstanza().creaRicettaDao();
-		moderatore = Moderatore.ottieniIstanza();
+		//moderatore = Moderatore.ottieniIstanza();
+		ricetteDaApprovare = new RicetteDaApprovare();
+		ricetteDaApprovareDao = DaoFactoryProvider.ottieniIstanza().creaRicetteDaApprovareDao();
+		
 	}
 	
 	/*
@@ -113,14 +126,7 @@ public class PubblicaRicettaController {
 		ricetta.setAutore(ricettaBean.getAutore());
 		notificaModeratore();
 }
-	public void compilaRicettaNew(RicettaBean ricettaBean) { //old
-		ricetta.setNome(ricettaBean.getNome());
-		ricetta.setDescrizione(ricettaBean.getDescrizione());
-		ricetta.setDifficolta(ricettaBean.getDifficolta());
-		ricetta.setAutore(ricettaBean.getAutore());
-		notificaModeratore();
-	}
-	
+
 	
 	/*
 	private List<Alimento> getAlimentiRicetta() {  //MOSTRA GLI INGREDIENTI DELLA RICETTA
@@ -151,20 +157,27 @@ public class PubblicaRicettaController {
 		}
 	}
 	
-	public void aggiungiIngredienteRicetta(AlimentoBean alimentoBean, String quantita) {  //AGGIUNGE INGREDIENTE ALLA RICETTA
-		Alimento alimento = new Alimento(alimentoBean.getNome());
-		ricetta.aggiungiIngrediente(alimento, quantita);
-	}
+//	public void aggiungiIngredienteRicetta(AlimentoBean alimentoBean, String quantita) {  //AGGIUNGE INGREDIENTE ALLA RICETTA
+//		Alimento alimento = new Alimento(alimentoBean.getNome());
+//		ricetta.aggiungiIngrediente(alimento, quantita);
+//	}
+
+    public void aggiungiIngredienteRicetta(AlimentoBean alimentoBean) {  //MODIFICATO DA BALDUZ MESSO QUANTITA NEL BEAN
+        Alimento alimento = new Alimento(alimentoBean.getNome());
+        ricetta.aggiungiIngrediente(alimento, alimentoBean.getQuantita());
+    }
 	
 	public void eliminaIngredienteRicetta(AlimentoBean alimentoBean) {
 		Alimento alimento = new Alimento(alimentoBean.getNome());
 		ricetta.eliminaIngrediente(alimento);
 	}
 	
-	private static void notificaModeratore() {  //NOTIFICA IL MODERATORE DOPO AVER COMPILATO
+	private void notificaModeratore() {  //NOTIFICA IL MODERATORE DOPO AVER COMPILATO
 		logger.info("MODERATORE NOTIFICATO");
-		moderatore.aggiungiRicettaDaVerificare(ricetta);
-		ricetta=null;
+		//ricetteDaApprovare.aggiungiRicettaDaVerificare(ricetta);
+		salvaRicettaDaApprovare(ricetta);
+		//moderatore.aggiungiRicettaDaVerificare(ricetta);
+		creaRicetta(); //resetto la ricetta corrente
 	}
 	
 	private void notificaChef(boolean bool) {  //NOTIFICA LO CHEF DOPO AVER APPROVATO LA RICETTA
@@ -172,34 +185,64 @@ public class PubblicaRicettaController {
 		logger.info(notifica);
 	}
 	
-	public void pubblicaRicetta(String nome,String autore,boolean bool) {  //PUBBLICA LA RICETTA APPROVATA NEL DATABASE
-		Ricetta ricettaDaPubblicare = Moderatore.ottieniRicetta(nome, autore);
-		try {
-			if(bool) {
-				ricettaDao.aggiungiRicetta(ricettaDaPubblicare);
-			}
-			moderatore.ricettaVerificata(ricettaDaPubblicare);
-			notificaChef(bool);
-		}catch(RicettaDuplicataException e) {
-			e.suggerimento();
-			logger.severe("RICETTA GIA' ESISTENTE");
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.severe("ERRORE NELLA PUBBLICAZIONE DELLA RICETTA");
-			logger.info("Problema con il DB");
-		}
-	}
+//	public void pubblicaRicetta(String nome,String autore,boolean bool) {  //PUBBLICA LA RICETTA APPROVATA NEL DATABASE
+//		Ricetta ricettaDaPubblicare = Moderatore.ottieniRicetta(nome, autore);
+//		try {
+//			if(bool) {
+//				ricettaDao.aggiungiRicetta(ricettaDaPubblicare);
+//			}
+//			moderatore.ricettaVerificata(ricettaDaPubblicare);
+//			notificaChef(bool);
+//		}catch(RicettaDuplicataException e) {
+//			e.suggerimento();
+//			logger.severe("RICETTA GIA' ESISTENTE");
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//			logger.severe("ERRORE NELLA PUBBLICAZIONE DELLA RICETTA");
+//			logger.info("Problema con il DB");
+//		}
+//	}
+
+    public void pubblicaRicetta(RicettaBean ricettaBean) {  //MODIFICATO DA BALDUZ AGGIUNTO BOOL
+        //Ricetta ricettaDaPubblicare = Moderatore.ottieniRicetta(ricettaBean.getNome(), ricettaBean.getAutore());
+    	Ricetta ricettaDaPubblicare = ricetteDaApprovare.ottieniRicetta(ricettaBean.getNome(), ricettaBean.getAutore());
+        try {
+            if(ricettaBean.getPublish()) {
+                ricettaDao.aggiungiRicetta(ricettaDaPubblicare);
+            }
+            ricetteDaApprovare.ricettaVerificata(ricettaDaPubblicare);
+            notificaChef(ricettaBean.getPublish());
+        }catch(RicettaDuplicataException e) {
+            e.suggerimento();
+            logger.severe("RICETTA GIA' ESISTENTE");
+        }catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("ERRORE NELLA PUBBLICAZIONE DELLA RICETTA");
+            logger.info("Problema con il DB");
+        }
+    }
 	
-	public void eliminaRicetta(String nome, String autore) {    //ELIMINA LA RICETTA DAL DATABASE
-		
-		try {
-			ricettaDao.eliminaRicetta(nome,autore);
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.severe("ERRORE NELL'ELIMINAZIONE DELLA RICETTA");
-			logger.info("Problema con il DB");
-		}
-	}
+//	public void eliminaRicetta(String nome, String autore) {    //ELIMINA LA RICETTA DAL DATABASE
+//
+//		try {
+//			ricettaDao.eliminaRicetta(nome,autore);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			logger.severe("ERRORE NELL'ELIMINAZIONE DELLA RICETTA");
+//			logger.info("Problema con il DB");
+//		}
+//	}
+
+    public void eliminaRicetta(RicettaBean ricettaBean) {    //MODIFICATO DA BALDUZ
+
+        try {
+            ricettaDao.eliminaRicetta(ricettaBean.getNome(),ricettaBean.getAutore());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("ERRORE NELL'ELIMINAZIONE DELLA RICETTA");
+            logger.info("Problema con il DB");
+        }
+    }
 	
 	/*
 	public List<Ricetta> mostraRicetteDaApprovare() {  //MOSTRA LE RICETTE CHE DEVONO ESSERE APPROVATE
@@ -245,30 +288,41 @@ public class PubblicaRicettaController {
 	}
 	
 	public ArrayList<RicettaBean> mostraRicetteDaApprovare() {
-		List<Ricetta> ricette = Moderatore.getRicetteDaVerificare();
-		if(ricette!=null && !ricette.isEmpty()) {
-			ArrayList<RicettaBean> ricetteBean = new ArrayList<>();
-			for(Ricetta r: ricette) {
-				RicettaBean ricettaBean = new RicettaBean();
-				ricettaBean.setNome(r.getNome());
-				ricettaBean.setDescrizione(r.getDescrizione());
-				ricettaBean.setDifficolta(r.getDifficolta());
-				ArrayList<AlimentoBean> alimentiTrovatiBean = new ArrayList<>();
-				List<Alimento> alimentiTrovati = r.getIngredienti();
-				for(Alimento a:alimentiTrovati) {
-					AlimentoBean alimentoBean = new AlimentoBean();
-					alimentoBean.setNome(a.getNome());
-					alimentiTrovatiBean.add(alimentoBean);
+		List<Ricetta> ricette = null;
+		//ricetteDaApprovare.getRicetteDaVerificare();
+		try {
+			ricetteDaApprovareDao.caricaRicetteDaApprovare();
+			ricette = ricetteDaApprovare.getRicetteDaVerificare();
+			if(ricette!=null && !ricette.isEmpty()) {
+				ArrayList<RicettaBean> ricetteBean = new ArrayList<>();
+				for(Ricetta r: ricette) {
+					RicettaBean ricettaBean = new RicettaBean();
+					ricettaBean.setNome(r.getNome());
+					ricettaBean.setDescrizione(r.getDescrizione());
+					ricettaBean.setDifficolta(r.getDifficolta());
+					ArrayList<AlimentoBean> alimentiTrovatiBean = new ArrayList<>();
+					List<Alimento> alimentiTrovati = r.getIngredienti();
+					for(Alimento a:alimentiTrovati) {
+						AlimentoBean alimentoBean = new AlimentoBean();
+						alimentoBean.setNome(a.getNome());
+						alimentiTrovatiBean.add(alimentoBean);
+					}
+					ricettaBean.setIngredienti(alimentiTrovatiBean);
+					ricettaBean.setAutore(r.getAutore());
+					ricettaBean.setQuantita(r.getQuantita());
+					ricetteBean.add(ricettaBean);
 				}
-				ricettaBean.setIngredienti(alimentiTrovatiBean);
-				ricettaBean.setAutore(r.getAutore());
-				ricettaBean.setQuantita(r.getQuantita());
-				ricetteBean.add(ricettaBean);
+				return ricetteBean;
 			}
-			return ricetteBean;
-		}
-		else {
-			return new ArrayList<>();
+			else {
+				return new ArrayList<>();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.severe("ERRORE NELL'OTTENIMENTO DEI DATI DELLA RICETTA");
+			logger.info("Problema con il DB");
+			return null;
 		}
 	}
 	
@@ -326,8 +380,39 @@ public class PubblicaRicettaController {
 		ricetta.registra(observer);
 	}
 	
-	public void registraOsservatoreModeratore(Observer observer) {
-		moderatore.registra(observer);
-	} 
+//	public void registraOsservatoreModeratore(Observer observer) {
+//		moderatore.registra(observer);
+//	}
+
+	
+    public void registraOsservatoreModeratore(Observer observer) {  //DA BALDUZ TI REGISTRI ALLE RICETTE DA APPROVARE DOPO AVERLE CARICATE INIZIALMENTE
+    	ricetteDaApprovare.registra(observer);
+    }
+    
+
+
+    //CREATI LE CLASSI DAO
+
+    private void salvaRicettaDaApprovare(Ricetta ricetta){  // DA BALDUZ  ,CHIAMALO OGNI VOLTA CHE APPROVI O RIFIUTI UNA RICETTA
+			try {
+				ricetteDaApprovareDao.salvaRicettaDaApprovare(ricetta);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+
+        //RicetteDaApprovare ricetteDaApprovare = RicettaDaApprovareDao.ottieniIstanza();
+
+        //USA DAO PER SALVARE LA CLASSE RICETTEDAAPPROVARE   ----->SCEGLI TE SE FARE SU FILE,DB O ENTRAMBI
+    }
+
+    public void caricaRicetteDaApprovare(){  //DA BALDUZ, CHIAMALO ALL'AVVIO DELL'APPLICAZIONE
+    	
+    	
+
+        //USA DAO PER CARICARE LA CLASSE RICETTEDAAPPROVARE  ----->SCEGLI TE SE FARE SU FILE,DB O ENTRAMBI
+        //RicetteDaApprovare ricetteDaApprovare = RicettaDaApprovareDao.ottieniIstanza();
+        //RISETTA LO STATO
+    }
 	
 }

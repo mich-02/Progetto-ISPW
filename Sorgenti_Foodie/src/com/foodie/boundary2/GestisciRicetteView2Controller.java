@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 
 public class GestisciRicetteView2Controller {
 	//private static GestisciRicetteView2Controller istanza;
-	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 //	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
 //	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
 //	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
@@ -133,7 +132,10 @@ public class GestisciRicetteView2Controller {
 			}
 			index++;
 		}
-		pubblicaRicettaontroller.eliminaRicetta(nome, autore);
+		RicettaBean ricettaBean = new RicettaBean();
+		ricettaBean.setNome(nome);
+		ricettaBean.setAutore(autore);
+		pubblicaRicettaontroller.eliminaRicetta(ricettaBean);
 		aggiornaView();
 	}
 	

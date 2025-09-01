@@ -357,6 +357,8 @@ public class RicettaDaoDB implements RicettaDao {
 	    }    
 	}
 	*/
+	
+	/*
 	@Override
 	public void aggiungiRicetta(Ricetta ricetta) throws SQLException, RicettaDuplicataException {
 	    String sqlInserisci = "INSERT INTO ricette (nome, descrizione, difficolta, autore) VALUES (?, ?, ?, ?)";
@@ -427,6 +429,87 @@ public class RicettaDaoDB implements RicettaDao {
 	        }
 	    }
 	}
+	*/
+	
+	@Override
+	public void aggiungiRicetta(Ricetta ricetta) throws SQLException, RicettaDuplicataException {
+	    String sqlEliminaDaApprovare = "DELETE FROM ricette_da_approvare WHERE nome = ? AND autore = ?";
+	    String sqlInserisci = "INSERT INTO ricette (nome, descrizione, difficolta, autore) VALUES (?, ?, ?, ?)";
+	    String sqlInserisciIngrediente = "INSERT INTO ingredienti (nome_ricetta, autore_ricetta, alimento, quantita) VALUES (?, ?, ?, ?)";
+
+	    Connection connessione = DBConnection.ottieniIstanza().getConnection();
+
+	    try {
+	        // Inizio transazione
+	        connessione.setAutoCommit(false);
+
+	        // 1) Elimino dalla tabella ricette_da_approvare
+	        try (PreparedStatement psDel = connessione.prepareStatement(sqlEliminaDaApprovare)) {
+	            psDel.setString(1, ricetta.getNome());
+	            psDel.setString(2, ricetta.getAutore());
+	            psDel.executeUpdate();
+	        }
+
+	        // 2) Controllo se esiste già la ricetta definitiva
+	        try (PreparedStatement ps = connessione.prepareStatement(
+	                "SELECT 1 FROM ricette WHERE nome = ? AND autore = ?")) {
+	            ps.setString(1, ricetta.getNome());
+	            ps.setString(2, ricetta.getAutore());
+	            try (ResultSet rs = ps.executeQuery()) {
+	                if (rs.next()) {
+	                    throw new RicettaDuplicataException("Ricetta già esistente nel database!");
+	                }
+	            }
+	        }
+
+	        // 3) Inserimento della ricetta
+	        try (PreparedStatement ps = connessione.prepareStatement(sqlInserisci)) {
+	            ps.setString(1, ricetta.getNome());
+	            ps.setString(2, ricetta.getDescrizione());
+	            ps.setInt(3, ricetta.getDifficolta());
+	            ps.setString(4, ricetta.getAutore());
+	            ps.executeUpdate();
+	        }
+
+	        // 4) Inserimento degli ingredienti
+	        try (PreparedStatement psIng = connessione.prepareStatement(sqlInserisciIngrediente)) {
+	            for (int i = 0; i < ricetta.getIngredienti().size(); i++) {
+	                psIng.setString(1, ricetta.getNome());
+	                psIng.setString(2, ricetta.getAutore());
+	                psIng.setString(3, ricetta.getIngredienti().get(i).getNome());
+	                psIng.setString(4, ricetta.getQuantita().get(i));
+	                psIng.addBatch();
+	            }
+	            psIng.executeBatch();
+	        }
+
+	        // Commit della transazione
+	        connessione.commit();
+	        logger.info("Ricetta e ingredienti aggiunti con successo");
+
+	    } catch (SQLException | RicettaDuplicataException ex) {
+	        // Rollback in caso di errore
+	        if (connessione != null) {
+	            try {
+	                connessione.rollback();
+	                logger.info("Transazione annullata: rollback eseguito");
+	            } catch (SQLException e) {
+	                logger.severe("Errore durante il rollback: " + e.getMessage());
+	            }
+	        }
+	        throw ex; // rilancio l'eccezione
+	    } finally {
+	        // Riattiva l'auto-commit
+	        if (connessione != null) {
+	            try {
+	                connessione.setAutoCommit(true);
+	            } catch (SQLException e) {
+	                logger.severe("Errore nel ripristinare auto-commit: " + e.getMessage());
+	            }
+	        }
+	    }
+	}
+
 	
 	/*
 	@Override
