@@ -123,5 +123,16 @@ public class RicetteDaApprovareDaoDB implements RicetteDaApprovareDao{
 	    }
 	}
 
+	@Override
+	public void rifiutaRicetta(Ricetta ricetta) throws SQLException {
+		String sqlEliminaDaApprovare = "DELETE FROM ricette_da_approvare WHERE nome = ? AND autore = ?";
+		Connection connessione = DBConnection.ottieniIstanza().getConnection();
+		try (PreparedStatement ps = connessione.prepareStatement(sqlEliminaDaApprovare)) {
+	        ps.setString(1, ricetta.getNome());
+	        ps.setString(2, ricetta.getAutore());
+	        ps.executeUpdate();
+		}
+	}
+
 
 }

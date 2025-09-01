@@ -1,9 +1,17 @@
 package com.foodie.model;
 
-public interface Utente {  //OGNI UTENTE DEVE IMPLEMENTARE QUESTE OPERAZIONI STANDARD
+public abstract class Utente { 
 	
-	public String getUsername();  //IMPOSTA L'USERNAME
+	protected String username;
 	
-	public String getViewIniziale(int i);  //OTTIENI LA VIEW INIZIALE DA CARICARE
+	protected Utente(String username) {
+		this.username = username;
+	}
+
+	public String getUsername() { 
+		return username;
+	}
+	
+	public abstract String getViewIniziale(int interfacciaSelezionata);  //OTTIENI LA VIEW INIZIALE DA CARICARE
 	
 }

@@ -4,9 +4,6 @@ import java.util.List;
 
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
-import com.foodie.controller.AdattatoreFactory;
-import com.foodie.controller.ControllerAdapter;
-import com.foodie.controller.LoginController;
 import com.foodie.controller.TrovaRicettaController;
 import com.foodie.model.AlimentoBean;
 import javafx.event.ActionEvent;
@@ -19,12 +16,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 public class AggiungiAlimentoView2Controller {
 	
-	//private static AggiungiAlimentoView2Controller istanza;
-	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 //	private ControllerAdapter adattatoreTrovaRicettaController = factory.creaTrovaRicettaAdapter();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
 //	private LoginController loginController = new LoginController(); //tolto singleton

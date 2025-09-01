@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
-import com.foodie.controller.AdattatoreFactory;
-import com.foodie.controller.ControllerAdapter;
 import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.model.Observer;
 import com.foodie.model.RicettaBean;
@@ -18,14 +16,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 public class ModeratoreView2Controller implements Observer{
 	
-//	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 	private PubblicaRicettaController controller = new PubblicaRicettaController();
-//	private ControllerAdapter adattatorePubblicaRicettaController= factory.creaPubblicaRicettaAdapter();
-	//private static ModeratoreView2Controller istanza;
 	private static final String FORMATO = "Arial";
 	@FXML
 	private TextArea descrizioneTextArea;
@@ -34,27 +28,15 @@ public class ModeratoreView2Controller implements Observer{
 	@FXML
 	private VBox contenitoreRicetteDaApprovare;
 	
-	/*
-	private ModeratoreView2Controller() {
-	}
-	
-	public static synchronized ModeratoreView2Controller ottieniIstanza() {  //SINGLETON METODO PER OTTENERE L'ISTANZA
-		if(istanza == null) {
-			istanza = new ModeratoreView2Controller();
-		}
-		return istanza;
-	}
-	*/
-	
 	@FXML
 	public void initialize() {
 		controller.registraOsservatoreModeratore(this);
+		controller.caricaRicetteDaApprovare();
 		aggiornaView();
 	}
 	
 	@FXML
 	public void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
-		//caricaView2.tornaAlLogin(primaryStage);
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 
 	}

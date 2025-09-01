@@ -12,4 +12,6 @@ public interface RicetteDaApprovareDao {
 	
 	public void salvaRicettaDaApprovare(Ricetta ricetta) throws SQLException;
 	
+	public void rifiutaRicetta(Ricetta ricetta) throws SQLException;
+	
 }

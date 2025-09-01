@@ -31,22 +31,14 @@ import com.foodie.model.dao.RicetteDaApprovareDao;
 @SuppressWarnings("unused")
 public class PubblicaRicettaController {  
 
-    //BALDUZ
-    //ORA LA CLASSE MODERATORE QUI NON SERVE A NULLA, DEVI MODIFCARE LA CLASSE PER RICORDARTI DI CARICARE PRIMA LO STATO DELLE
-    //RICETTE DA APPROVARE E POI CI LAVORI OGNI VOLTA CHE NE AGGIUNGI UNA O RIMUOVI UNA , POI OGNI VOLTA SALVA LO STATO SU EPRSISTENZAM, COSì HAI SIA
-    //CONSISTENZA IN RAM SIA SU FILE CONTEMPORANEAMENTE
-
-
 //	private static PubblicaRicettaController istanza;
 //	private static CatalogoRicetteChefDao database;
 //	private CatalogoRicetteChefDao database;
-//	private static Moderatore moderatore;  //BALDUZ QUESTA INTENDO !!!
 	private static Ricetta ricetta = new Ricetta();
 	private static final Logger logger = Logger.getLogger(PubblicaRicettaController.class.getName());
 	private static RicetteDaApprovare ricetteDaApprovare;
 	private RicetteDaApprovareDao ricetteDaApprovareDao;
 	private RicettaDao ricettaDao;
-//	private static AreaPersonaleDao databaseAreaPersonale = AreaPersonaleImplementazioneDao.ottieniIstanza(); 
 	
 	/*
 	private PubblicaRicettaController() {
@@ -86,17 +78,6 @@ public class PubblicaRicettaController {
 		ricetteDaApprovareDao = DaoFactoryProvider.ottieniIstanza().creaRicetteDaApprovareDao();
 		
 	}
-	
-	/*
-	public void salvaAreaPersonale(String descrizione) {  //SALVA LA DESCRIZIONE DELL'AREA PERSONALE NEL DB
-		String username = LoggedUser.ottieniIstanza().getUsername();
-		databaseAreaPersonale.salvaAreaPersonale(username, descrizione);
-	}
-	
-	public Map<String,String> caricaAreaPersonale() {  //CARICA LA DESCRIZIONE DELL'AREA PERSONALE DA DB
-		return databaseAreaPersonale.caricaAreaPersonale();
-    }
-    */
 	
 	public static void creaRicetta() {  //CREA LA RICETTA
 		ricetta = new Ricetta();
@@ -210,12 +191,15 @@ public class PubblicaRicettaController {
             if(ricettaBean.getPublish()) {
                 ricettaDao.aggiungiRicetta(ricettaDaPubblicare);
             }
+            else {
+            	ricetteDaApprovareDao.rifiutaRicetta(ricettaDaPubblicare);
+            }
             ricetteDaApprovare.ricettaVerificata(ricettaDaPubblicare);
             notificaChef(ricettaBean.getPublish());
-        }catch(RicettaDuplicataException e) {
+        } catch(RicettaDuplicataException e) {
             e.suggerimento();
             logger.severe("RICETTA GIA' ESISTENTE");
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             logger.severe("ERRORE NELLA PUBBLICAZIONE DELLA RICETTA");
             logger.info("Problema con il DB");
@@ -243,18 +227,6 @@ public class PubblicaRicettaController {
             logger.info("Problema con il DB");
         }
     }
-	
-	/*
-	public List<Ricetta> mostraRicetteDaApprovare() {  //MOSTRA LE RICETTE CHE DEVONO ESSERE APPROVATE
-		List<Ricetta> ricette=Moderatore.getRicetteDaVerificare();
-		if(ricette!=null && !ricette.isEmpty()) {
-			return ricette;
-		}
-		else {
-			return new ArrayList<>();
-		}
-	}
-	*/
 
 	public RicettaBean ottieniRicetta(RicettaBean ricettaBean) { //METODO PER OTTENERE I DATI DI UNA RICETTA IN FUNZIONE DEL NOME-AUTORE
 		Ricetta ricetta = null;
@@ -291,7 +263,7 @@ public class PubblicaRicettaController {
 		List<Ricetta> ricette = null;
 		//ricetteDaApprovare.getRicetteDaVerificare();
 		try {
-			ricetteDaApprovareDao.caricaRicetteDaApprovare();
+			//ricetteDaApprovareDao.caricaRicetteDaApprovare();
 			ricette = ricetteDaApprovare.getRicetteDaVerificare();
 			if(ricette!=null && !ricette.isEmpty()) {
 				ArrayList<RicettaBean> ricetteBean = new ArrayList<>();
@@ -380,39 +352,28 @@ public class PubblicaRicettaController {
 		ricetta.registra(observer);
 	}
 	
-//	public void registraOsservatoreModeratore(Observer observer) {
-//		moderatore.registra(observer);
-//	}
-
-	
-    public void registraOsservatoreModeratore(Observer observer) {  //DA BALDUZ TI REGISTRI ALLE RICETTE DA APPROVARE DOPO AVERLE CARICATE INIZIALMENTE
+    public void registraOsservatoreModeratore(Observer observer) {  
     	ricetteDaApprovare.registra(observer);
     }
-    
 
-
-    //CREATI LE CLASSI DAO
-
-    private void salvaRicettaDaApprovare(Ricetta ricetta){  // DA BALDUZ  ,CHIAMALO OGNI VOLTA CHE APPROVI O RIFIUTI UNA RICETTA
+    private void salvaRicettaDaApprovare(Ricetta ricetta){ 
 			try {
 				ricetteDaApprovareDao.salvaRicettaDaApprovare(ricetta);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-
-        //RicetteDaApprovare ricetteDaApprovare = RicettaDaApprovareDao.ottieniIstanza();
-
-        //USA DAO PER SALVARE LA CLASSE RICETTEDAAPPROVARE   ----->SCEGLI TE SE FARE SU FILE,DB O ENTRAMBI
+    }
+    
+    public void caricaRicetteDaApprovare() {
+    	try {
+    		ricetteDaApprovareDao.caricaRicetteDaApprovare();		
+    	} catch (Exception e) {
+			e.printStackTrace();
+			logger.severe("ERRORE NELL'OTTENIMENTO DELLE RICETTE");
+			logger.info("Problema con il DB");
+		}
     }
 
-    public void caricaRicetteDaApprovare(){  //DA BALDUZ, CHIAMALO ALL'AVVIO DELL'APPLICAZIONE
-    	
-    	
 
-        //USA DAO PER CARICARE LA CLASSE RICETTEDAAPPROVARE  ----->SCEGLI TE SE FARE SU FILE,DB O ENTRAMBI
-        //RicetteDaApprovare ricetteDaApprovare = RicettaDaApprovareDao.ottieniIstanza();
-        //RISETTA LO STATO
-    }
 	
 }

@@ -1,55 +1,13 @@
 package com.foodie.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
-public class Moderatore implements Utente { //MODERATORE IMPLEMENTA UTENTE
-
-    //HO RESO MODERATORE UNA SEMPLICE CLASSE, LA CLASSE CHE LO SOTITUISCE E' RICETTEDAAPPROVARE DOVE TI DEVI REGISTRARE
-
-	//private static Moderatore istanza;  //SINGLETON, ABBIAMO SOLO 1 MODERATORE
-	//private static ArrayList<Ricetta> ricetteDaVerificare=null;
-	private String username;
-	//private static final Logger logger = Logger.getLogger(Moderatore.class.getName());
-	
-//	private Moderatore(){
-//	}
-	
-//	private Moderatore(String username){
-//		this.username=username;
-//	}
+public class Moderatore extends Utente { 
 
     public Moderatore(String username){
-//		this.username=username;
-//	}  // DA BALDUZ
-	
-//	public static synchronized Moderatore ottieniIstanza(String username) { //METODO PER OTTENERE L'ISTANZA
-//		if(istanza==null) {
-//			istanza=new Moderatore(username);
-//			ricetteDaVerificare =new ArrayList<>();
-//		}
-//		return istanza;
-//	}
-	
-//	public static Moderatore ottieniIstanza() { //METODO PER OTTENERE L'ISTANZA
-//		if(istanza==null) {
-//			istanza=new Moderatore();
-//			ricetteDaVerificare =new ArrayList<>();
-//		}
-//		return istanza;
-	}
-	
-//	public void setUsername(String username) {
-//		this.username=username;
-//	}
+    	super(username);
+    }
+
 	@Override
-	public String getUsername() {
-		return username;
-	}
-	
-	@Override
-	public String getViewIniziale(int i) {  //VIEW INIZIALE
+	public String getViewIniziale(int i) {  //view iniziale
 		if(i==1) {
 			return "/com/foodie/boundary/ModeratoreView.fxml";
 		}

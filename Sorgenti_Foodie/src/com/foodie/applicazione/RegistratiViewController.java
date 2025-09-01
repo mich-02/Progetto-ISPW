@@ -24,7 +24,7 @@ public class RegistratiViewController {
 
 	// Variabile per memorizzare il ruolo, 0 per l'utente base, 1 per lo chef, 2 per il moderatore
     private int ruolo;
-    private LoginController controller = new LoginController(); //tolto singleton
+    private LoginController controller = new LoginController();
 	@FXML
     private RadioButton baseRadioButton;
     @FXML
@@ -49,20 +49,9 @@ public class RegistratiViewController {
     @FXML
     private Label esitoRegistrazioneLabel;
     
-    /*
-    private RegistratiViewController() {
-    }
-    
-    public static synchronized RegistratiViewController ottieniIstanza() { //METODO PER OTTENERE L'ISTANZA
-		if(istanza==null) {
-			istanza=new RegistratiViewController();
-		}
-		return istanza;
-	}
-	*/
     
     @FXML
-    public void initialize() {  //METODO PER INIZIALIZZARE
+    public void initialize() {  //per inizializzare
        
     	// Creazione del Toggle Group
     	userTypeToggleGroup = new ToggleGroup();

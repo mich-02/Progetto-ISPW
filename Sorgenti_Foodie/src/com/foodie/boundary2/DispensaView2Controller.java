@@ -6,8 +6,6 @@ import java.util.List;
 
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
-import com.foodie.controller.AdattatoreFactory;
-import com.foodie.controller.ControllerAdapter;
 import com.foodie.controller.LoginController;
 import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.controller.TrovaRicettaController;
@@ -24,8 +22,6 @@ import javafx.stage.Stage;
 
 public class DispensaView2Controller implements Observer{
 	
-//	private static DispensaView2Controller istanza;
-	private AdattatoreFactory factory= AdattatoreFactory.ottieniIstanza();
 //	PubblicaRicettaController controller1 = new PubblicaRicettaController();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
 //	private LoginController loginController= new LoginController(); //tolto singleton

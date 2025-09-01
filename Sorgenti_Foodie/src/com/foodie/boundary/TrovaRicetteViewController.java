@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
-import com.foodie.controller.AdattatoreFactory;
 import com.foodie.controller.TrovaRicettaController;
 import com.foodie.model.RicettaBean;
 import javafx.event.ActionEvent;
@@ -24,7 +23,6 @@ import javafx.scene.text.Font;
 public class TrovaRicetteViewController {
 	
 //	private static TrovaRicetteViewController istanza;
-	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
 //	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
 //	private CaricaView caricaView = CaricaView.ottieniIstanza();

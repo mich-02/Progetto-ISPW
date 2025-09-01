@@ -14,7 +14,7 @@ public class MemoDaoFactory implements DaoFactory { //finché non ho aggiungo la
 
 	@Override
 	public UtenteDao creaUtenteDao() {
-		return new UtenteDaoDB();
+		return new UtenteDaoMemo();
 	}
 
 	@Override

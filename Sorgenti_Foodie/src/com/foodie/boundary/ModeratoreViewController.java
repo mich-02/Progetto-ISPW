@@ -1,14 +1,11 @@
 package com.foodie.boundary;
 
 import java.util.List;
-
 import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.model.Observer;
 import com.foodie.model.RicettaBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
-import com.foodie.controller.AdattatoreFactory;
-import com.foodie.controller.ControllerAdapter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -17,7 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
+
 
 public class ModeratoreViewController implements Observer {
 	
@@ -29,21 +26,10 @@ public class ModeratoreViewController implements Observer {
 	@FXML
 	private VBox contenitoreContenutoRicetta;
 	
-	/*
-	private ModeratoreViewController() {
-	}
-	
-	public static synchronized ModeratoreViewController ottieniIstanza() {
-		if(istanza == null) {
-			istanza = new ModeratoreViewController();
-		}
-		return istanza;
-	}
-	*/
-	
 	@FXML
 	public void initialize() {
 		controller.registraOsservatoreModeratore(this);
+		controller.caricaRicetteDaApprovare();
 		aggiornaView();
 	}
 	

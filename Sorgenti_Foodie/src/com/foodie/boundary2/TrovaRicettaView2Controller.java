@@ -6,8 +6,6 @@ import java.util.List;
 
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
-import com.foodie.controller.AdattatoreFactory;
-import com.foodie.controller.ControllerAdapter;
 import com.foodie.controller.TrovaRicettaController;
 import com.foodie.model.AlimentoBean;
 import com.foodie.model.RicettaBean;
@@ -19,12 +17,10 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 public class TrovaRicettaView2Controller {
 	
 //	private static TrovaRicettaView2Controller istanza;
-	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
 //	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
 

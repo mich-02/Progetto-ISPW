@@ -27,7 +27,7 @@ public class DBDaoFactory implements DaoFactory {
 
 	@Override
 	public RicettaDao creaRicettaDao() {
-		return new RicettaDaoFS();
+		return new RicettaDaoDB();
 	}
 
 }

@@ -1,21 +1,14 @@
 package com.foodie.model;
 
 
-public class Standard implements Utente{  //STANDARD IMPLEMENTA UTENTE
-	
-	private String username;
+public class Standard extends Utente{
 	
 	public Standard(String username) {
-		this.username=username;
+		super(username);
 	}
-	
+
 	@Override
-	public String getUsername() {
-		return username;
-	}
-	
-	@Override
-	public String getViewIniziale(int interfaccia) { //VIEW DI INIZIO
+	public String getViewIniziale(int interfaccia) { //view iniziale
 		if(interfaccia == 1) {
 		return "/com/foodie/boundary/DispensaUtenteView.fxml";
 		} else {
