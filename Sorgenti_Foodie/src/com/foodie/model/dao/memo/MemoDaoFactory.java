@@ -10,27 +10,30 @@ import com.foodie.model.dao.db.RicettaDaoDB;
 import com.foodie.model.dao.db.RicetteDaApprovareDaoDB;
 import com.foodie.model.dao.db.UtenteDaoDB;
 
-public class MemoDaoFactory implements DaoFactory { //finché non ho aggiungo la demo creo sempre i Dao DB
+public class MemoDaoFactory implements DaoFactory { 
+	
+	private final DispensaDaoMemo dispensaDaoMemo = new DispensaDaoMemo();
+	private final RicettaDaoMemo ricettaDaoMemo = new RicettaDaoMemo();
+	private final RicetteDaApprovareDaoMemo ricetteDaApprovareDaoMemo = new RicetteDaApprovareDaoMemo();
 
 	@Override
 	public UtenteDao creaUtenteDao() {
-		return new UtenteDaoMemo();
+		return new UtenteDaoDB();
 	}
 
 	@Override
 	public DispensaDao creaDispensaDao() {
-		return new DispensaDaoDB();
+		return dispensaDaoMemo;
 	}
 
 	@Override
 	public RicettaDao creaRicettaDao() {
-		return new RicettaDaoDB();
+		return ricettaDaoMemo;
 	}
 
 	@Override
 	public RicetteDaApprovareDao creaRicetteDaApprovareDao() {
-		// TODO Auto-generated method stub
-		return new RicetteDaApprovareDaoDB();
+		return ricetteDaApprovareDaoMemo;
 	}
 
 }

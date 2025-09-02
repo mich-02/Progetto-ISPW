@@ -19,7 +19,244 @@ import com.foodie.model.dao.RicettaDao;
 
 public class RicettaDaoDB implements RicettaDao {
 	private static final Logger logger = Logger.getLogger(UtenteDaoDB.class.getName());
+	
+	public List<Ricetta> trovaRicettePerDispensa(int difficolta, String username) throws SQLException {
+	    List<Ricetta> ricetteTrovate = new ArrayList<>();
 
+	    String query =
+	        "SELECT r.nome, r.descrizione, r.difficolta, r.autore, i.alimento, i.quantita " +
+	        "FROM ricette r " +
+	        "JOIN ingredienti i ON r.nome = i.nome_ricetta AND r.autore = i.autore_ricetta " +
+	        "WHERE r.difficolta = ? " +
+	        "AND NOT EXISTS ( " +
+	        "    SELECT 1 " +
+	        "    FROM ingredienti ing " +
+	        "    WHERE ing.nome_ricetta = r.nome " +
+	        "      AND ing.autore_ricetta = r.autore " +
+	        "      AND ing.alimento NOT IN ( " +
+	        "          SELECT d.alimento FROM dispense d WHERE d.username = ? " +
+	        "      ) " +
+	        ")";
+
+	    Connection conn = DBConnection.ottieniIstanza().getConnection();
+
+	    try (PreparedStatement ps = conn.prepareStatement(query)) {
+	        ps.setInt(1, difficolta);
+	        ps.setString(2, username);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            popolaListaRicette(rs, ricetteTrovate);
+	        }
+	    }
+
+	    if (ricetteTrovate.isEmpty()) {
+	        logger.info("Nessuna ricetta trovata per utente " + username);
+	    } else {
+	        logger.info("Ricette trovate: " + ricetteTrovate.size() + " per utente " + username);
+	    }
+
+	    return ricetteTrovate;
+	}
+	
+	public List<Ricetta> trovaRicettePerAutore(String autore) throws SQLException {
+	    List<Ricetta> ricetteTrovate = new ArrayList<>();
+
+	    String query =
+	        "SELECT r.nome, r.descrizione, r.difficolta, r.autore, i.alimento, i.quantita " +
+	        "FROM ricette r " +
+	        "LEFT JOIN ingredienti i ON r.nome = i.nome_ricetta AND r.autore = i.autore_ricetta " +
+	        "WHERE r.autore = ?";
+
+	    Connection conn = DBConnection.ottieniIstanza().getConnection();
+
+	    try (PreparedStatement ps = conn.prepareStatement(query)) {
+	        ps.setString(1, autore);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            popolaListaRicette(rs, ricetteTrovate);
+	        }
+	    }
+
+	    if (ricetteTrovate.isEmpty()) {
+	        logger.info("Nessuna ricetta trovata per autore: " + autore);
+	    } else {
+	        logger.info("Ricette trovate per autore " + autore + ": " + ricetteTrovate.size());
+	    }
+
+	    return ricetteTrovate;
+	}
+
+
+	// Metodo per popolare la lista di ricette dal ResultSet
+	private void popolaListaRicette(ResultSet rs, List<Ricetta> lista) throws SQLException {
+	    String nomeCorrente = null;
+	    Ricetta ricettaCorrente = null;
+
+	    while (rs.next()) {
+	        String nome = rs.getString("nome");
+
+	        if (!nome.equals(nomeCorrente)) {
+	            String descrizione = rs.getString("descrizione");
+	            int difficolta = rs.getInt("difficolta");
+	            String autore = rs.getString("autore");
+
+	            ricettaCorrente = new Ricetta(nome, descrizione, difficolta, new ArrayList<>(), autore, new ArrayList<>());
+	            lista.add(ricettaCorrente);
+
+	            nomeCorrente = nome;
+	        }
+
+	        String alimento = rs.getString("alimento");
+	        String quantita = rs.getString("quantita");
+	        if (alimento != null && ricettaCorrente != null) {
+	            ricettaCorrente.aggiungiIngrediente(new Alimento(alimento), quantita);
+	        }
+	    }
+	}
+
+	@Override
+	public void aggiungiRicetta(Ricetta ricetta) throws SQLException, RicettaDuplicataException {
+	    String sqlEliminaDaApprovare = "DELETE FROM ricette_da_approvare WHERE nome = ? AND autore = ?";
+	    String sqlInserisci = "INSERT INTO ricette (nome, descrizione, difficolta, autore) VALUES (?, ?, ?, ?)";
+	    String sqlInserisciIngrediente = "INSERT INTO ingredienti (nome_ricetta, autore_ricetta, alimento, quantita) VALUES (?, ?, ?, ?)";
+
+	    Connection connessione = DBConnection.ottieniIstanza().getConnection();
+
+	    try {
+	        // Inizio transazione
+	        connessione.setAutoCommit(false);
+
+	        // 1) Elimino dalla tabella ricette_da_approvare
+	        try (PreparedStatement psDel = connessione.prepareStatement(sqlEliminaDaApprovare)) {
+	            psDel.setString(1, ricetta.getNome());
+	            psDel.setString(2, ricetta.getAutore());
+	            psDel.executeUpdate();
+	        }
+
+	        // 2) Controllo se esiste già la ricetta definitiva
+	        try (PreparedStatement ps = connessione.prepareStatement(
+	                "SELECT 1 FROM ricette WHERE nome = ? AND autore = ?")) {
+	            ps.setString(1, ricetta.getNome());
+	            ps.setString(2, ricetta.getAutore());
+	            try (ResultSet rs = ps.executeQuery()) {
+	                if (rs.next()) {
+	                    throw new RicettaDuplicataException("Ricetta già esistente nel database!");
+	                }
+	            }
+	        }
+
+	        // 3) Inserimento della ricetta
+	        try (PreparedStatement ps = connessione.prepareStatement(sqlInserisci)) {
+	            ps.setString(1, ricetta.getNome());
+	            ps.setString(2, ricetta.getDescrizione());
+	            ps.setInt(3, ricetta.getDifficolta());
+	            ps.setString(4, ricetta.getAutore());
+	            ps.executeUpdate();
+	        }
+
+	        // 4) Inserimento degli ingredienti
+	        try (PreparedStatement psIng = connessione.prepareStatement(sqlInserisciIngrediente)) {
+	            for (int i = 0; i < ricetta.getIngredienti().size(); i++) {
+	                psIng.setString(1, ricetta.getNome());
+	                psIng.setString(2, ricetta.getAutore());
+	                psIng.setString(3, ricetta.getIngredienti().get(i).getNome());
+	                psIng.setString(4, ricetta.getQuantita().get(i));
+	                psIng.addBatch();
+	            }
+	            psIng.executeBatch();
+	        }
+
+	        // Commit della transazione
+	        connessione.commit();
+	        logger.info("Ricetta e ingredienti aggiunti con successo");
+
+	    } catch (SQLException | RicettaDuplicataException ex) {
+	        // Rollback in caso di errore
+	        if (connessione != null) {
+	            try {
+	                connessione.rollback();
+	                logger.info("Transazione annullata: rollback eseguito");
+	            } catch (SQLException e) {
+	                logger.severe("Errore durante il rollback: " + e.getMessage());
+	            }
+	        }
+	        throw ex; // rilancio l'eccezione
+	    } finally {
+	        // Riattiva l'auto-commit
+	        if (connessione != null) {
+	            try {
+	                connessione.setAutoCommit(true);
+	            } catch (SQLException e) {
+	                logger.severe("Errore nel ripristinare auto-commit: " + e.getMessage());
+	            }
+	        }
+	    }
+	}
+	
+	@Override
+	public void eliminaRicetta(String nome, String autore) throws SQLException { 
+		String sqlDelete = "DELETE FROM ricette WHERE nome = ? AND autore = ?";
+		Connection connessione = DBConnection.ottieniIstanza().getConnection();
+
+	    try (PreparedStatement ps = connessione.prepareStatement(sqlDelete)) {
+
+	        ps.setString(1, nome);
+	        ps.setString(2, autore);
+
+	        int righeEliminate = ps.executeUpdate();
+
+	        if (righeEliminate > 0) {
+	            logger.info("Ricetta eliminata dal database");
+	        } else {
+	            logger.info("Ricetta non eliminata dal database o non presente");
+	        }
+	    }
+	}
+	
+	@Override
+	public Ricetta ottieniDatiRicetta(String nome, String autore) throws SQLException {
+	    String sqlQuery = "SELECT a.nome, a.autore, a.descrizione, a.difficolta, b.alimento, b.quantita "
+	                    + "FROM ricette a "
+	                    + "LEFT JOIN ingredienti b ON a.nome = b.nome_ricetta AND a.autore = b.autore_ricetta "
+	                    + "WHERE a.nome = ? AND a.autore = ?";
+
+	    Ricetta ricetta = null;
+	    Connection connessione = DBConnection.ottieniIstanza().getConnection();
+
+	    try (PreparedStatement ps = connessione.prepareStatement(sqlQuery)) {
+
+	        ps.setString(1, nome);
+	        ps.setString(2, autore);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                if (ricetta == null) {
+	                    // Creo la ricetta alla prima riga trovata
+	                    ricetta = new Ricetta();
+	                    ricetta.setNome(rs.getString("nome"));
+	                    ricetta.setDescrizione(rs.getString("descrizione"));
+	                    ricetta.setDifficolta(rs.getInt("difficolta"));
+	                    ricetta.setAutore(rs.getString("autore"));
+	                }
+
+	                // Aggiungo gli ingredienti se presenti
+	                String alimento = rs.getString("alimento");
+	                String quantita = rs.getString("quantita");
+	                if (alimento != null && quantita != null) {
+	                    ricetta.aggiungiIngrediente(new Alimento(alimento), quantita);
+	                }
+	            }
+	        }
+	    }
+
+	    // Se la ricetta non è stata trovata, ritorna un oggetto vuoto oppure null
+	    if (ricetta == null) {
+	        ricetta = new Ricetta();
+	    }
+
+	    return ricetta;
+	}
+	
 	/*
 	@Override
 	public List<Ricetta> trovaRicette(Dispensa dispensa, int difficolta, String autore) throws SQLException { //TROVA LE RICETTE NEL DB O PER ALIMENTI-DIFFICOLTA' O PER AUTORE
@@ -145,44 +382,6 @@ public class RicettaDaoDB implements RicettaDao {
 	}
 	*/
 	
-	public List<Ricetta> trovaRicettePerDispensa(int difficolta, String username) throws SQLException {
-	    List<Ricetta> ricetteTrovate = new ArrayList<>();
-
-	    String query =
-	        "SELECT r.nome, r.descrizione, r.difficolta, r.autore, i.alimento, i.quantita " +
-	        "FROM ricette r " +
-	        "JOIN ingredienti i ON r.nome = i.nome_ricetta AND r.autore = i.autore_ricetta " +
-	        "WHERE r.difficolta = ? " +
-	        "AND NOT EXISTS ( " +
-	        "    SELECT 1 " +
-	        "    FROM ingredienti ing " +
-	        "    WHERE ing.nome_ricetta = r.nome " +
-	        "      AND ing.autore_ricetta = r.autore " +
-	        "      AND ing.alimento NOT IN ( " +
-	        "          SELECT d.alimento FROM dispense d WHERE d.username = ? " +
-	        "      ) " +
-	        ")";
-
-	    Connection conn = DBConnection.ottieniIstanza().getConnection();
-
-	    try (PreparedStatement ps = conn.prepareStatement(query)) {
-	        ps.setInt(1, difficolta);
-	        ps.setString(2, username);
-
-	        try (ResultSet rs = ps.executeQuery()) {
-	            popolaListaRicette(rs, ricetteTrovate);
-	        }
-	    }
-
-	    if (ricetteTrovate.isEmpty()) {
-	        logger.info("Nessuna ricetta trovata per utente " + username);
-	    } else {
-	        logger.info("Ricette trovate: " + ricetteTrovate.size() + " per utente " + username);
-	    }
-
-	    return ricetteTrovate;
-	}
-	
 	/*
 	public List<Ricetta> trovaRicettePerDispensa(Dispensa dispensa, int difficolta) throws SQLException {
 	    List<Ricetta> ricetteTrovate = new ArrayList<>();
@@ -229,63 +428,6 @@ public class RicettaDaoDB implements RicettaDao {
 	}
 	*/
 	
-	public List<Ricetta> trovaRicettePerAutore(String autore) throws SQLException {
-	    List<Ricetta> ricetteTrovate = new ArrayList<>();
-
-	    String query =
-	        "SELECT r.nome, r.descrizione, r.difficolta, r.autore, i.alimento, i.quantita " +
-	        "FROM ricette r " +
-	        "LEFT JOIN ingredienti i ON r.nome = i.nome_ricetta AND r.autore = i.autore_ricetta " +
-	        "WHERE r.autore = ?";
-
-	    Connection conn = DBConnection.ottieniIstanza().getConnection();
-
-	    try (PreparedStatement ps = conn.prepareStatement(query)) {
-	        ps.setString(1, autore);
-
-	        try (ResultSet rs = ps.executeQuery()) {
-	            popolaListaRicette(rs, ricetteTrovate);
-	        }
-	    }
-
-	    if (ricetteTrovate.isEmpty()) {
-	        logger.info("Nessuna ricetta trovata per autore: " + autore);
-	    } else {
-	        logger.info("Ricette trovate per autore " + autore + ": " + ricetteTrovate.size());
-	    }
-
-	    return ricetteTrovate;
-	}
-
-
-	// Metodo per popolare la lista di ricette dal ResultSet
-	private void popolaListaRicette(ResultSet rs, List<Ricetta> lista) throws SQLException {
-	    String nomeCorrente = null;
-	    Ricetta ricettaCorrente = null;
-
-	    while (rs.next()) {
-	        String nome = rs.getString("nome");
-
-	        if (!nome.equals(nomeCorrente)) {
-	            String descrizione = rs.getString("descrizione");
-	            int difficolta = rs.getInt("difficolta");
-	            String autore = rs.getString("autore");
-
-	            ricettaCorrente = new Ricetta(nome, descrizione, difficolta, new ArrayList<>(), autore, new ArrayList<>());
-	            lista.add(ricettaCorrente);
-
-	            nomeCorrente = nome;
-	        }
-
-	        String alimento = rs.getString("alimento");
-	        String quantita = rs.getString("quantita");
-	        if (alimento != null && ricettaCorrente != null) {
-	            ricettaCorrente.aggiungiIngrediente(new Alimento(alimento), quantita);
-	        }
-	    }
-	}
-
-
 	/*
 	@Override
 	public void aggiungiRicetta(Ricetta ricetta) throws SQLException, RicettaDuplicataException {
@@ -431,86 +573,6 @@ public class RicettaDaoDB implements RicettaDao {
 	}
 	*/
 	
-	@Override
-	public void aggiungiRicetta(Ricetta ricetta) throws SQLException, RicettaDuplicataException {
-	    String sqlEliminaDaApprovare = "DELETE FROM ricette_da_approvare WHERE nome = ? AND autore = ?";
-	    String sqlInserisci = "INSERT INTO ricette (nome, descrizione, difficolta, autore) VALUES (?, ?, ?, ?)";
-	    String sqlInserisciIngrediente = "INSERT INTO ingredienti (nome_ricetta, autore_ricetta, alimento, quantita) VALUES (?, ?, ?, ?)";
-
-	    Connection connessione = DBConnection.ottieniIstanza().getConnection();
-
-	    try {
-	        // Inizio transazione
-	        connessione.setAutoCommit(false);
-
-	        // 1) Elimino dalla tabella ricette_da_approvare
-	        try (PreparedStatement psDel = connessione.prepareStatement(sqlEliminaDaApprovare)) {
-	            psDel.setString(1, ricetta.getNome());
-	            psDel.setString(2, ricetta.getAutore());
-	            psDel.executeUpdate();
-	        }
-
-	        // 2) Controllo se esiste già la ricetta definitiva
-	        try (PreparedStatement ps = connessione.prepareStatement(
-	                "SELECT 1 FROM ricette WHERE nome = ? AND autore = ?")) {
-	            ps.setString(1, ricetta.getNome());
-	            ps.setString(2, ricetta.getAutore());
-	            try (ResultSet rs = ps.executeQuery()) {
-	                if (rs.next()) {
-	                    throw new RicettaDuplicataException("Ricetta già esistente nel database!");
-	                }
-	            }
-	        }
-
-	        // 3) Inserimento della ricetta
-	        try (PreparedStatement ps = connessione.prepareStatement(sqlInserisci)) {
-	            ps.setString(1, ricetta.getNome());
-	            ps.setString(2, ricetta.getDescrizione());
-	            ps.setInt(3, ricetta.getDifficolta());
-	            ps.setString(4, ricetta.getAutore());
-	            ps.executeUpdate();
-	        }
-
-	        // 4) Inserimento degli ingredienti
-	        try (PreparedStatement psIng = connessione.prepareStatement(sqlInserisciIngrediente)) {
-	            for (int i = 0; i < ricetta.getIngredienti().size(); i++) {
-	                psIng.setString(1, ricetta.getNome());
-	                psIng.setString(2, ricetta.getAutore());
-	                psIng.setString(3, ricetta.getIngredienti().get(i).getNome());
-	                psIng.setString(4, ricetta.getQuantita().get(i));
-	                psIng.addBatch();
-	            }
-	            psIng.executeBatch();
-	        }
-
-	        // Commit della transazione
-	        connessione.commit();
-	        logger.info("Ricetta e ingredienti aggiunti con successo");
-
-	    } catch (SQLException | RicettaDuplicataException ex) {
-	        // Rollback in caso di errore
-	        if (connessione != null) {
-	            try {
-	                connessione.rollback();
-	                logger.info("Transazione annullata: rollback eseguito");
-	            } catch (SQLException e) {
-	                logger.severe("Errore durante il rollback: " + e.getMessage());
-	            }
-	        }
-	        throw ex; // rilancio l'eccezione
-	    } finally {
-	        // Riattiva l'auto-commit
-	        if (connessione != null) {
-	            try {
-	                connessione.setAutoCommit(true);
-	            } catch (SQLException e) {
-	                logger.severe("Errore nel ripristinare auto-commit: " + e.getMessage());
-	            }
-	        }
-	    }
-	}
-
-	
 	/*
 	@Override
 	public void eliminaRicetta(String nome, String autore) throws SQLException { 
@@ -524,26 +586,6 @@ public class RicettaDaoDB implements RicettaDao {
 	}
 	*/
 	
-	@Override
-	public void eliminaRicetta(String nome, String autore) throws SQLException { 
-		String sqlDelete = "DELETE FROM ricette WHERE nome = ? AND autore = ?";
-		Connection connessione = DBConnection.ottieniIstanza().getConnection();
-
-	    try (PreparedStatement ps = connessione.prepareStatement(sqlDelete)) {
-
-	        ps.setString(1, nome);
-	        ps.setString(2, autore);
-
-	        int righeEliminate = ps.executeUpdate();
-
-	        if (righeEliminate > 0) {
-	            logger.info("Ricetta eliminata dal database");
-	        } else {
-	            logger.info("Ricetta non eliminata dal database o non presente");
-	        }
-	    }
-	}
-
 	/*
 	@Override
 	public Ricetta ottieniDatiRicetta(String nome, String autore) throws SQLException {
@@ -569,50 +611,6 @@ public class RicettaDaoDB implements RicettaDao {
 			return ricetta;
 	}
 	*/
-	
-	@Override
-	public Ricetta ottieniDatiRicetta(String nome, String autore) throws SQLException {
-	    String sqlQuery = "SELECT a.nome, a.autore, a.descrizione, a.difficolta, b.alimento, b.quantita "
-	                    + "FROM ricette a "
-	                    + "LEFT JOIN ingredienti b ON a.nome = b.nome_ricetta AND a.autore = b.autore_ricetta "
-	                    + "WHERE a.nome = ? AND a.autore = ?";
-
-	    Ricetta ricetta = null;
-	    Connection connessione = DBConnection.ottieniIstanza().getConnection();
-
-	    try (PreparedStatement ps = connessione.prepareStatement(sqlQuery)) {
-
-	        ps.setString(1, nome);
-	        ps.setString(2, autore);
-
-	        try (ResultSet rs = ps.executeQuery()) {
-	            while (rs.next()) {
-	                if (ricetta == null) {
-	                    // Creo la ricetta alla prima riga trovata
-	                    ricetta = new Ricetta();
-	                    ricetta.setNome(rs.getString("nome"));
-	                    ricetta.setDescrizione(rs.getString("descrizione"));
-	                    ricetta.setDifficolta(rs.getInt("difficolta"));
-	                    ricetta.setAutore(rs.getString("autore"));
-	                }
-
-	                // Aggiungo gli ingredienti se presenti
-	                String alimento = rs.getString("alimento");
-	                String quantita = rs.getString("quantita");
-	                if (alimento != null && quantita != null) {
-	                    ricetta.aggiungiIngrediente(new Alimento(alimento), quantita);
-	                }
-	            }
-	        }
-	    }
-
-	    // Se la ricetta non è stata trovata, ritorna un oggetto vuoto oppure null
-	    if (ricetta == null) {
-	        ricetta = new Ricetta();
-	    }
-
-	    return ricetta;
-	}
 
 
 }

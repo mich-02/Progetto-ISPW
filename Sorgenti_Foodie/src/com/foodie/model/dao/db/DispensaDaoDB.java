@@ -18,51 +18,6 @@ import com.foodie.model.dao.DispensaDao;
 public class DispensaDaoDB implements DispensaDao {
 	private static final Logger logger = Logger.getLogger(DispensaDaoDB.class.getName());
 
-	/*
-	@Override
-	public void salvaDispensa(String username) throws SQLException{
-		Connection connessione = DBConnection.ottieniIstanza().getConnection();
-	    Dispensa dispensa = Dispensa.ottieniIstanza();
-	    List<Alimento> alimenti = dispensa.getAlimenti();
-
-	    if (alimenti == null || alimenti.isEmpty()) {
-	        logger.info("Nessun alimento da salvare per " + username);
-	        return;
-	    }
-
-	    connessione.setAutoCommit(false); // inizio transazione
-
-	    try {
-	        // Elimina i vecchi alimenti dell'utente
-	        try (PreparedStatement deleteStmt = connessione.prepareStatement(
-	                "DELETE FROM dispense WHERE username = ?")) {
-	            deleteStmt.setString(1, username);
-	            deleteStmt.executeUpdate();
-	        }
-
-	        // Inserisci i nuovi alimenti
-	        try (PreparedStatement insertStmt = connessione.prepareStatement(
-	                "INSERT INTO dispense (username, alimento) VALUES (?, ?)")) {
-	            for (Alimento a : alimenti) {
-	                insertStmt.setString(1, username);
-	                insertStmt.setString(2, a.getNome());
-	                insertStmt.addBatch();
-	            }
-	            insertStmt.executeBatch();
-	        }
-
-	        connessione.commit(); // commit della transazione
-	        logger.info("Dispensa salvata nel database per utente: " + username);
-
-	    } catch (SQLException e) {
-	        connessione.rollback(); // rollback in caso di errore
-	        logger.severe("Errore nel salvataggio della dispensa su DB: " + e.getMessage());
-
-	    } finally {
-	        connessione.setAutoCommit(true); // ripristino comportamento predefinito
-	    }
-	}
-	*/
 	@Override
 	public void salvaDispensa(String username) throws SQLException{
 		Connection connessione = DBConnection.ottieniIstanza().getConnection();
@@ -157,5 +112,51 @@ public class DispensaDaoDB implements DispensaDao {
 
 	    return alimenti;
 	}
+	
+	/*
+	@Override
+	public void salvaDispensa(String username) throws SQLException{
+		Connection connessione = DBConnection.ottieniIstanza().getConnection();
+	    Dispensa dispensa = Dispensa.ottieniIstanza();
+	    List<Alimento> alimenti = dispensa.getAlimenti();
+
+	    if (alimenti == null || alimenti.isEmpty()) {
+	        logger.info("Nessun alimento da salvare per " + username);
+	        return;
+	    }
+
+	    connessione.setAutoCommit(false); // inizio transazione
+
+	    try {
+	        // Elimina i vecchi alimenti dell'utente
+	        try (PreparedStatement deleteStmt = connessione.prepareStatement(
+	                "DELETE FROM dispense WHERE username = ?")) {
+	            deleteStmt.setString(1, username);
+	            deleteStmt.executeUpdate();
+	        }
+
+	        // Inserisci i nuovi alimenti
+	        try (PreparedStatement insertStmt = connessione.prepareStatement(
+	                "INSERT INTO dispense (username, alimento) VALUES (?, ?)")) {
+	            for (Alimento a : alimenti) {
+	                insertStmt.setString(1, username);
+	                insertStmt.setString(2, a.getNome());
+	                insertStmt.addBatch();
+	            }
+	            insertStmt.executeBatch();
+	        }
+
+	        connessione.commit(); // commit della transazione
+	        logger.info("Dispensa salvata nel database per utente: " + username);
+
+	    } catch (SQLException e) {
+	        connessione.rollback(); // rollback in caso di errore
+	        logger.severe("Errore nel salvataggio della dispensa su DB: " + e.getMessage());
+
+	    } finally {
+	        connessione.setAutoCommit(true); // ripristino comportamento predefinito
+	    }
+	}
+	*/
 
 }

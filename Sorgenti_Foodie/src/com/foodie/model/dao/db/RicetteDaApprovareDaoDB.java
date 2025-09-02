@@ -17,32 +17,7 @@ import com.foodie.model.dao.RicetteDaApprovareDao;
 
 public class RicetteDaApprovareDaoDB implements RicetteDaApprovareDao{
 	
-	private static final Logger logger = Logger.getLogger(UtenteDaoDB.class.getName());
-	RicetteDaApprovare ricetteDaApprovare = new RicetteDaApprovare();
-
-	/*
-	@Override
-	public void caricaRicetteDaApprovare() throws SQLException {
-		String sql = "SELECT nome, autore, difficolta, descrizione FROM ricette_da_approvare";
-
-	    Connection conn = DBConnection.ottieniIstanza().getConnection();
-
-	    try (PreparedStatement ps = conn.prepareStatement(sql);
-	         ResultSet rs = ps.executeQuery()) {
-
-	        while (rs.next()) {
-	            Ricetta ricetta = new Ricetta();
-	            ricetta.setNome(rs.getString("nome"));
-	            ricetta.setAutore(rs.getString("autore"));
-	            ricetta.setDifficolta(rs.getInt("difficolta"));
-	            ricetta.setDescrizione(rs.getString("descrizione"));
-	            
-	           
-	            ricetteDaApprovare.aggiungiRicettaDaVerificare(ricetta);
-	        }
-	    }
-	}
-	*/
+	private final RicetteDaApprovare ricetteDaApprovare = new RicetteDaApprovare();
 	
 	@Override
 	public void caricaRicetteDaApprovare() throws SQLException {
@@ -133,6 +108,28 @@ public class RicetteDaApprovareDaoDB implements RicetteDaApprovareDao{
 	        ps.executeUpdate();
 		}
 	}
+	
+	/*
+	@Override
+	public void caricaRicetteDaApprovare() throws SQLException {
+		String sql = "SELECT nome, autore, difficolta, descrizione FROM ricette_da_approvare";
 
+	    Connection conn = DBConnection.ottieniIstanza().getConnection();
 
+	    try (PreparedStatement ps = conn.prepareStatement(sql);
+	         ResultSet rs = ps.executeQuery()) {
+
+	        while (rs.next()) {
+	            Ricetta ricetta = new Ricetta();
+	            ricetta.setNome(rs.getString("nome"));
+	            ricetta.setAutore(rs.getString("autore"));
+	            ricetta.setDifficolta(rs.getInt("difficolta"));
+	            ricetta.setDescrizione(rs.getString("descrizione"));
+	            
+	           
+	            ricetteDaApprovare.aggiungiRicettaDaVerificare(ricetta);
+	        }
+	    }
+	}
+	*/
 }
