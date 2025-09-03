@@ -9,57 +9,35 @@ import java.util.logging.Logger;
 import com.foodie.model.dao.DBConnection;
 import com.foodie.model.dao.UtenteDao;
 
-
-
 public class UtenteDaoDB implements UtenteDao {
 	
 	private static final Logger logger = Logger.getLogger(UtenteDaoDB.class.getName());
 
-	
 	@Override
-	public int validazioneLogin(String username, String password) throws SQLException{
-		String query = "SELECT COUNT(1) FROM user_account WHERE username = ? AND password = ?";
-		Connection connessione = DBConnection.ottieniIstanza().getConnection();
-		
-	    try (PreparedStatement ps = connessione.prepareStatement(query)){
+	public int validazioneLogin(String username, String password) throws SQLException {
+	    String query = "SELECT ruolo FROM user_account WHERE username = ? AND password = ?";
+	    Connection connessione = DBConnection.ottieniIstanza().getConnection();
 
+	    try (PreparedStatement ps = connessione.prepareStatement(query)) {
 	        ps.setString(1, username);
 	        ps.setString(2, password);
 
 	        try (ResultSet rs = ps.executeQuery()) {
-	            if (rs.next() && rs.getInt(1) == 1) {
-	                return ottieniRuolo(username); // login corretto
+	            if (rs.next()) {
+	                int ruolo = rs.getInt("ruolo");
+
+	                switch (ruolo) {
+	                    case 0 -> logger.info("utente base");
+	                    case 1 -> logger.info("utente chef");
+	                    case 2 -> logger.info("utente moderatore");
+	                }
+
+	                return ruolo; // login corretto, ritorna ruolo
 	            }
 	        }
 	    }
 
 	    return -1; // login fallito
-	}
-	
-	private int ottieniRuolo(String username) throws SQLException{
-		String query = "SELECT ruolo FROM user_account WHERE username = ?";
-		Connection connessione = DBConnection.ottieniIstanza().getConnection();
-
-	    try (PreparedStatement ps = connessione.prepareStatement(query)) {
-
-	        ps.setString(1, username);
-
-	        try (ResultSet rs = ps.executeQuery()) {
-	            if (rs.next()) {
-	                int tipo = rs.getInt(1);
-
-	                switch (tipo) {
-	                    case 0 -> logger.info("utente base");
-	                    case 1 -> logger.info("utente chef");
-	                    default -> logger.info("utente moderatore");
-	                }
-
-	                return tipo;
-	            }
-	        }
-	    }
-
-	    return -1; // se username non trovato   
 	}
 	
 	@Override
@@ -106,6 +84,54 @@ public class UtenteDaoDB implements UtenteDao {
 	        }
 	    }
 	}
+	
+	/*
+	@Override
+	public int validazioneLogin(String username, String password) throws SQLException{ 
+		String query = "SELECT COUNT(1) FROM user_account WHERE username = ? AND password = ?";
+		Connection connessione = DBConnection.ottieniIstanza().getConnection();
+		
+	    try (PreparedStatement ps = connessione.prepareStatement(query)){
+
+	        ps.setString(1, username);
+	        ps.setString(2, password);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next() && rs.getInt(1) == 1) {
+	                return ottieniRuolo(username); // login corretto
+	            }
+	        }
+	    }
+
+	    return -1; // login fallito
+	}
+	
+	private int ottieniRuolo(String username) throws SQLException{
+		String query = "SELECT ruolo FROM user_account WHERE username = ?";
+		Connection connessione = DBConnection.ottieniIstanza().getConnection();
+
+	    try (PreparedStatement ps = connessione.prepareStatement(query)) {
+
+	        ps.setString(1, username);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                int tipo = rs.getInt(1);
+
+	                switch (tipo) {
+	                    case 0 -> logger.info("utente base");
+	                    case 1 -> logger.info("utente chef");
+	                    default -> logger.info("utente moderatore");
+	                }
+
+	                return tipo;
+	            }
+	        }
+	    }
+
+	    return -1; // se username non trovato   
+	}
+	*/
 	
 	/*
 	@Override

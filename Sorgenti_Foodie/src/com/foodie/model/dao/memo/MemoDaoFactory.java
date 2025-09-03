@@ -12,28 +12,31 @@ import com.foodie.model.dao.db.UtenteDaoDB;
 
 public class MemoDaoFactory implements DaoFactory { 
 	
-	private final DispensaDaoMemo dispensaDaoMemo = new DispensaDaoMemo();
-	private final RicettaDaoMemo ricettaDaoMemo = new RicettaDaoMemo();
-	private final RicetteDaApprovareDaoMemo ricetteDaApprovareDaoMemo = new RicetteDaApprovareDaoMemo();
+	//private final DispensaDaoMemo dispensaDaoMemo = new DispensaDaoMemo();
+	//private final RicetteDaApprovareDaoMemo ricetteDaApprovareDaoMemo = new RicetteDaApprovareDaoMemo();
+	//private final RicettaDaoMemo ricettaDaoMemo = new RicettaDaoMemo(dispensaDaoMemo,ricetteDaApprovareDaoMemo );
 
 	@Override
 	public UtenteDao creaUtenteDao() {
-		return new UtenteDaoDB();
+		return new UtenteDaoMemo();
 	}
 
 	@Override
 	public DispensaDao creaDispensaDao() {
-		return dispensaDaoMemo;
+		//return dispensaDaoMemo;
+		return new DispensaDaoMemo();
 	}
 
 	@Override
 	public RicettaDao creaRicettaDao() {
-		return ricettaDaoMemo;
+		//return ricettaDaoMemo;
+		return new RicettaDaoMemo(creaDispensaDao(), creaRicetteDaApprovareDao());
 	}
 
 	@Override
 	public RicetteDaApprovareDao creaRicetteDaApprovareDao() {
-		return ricetteDaApprovareDaoMemo;
+		//return ricetteDaApprovareDaoMemo;
+		return new RicetteDaApprovareDaoMemo();
 	}
 
 }

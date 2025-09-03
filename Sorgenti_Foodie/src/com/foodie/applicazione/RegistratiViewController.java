@@ -14,6 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import com.foodie.bean.CredenzialiBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.LoginController;
@@ -21,7 +23,6 @@ import com.foodie.controller.LoginController;
 
 public class RegistratiViewController {
 	
-
 	// Variabile per memorizzare il ruolo, 0 per l'utente base, 1 per lo chef, 2 per il moderatore
     private int ruolo;
     private LoginController controller = new LoginController();
@@ -51,12 +52,10 @@ public class RegistratiViewController {
     
     
     @FXML
-    public void initialize() {  //per inizializzare
-       
-    	// Creazione del Toggle Group
+    public void initialize() {  
+      
     	userTypeToggleGroup = new ToggleGroup();
         
-    	// Associazione dei Radio Button al Toggle Group
     	baseRadioButton.setToggleGroup(userTypeToggleGroup);
         chefRadioButton.setToggleGroup(userTypeToggleGroup);
         moderatoreRadioButton.setToggleGroup(userTypeToggleGroup);
@@ -68,7 +67,7 @@ public class RegistratiViewController {
         ruolo = 0;    
     }
 
-    public void handleRegistration() {  //CONTROLLA IL TIPO CHE SI REGISTRA
+    private void handleRegistration() {  //imposta il ruolo
         RadioButton selectedRadioButton = (RadioButton) userTypeToggleGroup.getSelectedToggle();
         	
         	if(selectedRadioButton == baseRadioButton) {
@@ -82,9 +81,8 @@ public class RegistratiViewController {
         }
     
     @FXML
-    public void indietroButtonOnAction(ActionEvent event) {  //RITORNA AL LOGIN
+    public void indietroButtonOnAction(ActionEvent event) { 
     	ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
-    	
    }
    
    @FXML
@@ -94,7 +92,7 @@ public class RegistratiViewController {
     	
    }
     
-   public void registrazioneUser() {  //METODO PER REGISTRARE L'UTENTE
+   private void registrazioneUser() { 
     	    	
     	// Prendo input utente e verifico che non sia vuoto
     	String nome = nomeTextField.getText().trim();
@@ -103,30 +101,39 @@ public class RegistratiViewController {
     	String password = setPasswordField.getText().trim();
     	int role = ruolo;
     	
+    	CredenzialiBean credenzialiBean = new CredenzialiBean();
+    	
     	if (nome.isEmpty() || cognome.isEmpty() || username.isEmpty() || password.isEmpty()) {
             // Uno o più campi sono vuoti
     		esitoRegistrazioneLabel.setText("Per favore, completa tutti i campi");
             return; // Interrompi l'esecuzione se ci sono campi vuoti
         }
-    	
+        credenzialiBean.setUsername(username);
     	// Controllo se l'username è già presente nella base di dati
-        if (usernameEsistente(username)==0) {
+        if (controller.controllaUsername(credenzialiBean) == 0) {
+        //if (usernameEsistente(username) == 0) {
             esitoRegistrazioneLabel.setText("L'username è già in uso. Scegli un altro username.");
             return; // Interrompi l'esecuzione se l'username è già in uso
         }
-    	controller.registraUtente(nome, cognome, username, role, password);
+        
+        credenzialiBean.setNome(nome);
+        credenzialiBean.setCognome(cognome);
+        credenzialiBean.setRuolo(role);
+        credenzialiBean.setPassword(password);
+    	controller.registraUtente(credenzialiBean);
     	
     	esitoRegistrazioneLabel.setText("Registrazione andata a buon fine.");
     	PauseTransition pause = new PauseTransition(Duration.seconds(2));
     	pause.setOnFinished(event -> {
     		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     	});
-    
     		pause.play();
     }
 
+   /*
 	private int usernameEsistente(String username) {  //METODO CHE CONTROLLA SE L'USERNAME E' ESISTENTE
 		return controller.controllaUsername(username);
 	}
+	*/
 	
 }

@@ -1,6 +1,7 @@
 package com.foodie.controller;
 
 import java.util.logging.Logger;
+import com.foodie.bean.CredenzialiBean;
 import com.foodie.model.Chef;
 import com.foodie.model.LoggedUser;
 import com.foodie.model.Moderatore;
@@ -14,72 +15,48 @@ import com.foodie.model.dao.UtenteDao;
 
 public class LoginController {
 	
-//	private static Utente utente = null;
-	private static final String MESSAGGIO= "PROBLEMA CON IL DB";
+	private static final String MESSAGGIO = "PROBLEMA CON IL DB";
 	private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 	private LoggedUser utenteCorrente = LoggedUser.ottieniIstanza();
 	private Utente utente;
 	private UtenteDao utenteDao;
-//	private DispensaDao dispensaDao;
-	
-	/*
-	private LoginController() {
-		try {
-			database = LoginImplementazioneDao.ottieniIstanza();
-		} catch (IOException e) {
-			logger.severe("Problema nel collegamento con il DB, termino l'applicazione");
-			System.exit(0);
-		}
-	}
-	
-	public static synchronized LoginController ottieniIstanza() { //METODO PER OTTENERE L'ISTANZA
-		if(istanza == null) {
-			istanza = new LoginController();
-			try {
-				database = LoginImplementazioneDao.ottieniIstanza();
-			} catch (IOException e) {
-				logger.severe("PROBLEMA CON IL COLLEGAMENTO DEL DB! TERMINO L'APPLICAZIONE");
-				System.exit(0);
-			}
-		}
-		return istanza;
-	}
-	*/
 	
 	public LoginController() {
 		utenteDao = DaoFactoryProvider.ottieniIstanza().creaUtenteDao();
 	}
 	
-	
-	public void setUtente(String username, String tipo) {  //ISTANZIA L'UTENTE IN FUNZIONE DEL TIPO
-		if(tipo.equals("Standard")) {
+	private void setUtente(String username, int tipo) {
+	//private void setUtente(String username, String tipo) {  //ISTANZIA L'UTENTE IN FUNZIONE DEL TIPO
+		if(tipo == 0) {
 			utente = new Standard(username);
 		}
-		else if(tipo.equals("Chef")) {
+		else if(tipo == 1) {
 			utente = new Chef(username);
 		}
 		else {
-			//utente = Moderatore.ottieniIstanza(username);
 			utente = new Moderatore(username);
 		}
-		utenteCorrente.setUtente(utente);
+		utenteCorrente.setUtente(utente); //a ogni login sovrascrivo
 		logger.info(username);
 	}
 	
-	
-	public int effettuaLogin(String username, String pwd) {  //EFFETTUA IL LOGIN
+	public int effettuaLogin(CredenzialiBean credenzialiBean) {
+	//public int effettuaLogin(String username, String pwd) {  
 		try {
-			return utenteDao.validazioneLogin(username, pwd);
+			int ruolo = utenteDao.validazioneLogin(credenzialiBean.getUsername(), credenzialiBean.getPassword());
+			setUtente(credenzialiBean.getUsername(), ruolo);
+			return ruolo;
+			//return utenteDao.validazioneLogin(credenzialiBean.getUsername(), credenzialiBean.getPassword());
 		} catch (Exception e) {
 			logger.severe("Errore durante la fase di login.");
 			return -1;
 		}
 	}
 	
-	public int controllaUsername(String username) {  //CONTROLLA L'USERNAME SE ESISTE
+	public int controllaUsername(CredenzialiBean credenzialiBean) {  //controlla se esiste già l'username
 		try {
-			if(utenteDao.controllaUsername(username) == 0) {
-				throw new UtenteEsistenteException("Ricetta già esistente nel database!");
+			if(utenteDao.controllaUsername(credenzialiBean.getUsername()) == 0) {
+				throw new UtenteEsistenteException("Utente già esistente nel database!");
 			}
 			return 1;
 		}catch(UtenteEsistenteException e) {
@@ -88,76 +65,22 @@ public class LoginController {
 			return 0;
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.severe("ERRORE NEL CONTROLLO DELL'USERNAME-->RIPROVA,LA GUI TI DIRA' ESISTENTE");
+			logger.severe("ERRORE NEL CONTROLLO DELL'USERNAME, RIPROVA");
 			logger.info(MESSAGGIO);
-			return 0;  //LO FACCIO PASSARE PER ESISTENTE
+			return 0;  //username esistente 
 		}
 	}
 	
-	public void registraUtente(String nome,String cognome,String username,int ruolo,String password) {  //REGISTRA L'UTENTE SUL DB
+	public void registraUtente(CredenzialiBean credenzialiBean) { 
+	//public void registraUtente(String nome,String cognome,String username,int ruolo,String password) {  
 		try {
-			utenteDao.registraUtente(nome, cognome, username, ruolo, password);
+			utenteDao.registraUtente(credenzialiBean.getNome(), credenzialiBean.getCognome(), credenzialiBean.getUsername(), credenzialiBean.getRuolo(), credenzialiBean.getPassword());
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.severe("ERRORE NELLA REGISTRAZIONE DELL'UTENTE");
 			logger.info(MESSAGGIO);
 		}
-	}
-	
-	/*
-	public void salvaDispensa() {  //SALVA GLI INGREDIENTI DELLA DISPENSA NEL DB
-		databaseDispensa.salvaDispensa(utente.getUsername());
-	}
-	*/
-	/*
-	public void salvaDispensa() {  //SALVA GLI INGREDIENTI DELLA DISPENSA NEL DB
-		try {
-			dispensaDao.salvaDispensa(utente.getUsername());
-		} catch (SQLException e) {
-			logger.severe("Errore durante il salvataggio della dispensa: " + e.getMessage());
-		}
-	}
-	*/
-	
-	/*
-	public void caricaDispense() {  //CARICA GLI INGREDIENTI DELLA DISPENSA DA DB
-		Dispensa dispensa = Dispensa.ottieniIstanza();
-    	dispensa.svuotaDispensa();
-		Map<String, ArrayList<AlimentoSerializzabile>> dispensaMap = databaseDispensa.caricaDispense(); 
-		//Dispensa dispensa = Dispensa.ottieniIstanza();
-		ArrayList<AlimentoSerializzabile> dispensaOld = dispensaMap.get(utente.getUsername());
-		if(dispensaOld!=null) {
-			for(AlimentoSerializzabile a: dispensaOld) {
-				dispensa.aggiungiAlimento(new Alimento(a.getNome()));
-			}
-			logger.info("dispensa caricata");
-		}
-	}
-	*/
-	/*
-	public void caricaDispense() {  //CARICA GLI INGREDIENTI DELLA DISPENSA DA DB
-		Dispensa dispensa = Dispensa.ottieniIstanza();
-	    dispensa.svuotaDispensa(); // svuota prima di ricaricare
-
-	    List<Alimento> alimentiDispensa;
-	    try {
-	        alimentiDispensa = dispensaDao.caricaDispensa(utente.getUsername());
-	    } catch (SQLException e) {
-	    	logger.severe("Errore durante il caricamento della dispensa: " + e.getMessage());
-	        return; // esce dal metodo se c'è un errore
-	    }
-
-	    if (alimentiDispensa != null && !alimentiDispensa.isEmpty()) {
-	        for (Alimento a : alimentiDispensa) {
-	            dispensa.aggiungiAlimento(a); // usa direttamente l'oggetto recuperato
-	        }
-	        logger.info("Dispensa caricata con successo per l'utente: " + utente.getUsername());
-	    } else {
-	        logger.info("La dispensa dell'utente " + utente.getUsername() + " è vuota.");
-	    }
-	}
-	*/
-	
+	}	
 	
 	public UtenteBean getUtente() {
 		UtenteBean utenteBean = new UtenteBean();
@@ -165,7 +88,7 @@ public class LoginController {
 		return utenteBean;
 	}
 	
-	public String ottieniView(int interfacciaSelezionata) {  // restituisce la view iniziale da caricare
+	public String ottieniView(int interfacciaSelezionata) {  //restituisce la view iniziale da caricare
 		return utente.getViewIniziale(interfacciaSelezionata);
 	}
 	

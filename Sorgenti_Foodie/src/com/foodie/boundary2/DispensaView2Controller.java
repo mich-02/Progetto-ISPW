@@ -1,13 +1,9 @@
 package com.foodie.boundary2;
 
-
-
 import java.util.List;
 
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
-import com.foodie.controller.LoginController;
-import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.controller.TrovaRicettaController;
 import com.foodie.model.AlimentoBean;
 import com.foodie.model.Observer;
@@ -18,60 +14,40 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 public class DispensaView2Controller implements Observer{
 	
-//	PubblicaRicettaController controller1 = new PubblicaRicettaController();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
-//	private LoginController loginController= new LoginController(); //tolto singleton
-//	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
-	
 	@FXML
 	private VBox contenitoreDispensa;
 	
-	/*
-	private DispensaView2Controller() {	
-	}
-	
-	public static synchronized DispensaView2Controller ottieniIstanza() { //SINGLETON  METODO PER OTTENERE L'ISTANZA
-		if(istanza == null) {
-			istanza = new DispensaView2Controller();
-		}
-		return istanza;
-	}
-	*/
-	
 	@FXML
 	public void initialize() {
+		trovaRicettaController.caricaDispense();
 		trovaRicettaController.registraOsservatoreDispensa(this);
 		aggiornaView();
 	}
 	
-	
 	@FXML
-    private void tornaAlLogin(MouseEvent event) { //CARICA VIEW LOGIN
-        //caricaView2.tornaAlLogin(primaryStage);
+    private void tornaAlLogin(MouseEvent event) {
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     }
 	
 	@FXML
-    private void caricaViewAlimenti(ActionEvent event) {  //CARICA VIEW TROVA ALIMENTI
-        //caricaView2.caricaViewAlimenti(primaryStage);
+    private void caricaViewAlimenti(ActionEvent event) { 
 		ViewLoader.caricaView(ViewInfo.AGGIUNGI_ALIMENTO);
 
     }
 	
 	@FXML
-    private void caricaViewTrovaRicetta(ActionEvent event) {  //CARICA VIEW TROVA RICETTA
-        //caricaView2.caricaViewTrovaRicetta(primaryStage);
+    private void caricaViewTrovaRicetta(ActionEvent event) { 
 		ViewLoader.caricaView(ViewInfo.TROVA_RICETTE2);
     }
 	
 	@FXML
 	private void svuotaDispensa(ActionEvent event) {  //SVUOTA DISPENSA
 		trovaRicettaController.svuotaDispensa();
-		trovaRicettaController.salvaDispensa(); //SALVO DISPENSA SU FILE IN AUTOMATICO
+		trovaRicettaController.salvaDispensa(); //SALVO DISPENSA 
 	}
 	
 	public void aggiornaView() {  //AGGIORNA LA VIEW IN FUNZIONE DELLA DISPENSA
@@ -105,7 +81,7 @@ public class DispensaView2Controller implements Observer{
 		AlimentoBean alimentoBean = new AlimentoBean();
 		alimentoBean.setNome(nomeAlimento);
 		trovaRicettaController.rimuoviDallaDispensa(alimentoBean);
-		trovaRicettaController.salvaDispensa(); //SALVO DISPENSA SU FILE IN AUTOMATICO
+		trovaRicettaController.salvaDispensa(); //SALVO DISPENSA 
 	}
 	
 }

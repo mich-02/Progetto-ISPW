@@ -12,6 +12,6 @@ public abstract class Utente {
 		return username;
 	}
 	
-	public abstract String getViewIniziale(int interfacciaSelezionata);  //OTTIENI LA VIEW INIZIALE DA CARICARE
+	public abstract String getViewIniziale(int interfacciaSelezionata);  //ottieni la view inizale da caricare
 	
 }

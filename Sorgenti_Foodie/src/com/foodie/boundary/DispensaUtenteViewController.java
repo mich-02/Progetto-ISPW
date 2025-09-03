@@ -21,11 +21,8 @@ import com.foodie.model.Observer;
 
 public class DispensaUtenteViewController implements Observer {
 	
-//	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
-//	private AdattatoreFactory factory = AdattatoreFactory.ottieniIstanza();
+
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
-	//private ControllerAdapter adattatoreTrovaRicettaController = factory.creaTrovaRicettaAdapter();
-//	private LoginController loginController = new LoginController(); //tolto singleton
 	private boolean bottoneModifica = true;
 	private static final String FORMATO = "Arial";
 	private static final String DISPENSA = "La mia Dispensa";
@@ -39,18 +36,6 @@ public class DispensaUtenteViewController implements Observer {
 	private VBox contenitoreDispensa;
 	@FXML
 	private Label labelDispensa;
-	
-	/*
-	private DispensaUtenteViewController() {
-	}
-	
-	public static synchronized DispensaUtenteViewController ottieniIstanza() { //METODO PER OTTENERE L'ISTANZA
-		if(istanza==null) {
-			istanza=new DispensaUtenteViewController();
-		}
-		return istanza;
-	}
-	*/
 	
 	@FXML
 	public void initialize() {
@@ -122,9 +107,8 @@ public class DispensaUtenteViewController implements Observer {
 	*/
 	
 	@FXML
-	private void tornaAlLogin(MouseEvent event) {  //CARICA LA VIEW LOGIN
+	private void tornaAlLogin(MouseEvent event) {  
 		trovaRicettaController.svuotaDispensa();
-		//caricaView.tornaAlLogin(primaryStage);
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
 	

@@ -12,7 +12,7 @@ import com.foodie.model.dao.DispensaDao;
 public class DispensaDaoMemo implements DispensaDao{
 	
 	// Mappa username -> copia della lista di alimenti dell'utente nella sessione
-    private final Map<String, List<Alimento>> memoriaUtenti = new HashMap<>();
+    private final static Map<String, List<Alimento>> memoriaUtenti = new HashMap<>();
 
     @Override
     public void salvaDispensa(String username) throws SQLException {
