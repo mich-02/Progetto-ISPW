@@ -2,6 +2,7 @@ package com.foodie.boundary;
 
 import java.util.List;
 import com.foodie.controller.PubblicaRicettaController;
+import com.foodie.exception.OperazioneFallitaException;
 import com.foodie.model.Observer;
 import com.foodie.bean.RicettaBean;
 import com.foodie.boundary.components.ViewInfo;
@@ -10,7 +11,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -94,7 +97,11 @@ public class ModeratoreViewController implements Observer {
 			ricettaBean.setNome(nome);
 			ricettaBean.setAutore(autore);
 			ricettaBean.setPublish(true);
-			controller.pubblicaRicetta(ricettaBean);
+			try {
+				controller.pubblicaRicetta(ricettaBean);
+			} catch (OperazioneFallitaException e) {
+				showAlert(Alert.AlertType.ERROR, "Pubblicazione fallita", "Ricetta già esistente per questo chef");
+			}
 		}
 	}
 	
@@ -116,7 +123,11 @@ public class ModeratoreViewController implements Observer {
 			ricettaBean.setNome(nome);
 			ricettaBean.setAutore(autore);
 			ricettaBean.setPublish(false);
-			controller.pubblicaRicetta(ricettaBean);
+			try {
+				controller.pubblicaRicetta(ricettaBean);
+			} catch (OperazioneFallitaException e) {
+				showAlert(Alert.AlertType.ERROR, "Pubblicazione fallita", e.getMessage());
+			}
 		}
 	}
 	
@@ -124,6 +135,13 @@ public class ModeratoreViewController implements Observer {
 	private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 		
+	}
+	
+	private void showAlert(AlertType alertType, String titolo, String contenuto) {
+		Alert alert = new Alert(alertType);
+		alert.setTitle(titolo);
+		alert.setContentText(contenuto);
+		alert.showAndWait();
 	}
 	
 }

@@ -7,6 +7,7 @@ import com.foodie.bean.AlimentoBean;
 import com.foodie.bean.RicettaBean;
 import com.foodie.bean.UtenteBean;
 import com.foodie.exception.DaoException;
+import com.foodie.exception.OperazioneFallitaException;
 import com.foodie.exception.RicettaDuplicataException;
 import com.foodie.model.Alimento;
 import com.foodie.model.Observer;
@@ -168,7 +169,7 @@ public class PubblicaRicettaController {
 //		}
 //	}
 
-    public void pubblicaRicetta(RicettaBean ricettaBean) {  
+    public void pubblicaRicetta(RicettaBean ricettaBean) throws OperazioneFallitaException{  
     	Ricetta ricettaDaPubblicare = ricetteDaApprovare.ottieniRicetta(ricettaBean.getNome(), ricettaBean.getAutore());
         try {
             if (ricettaBean.getPublish()) {
@@ -185,6 +186,7 @@ public class PubblicaRicettaController {
                 // Rifiuto la ricetta duplicata automaticamente
                 ricetteDaApprovareDao.rifiutaRicetta(ricettaDaPubblicare);
                 ricetteDaApprovare.ricettaVerificata(ricettaDaPubblicare);
+                throw new OperazioneFallitaException("Ricetta già esistente per questo chef");
             } catch (DaoException ex) {
                 logger.severe("Errore durante il rifiuto automatico della ricetta duplicata: " + ex.getMessage());
             }

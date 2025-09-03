@@ -13,7 +13,7 @@ public class TestAlimento { //BIRU MICHELE
 	
 	@Test
     public void testGetNomeUguale() {
-        Alimento alimento=new Alimento(NOME1);
+        Alimento alimento = new Alimento(NOME1);
        
         //VERIFICA CHE IL METODO RESTITUISCA IL NOME CORRETTO
         assertEquals(NOME1, alimento.getNome());
@@ -21,8 +21,8 @@ public class TestAlimento { //BIRU MICHELE
 	
 	@Test
 	public void testEqualsStessoNome() {
-		Alimento alimento1=new Alimento(NOME1);
-        Alimento alimento2=new Alimento(NOME1);
+		Alimento alimento1 = new Alimento(NOME1);
+        Alimento alimento2 = new Alimento(NOME1);
        
         //VERIFICA CHE EQUALS RESTITUISCA TRUE QUANDO CONFRONTA DUE ISTANZE CON LO STESSO NOME
         assertTrue(alimento1.equals(alimento2));
@@ -31,8 +31,8 @@ public class TestAlimento { //BIRU MICHELE
 	 @Test
 	 public void testHashCodeDiverso() {
 
-	    Alimento alimento1=new Alimento(NOME1);
-	    Alimento alimento2=new Alimento(NOME2);
+	    Alimento alimento1 = new Alimento(NOME1);
+	    Alimento alimento2 = new Alimento(NOME2);
 
 	    //VERIFICA CHE IL LORO CODICE HASH SIA DIVERSO
 	    assertNotEquals(alimento1.hashCode(), alimento2.hashCode());
