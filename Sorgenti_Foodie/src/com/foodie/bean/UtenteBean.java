@@ -1,4 +1,4 @@
-package com.foodie.model;
+package com.foodie.bean;
 
 public class UtenteBean {  //BEAN DEL TIPO UTENTE NONOSTANTE IN REALTA' ESSA SIA UNA INTERFACCIA
 	

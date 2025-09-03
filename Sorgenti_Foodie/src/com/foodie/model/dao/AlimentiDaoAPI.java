@@ -1,4 +1,4 @@
-package com.foodie.model;
+package com.foodie.model.dao;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -11,24 +11,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.foodie.model.Alimento;
 
-public class CatalogoAlimentiNutrixionixImplementazioneDao implements CatalogoAlimentiDao{  //IMPLEMENTAZIONE DAO CHE USA UN API PER COMUNICARE CON IL DB DI NUTRIXIONIX
+public class AlimentiDaoAPI implements AlimentiDao{  //IMPLEMENTAZIONE DAO CHE USA UN API PER COMUNICARE CON IL DB DI NUTRIXIONIX
 	
-	private static CatalogoAlimentiNutrixionixImplementazioneDao istanza;  //SINGLETON 
 	private static final String API_URL = "https://trackapi.nutritionix.com/v2/search/instant";
 	private static final String APP_ID = "103947a7";
 	private static final String API_KEY = "726892d58f85bf82f8f8ab4171671c42";
-	private static final Logger logger = Logger.getLogger(CatalogoAlimentiNutrixionixImplementazioneDao.class.getName());
-	
-	private CatalogoAlimentiNutrixionixImplementazioneDao(){
-	}
-	
-	public static synchronized CatalogoAlimentiNutrixionixImplementazioneDao ottieniIstanza() { //METODO PER OTTENERE L'ISTANZA
-		if(istanza==null) {
-			istanza=new CatalogoAlimentiNutrixionixImplementazioneDao();
-		}
-		return istanza;
-	}
+	private static final Logger logger = Logger.getLogger(AlimentiDaoAPI.class.getName());
 	
 	private ArrayList<Alimento> estraiFoodName(String stringa) {  //INIZIALIZZO I VARI ALIMENTI DAL CAMPO FOOD NAME ESTRATTO DAL JSON OTTENUTO
 		ObjectMapper mapper = new ObjectMapper(); 
@@ -52,16 +42,16 @@ public class CatalogoAlimentiNutrixionixImplementazioneDao implements CatalogoAl
 	public ArrayList<Alimento> trovaAlimenti(String nome) {
 		try {
 			ArrayList<Alimento> alimentiTrovati=null;
-			String nomeCodificato = URLEncoder.encode(nome, "UTF-8");//da stringa codificato per l'url
-			String urlQuery=API_URL+"?query="+nomeCodificato; //url per fare query all'api di nutrixionix
-			URI url= new URI(urlQuery);  //creo l'URI associato a quell'url
+			String nomeCodificato = URLEncoder.encode(nome, "UTF-8"); //da stringa codificato per l'url
+			String urlQuery = API_URL+"?query="+nomeCodificato; //url per fare query all'api di nutrixionix
+			URI url = new URI(urlQuery);  //creo l'URI associato a quell'url
 			HttpURLConnection connessione = (HttpURLConnection) url.toURL().openConnection(); //converto l'URI ad URl e apro una connessione http
 			// imposto il modo di richiedere come definito nella documentazione dell'API di Nutrixionix
 			connessione.setRequestMethod("GET");
             connessione.setRequestProperty("x-app-id", APP_ID);
             connessione.setRequestProperty("x-app-key", API_KEY);
             int codiceDiRisposta= connessione.getResponseCode(); //ottengo codice di risposta di http
-            if(codiceDiRisposta== HttpURLConnection.HTTP_OK) {//controllo se ==200 per capire se la connessione http ha ottenuto esito positivo
+            if(codiceDiRisposta== HttpURLConnection.HTTP_OK) {//controllo se ==2 00 per capire se la connessione http ha ottenuto esito positivo
             	BufferedReader lettore = new BufferedReader(new InputStreamReader(connessione.getInputStream()));
                 String stringa;  //converto i dati ottenuti in una stringa
                 StringBuilder risposta = new StringBuilder();
@@ -69,7 +59,7 @@ public class CatalogoAlimentiNutrixionixImplementazioneDao implements CatalogoAl
                     risposta.append(stringa);
                 }
                 lettore.close();
-                alimentiTrovati=estraiFoodName(risposta.toString());  // applico il metodo che deserializza la stringa json ottenuta per ottenere i nomi degli alimenti
+                alimentiTrovati = estraiFoodName(risposta.toString());  // applico il metodo che deserializza la stringa json ottenuta per ottenere i nomi degli alimenti
                 connessione.disconnect();
                 if(!alimentiTrovati.isEmpty()) {
                 	return alimentiTrovati;
@@ -87,7 +77,7 @@ public class CatalogoAlimentiNutrixionixImplementazioneDao implements CatalogoAl
 		}catch(Exception e) {
 			e.printStackTrace();
 			logger.severe("PROBLEMA CON LA CONNESSIONE HTTML PER L'UTILIZZO DELL'API NUTRIXIONIX");
-			logger.info("L'API sta dando problemi... riprova in seguito");
+			logger.info("L'API sta dando problemi...riprova in seguito");
 			return new ArrayList<>();
 		}
 	}

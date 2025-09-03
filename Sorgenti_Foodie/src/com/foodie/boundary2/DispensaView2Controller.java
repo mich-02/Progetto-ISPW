@@ -2,10 +2,10 @@ package com.foodie.boundary2;
 
 import java.util.List;
 
+import com.foodie.bean.AlimentoBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.TrovaRicettaController;
-import com.foodie.model.AlimentoBean;
 import com.foodie.model.Observer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -2,6 +2,7 @@ package com.foodie.boundary;
 
 import java.util.List;
 
+import com.foodie.bean.AlimentoBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.TrovaRicettaController;
@@ -16,7 +17,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-import com.foodie.model.AlimentoBean;
 import com.foodie.model.Observer;
 
 public class DispensaUtenteViewController implements Observer {

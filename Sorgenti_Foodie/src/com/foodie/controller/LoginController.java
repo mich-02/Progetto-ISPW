@@ -2,12 +2,12 @@ package com.foodie.controller;
 
 import java.util.logging.Logger;
 import com.foodie.bean.CredenzialiBean;
+import com.foodie.bean.UtenteBean;
 import com.foodie.model.Chef;
 import com.foodie.model.LoggedUser;
 import com.foodie.model.Moderatore;
 import com.foodie.model.Standard;
 import com.foodie.model.Utente;
-import com.foodie.model.UtenteBean;
 import com.foodie.model.UtenteEsistenteException;
 import com.foodie.model.dao.DaoFactoryProvider;
 import com.foodie.model.dao.UtenteDao;

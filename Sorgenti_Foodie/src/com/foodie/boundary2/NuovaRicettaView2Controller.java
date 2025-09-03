@@ -5,15 +5,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import com.foodie.bean.AlimentoBean;
+import com.foodie.bean.RicettaBean;
+import com.foodie.bean.UtenteBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.LoginController;
 import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.controller.TrovaRicettaController;
-import com.foodie.model.AlimentoBean;
 import com.foodie.model.Observer;
-import com.foodie.model.RicettaBean;
-import com.foodie.model.UtenteBean;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

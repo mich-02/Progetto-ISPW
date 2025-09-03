@@ -1,4 +1,4 @@
-package com.foodie.model;
+package com.foodie.bean;
 
 public class AlimentoBean {  //BEAN DELLA CLASSE ALIMENTO
 	

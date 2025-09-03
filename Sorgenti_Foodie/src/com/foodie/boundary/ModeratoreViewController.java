@@ -3,7 +3,7 @@ package com.foodie.boundary;
 import java.util.List;
 import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.model.Observer;
-import com.foodie.model.RicettaBean;
+import com.foodie.bean.RicettaBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import javafx.event.ActionEvent;

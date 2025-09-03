@@ -2,9 +2,9 @@ package com.foodie.boundary;
 
 import javafx.fxml.FXML;
 
+import com.foodie.bean.RicettaBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
-import com.foodie.model.RicettaBean;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;

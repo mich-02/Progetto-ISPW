@@ -17,5 +17,4 @@ public class UtenteEsistenteException extends Exception{
 	public void suggerimento() {
         logger.info("Suggerimento: Prova a inserire un altro username");
     }
-
 }

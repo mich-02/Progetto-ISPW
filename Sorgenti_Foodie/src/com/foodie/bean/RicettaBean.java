@@ -1,4 +1,4 @@
-package com.foodie.model;
+package com.foodie.bean;
 
 import java.util.List;
 

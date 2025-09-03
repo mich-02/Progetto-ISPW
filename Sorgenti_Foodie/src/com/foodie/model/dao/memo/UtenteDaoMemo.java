@@ -27,6 +27,7 @@ public class UtenteDaoMemo implements UtenteDao {
 
     @Override
     public void registraUtente(String nome, String cognome, String username, int ruolo, String password) throws SQLException {
+    	//per la versione demo nome e cognome sono stati ignorati
         if (usernamePassword.containsKey(username)) {
             return; //username già presente, non registrato
         }

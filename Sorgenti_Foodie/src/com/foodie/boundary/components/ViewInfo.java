@@ -4,8 +4,6 @@ public enum ViewInfo {
 	CONFIGURAZIONE("/com/foodie/applicazione/ConfigurazioneView.fxml"),
 	LOGIN_VIEW("/com/foodie/applicazione/LoginView.fxml"),
 	REGISTRAZIONE_VIEW("/com/foodie/applicazione/RegistratiView.fxml"),
-	AREA_CHEF1("/com/foodie/boundary/AreaPersonaleView.fxml"),
-	AREA_CHEF2("/com/foodie/boundary2/AreaPersonaleView2.fxml"),
 	DISPENSA_UTENTE("/com/foodie/boundary/DispensaUtenteView.fxml"),
 	DISPENSA2("/com/foodie/boundary2/DispensaView2.fxml"),
 	AGGIUNGI_ALIMENTO("/com/foodie/boundary2/AggiungiAlimentoView2.fxml"),

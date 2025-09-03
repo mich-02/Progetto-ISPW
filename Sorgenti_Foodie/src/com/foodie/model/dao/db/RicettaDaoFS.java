@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import com.foodie.model.Alimento;
-import com.foodie.model.CatalogoRicetteImplementazione2Dao;
 import com.foodie.model.Dispensa;
 import com.foodie.model.Ricetta;
 import com.foodie.model.RicettaDuplicataException;
@@ -25,7 +24,7 @@ public class RicettaDaoFS implements RicettaDao {
 	private static Path filePath = otherDirectory.resolve("CatalogoRicette.txt");
 	private static final String PATH = filePath.toString();
 	private static final String MESSAGGIO = "ERRORE NELL'APERTURA DEL CATALOGO DELLE RICETTE (FILE)";
-	private static final Logger logger = Logger.getLogger(CatalogoRicetteImplementazione2Dao.class.getName());
+	private static final Logger logger = Logger.getLogger(RicettaDaoFS.class.getName());
 
 	@Override
 	public List<Ricetta> trovaRicettePerDispensa(int difficolta, String username) throws SQLException {
