@@ -10,10 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import com.foodie.exception.DaoException;
+import com.foodie.exception.RicettaDuplicataException;
 import com.foodie.model.Alimento;
 import com.foodie.model.Dispensa;
 import com.foodie.model.Ricetta;
-import com.foodie.model.RicettaDuplicataException;
 import com.foodie.model.dao.RicettaDao;
 
 public class RicettaDaoFS implements RicettaDao {
@@ -27,6 +29,40 @@ public class RicettaDaoFS implements RicettaDao {
 	private static final Logger logger = Logger.getLogger(RicettaDaoFS.class.getName());
 
 	@Override
+	public List<Ricetta> trovaRicettePerDispensa(int difficolta, String username) throws DaoException {
+	    List<Ricetta> ricetteTrovate = new ArrayList<>();
+	    List<Alimento> alimentiDispensa = Dispensa.ottieniIstanza().getAlimenti();
+
+	    if (alimentiDispensa == null || alimentiDispensa.isEmpty()) {
+	        // Se la dispensa è vuota, ritorna lista vuota senza loggare
+	        return new ArrayList<>();
+	    }
+
+	    ArrayList<String> linee = new ArrayList<>();
+	    try (BufferedReader lettore = new BufferedReader(new FileReader(PATH))) {
+	        String linea;
+	        while ((linea = lettore.readLine()) != null) {
+	            linee.add(linea);
+	        }
+
+	        for (String s : linee) {
+	            String[] campi = s.split(";");
+	            String[] alimenti = campi[4].split(",");
+	            int diff = Integer.parseInt(campi[3]);
+
+	            if (diff == difficolta && controllaIngredienti(alimentiDispensa, alimenti)) {
+	                Ricetta ricetta = costruisciRicetta(campi);
+	                ricetteTrovate.add(ricetta);
+	            }
+	        }
+
+	    } catch (IOException e) {
+	        throw new DaoException("trovaRicettePerDispensa " + e.getMessage());
+	    }
+	    return ricetteTrovate;
+	}
+
+	/*
 	public List<Ricetta> trovaRicettePerDispensa(int difficolta, String username) throws SQLException {
 		List<Ricetta> ricetteTrovate = new ArrayList<>();
 	    List<Alimento> alimentiDispensa = Dispensa.ottieniIstanza().getAlimenti(); 
@@ -70,6 +106,7 @@ public class RicettaDaoFS implements RicettaDao {
 
 	    return ricetteTrovate;
 	}
+	*/
 	
 	private boolean controllaIngredienti(List<Alimento> alimentiDispensa,String[] alimenti) {//METODO PRIVATO CHE MI CONSENTE DI VEDERE SE LA DISPENSA CONTIENE GLI INGREDIENTI NECESSARI ALLA RICETTA
 		for(String s:alimenti) {  //INGREDIENTI RICETTA
@@ -99,6 +136,32 @@ public class RicettaDaoFS implements RicettaDao {
 	
 
 	@Override
+	public List<Ricetta> trovaRicettePerAutore(String autore) throws DaoException {
+	    List<Ricetta> ricetteTrovate = new ArrayList<>();
+	    ArrayList<String> linee = new ArrayList<>();
+
+	    try (BufferedReader lettore = new BufferedReader(new FileReader(PATH))) {
+	        String linea;
+	        while ((linea = lettore.readLine()) != null) {
+	            linee.add(linea);
+	        }
+
+	        for (String s : linee) {
+	            String[] campi = s.split(";");
+	            if (campi.length > 1 && campi[1].equals(autore)) {
+	                Ricetta ricetta = costruisciRicetta(campi);
+	                ricetteTrovate.add(ricetta);
+	            }
+	        }
+
+	    } catch (IOException e) {
+	        throw new DaoException("trovaRicettePerAutore: " + e.getMessage());
+	    }
+
+	    return ricetteTrovate;
+	}
+
+	/*
 	public List<Ricetta> trovaRicettePerAutore(String autore) throws SQLException {
 		List<Ricetta> ricetteTrovate = new ArrayList<>();
 	    ArrayList<String> linee = new ArrayList<>();
@@ -133,8 +196,48 @@ public class RicettaDaoFS implements RicettaDao {
 
 	    return ricetteTrovate;
 	}
+	*/
 
 	@Override
+	public void aggiungiRicetta(Ricetta ricetta) throws DaoException, RicettaDuplicataException {
+	    // Controlla se la ricetta esiste già nel file
+	    if (controllaSeEsistente(ricetta.getNome(), ricetta.getAutore())) {
+	        RicettaDuplicataException eccezione = new RicettaDuplicataException();
+	        throw eccezione;
+	    }
+
+	    // Scrittura nel file
+	    try (BufferedWriter scrittore = new BufferedWriter(new FileWriter(PATH, true))) {
+	        String nome = ricetta.getNome();
+	        String descrizione = ricetta.getDescrizione();
+	        String autore = ricetta.getAutore();
+	        int difficolta = ricetta.getDifficolta();
+
+	        StringBuilder alimentiBuilder = new StringBuilder();
+	        StringBuilder quantitaBuilder = new StringBuilder();
+
+	        for (int i = 0; i < ricetta.getIngredienti().size(); i++) {
+	            Alimento alimento = ricetta.getIngredienti().get(i);
+	            alimentiBuilder.append(alimento.getNome());
+	            quantitaBuilder.append(ricetta.getQuantita().get(i));
+	            if (i != ricetta.getIngredienti().size() - 1) {
+	                alimentiBuilder.append(",");
+	                quantitaBuilder.append(",");
+	            }
+	        }
+
+	        String alimenti = alimentiBuilder.toString();
+	        String quantita = quantitaBuilder.toString();
+
+	        scrittore.write(nome + ";" + autore + ";" + descrizione + ";" + difficolta + ";" + alimenti + ";" + quantita);
+	        scrittore.newLine();
+
+	    } catch (IOException e) {
+	        throw new DaoException("aggiungiRicetta: " + e.getMessage());
+	    }
+	}
+
+	/*
 	public void aggiungiRicetta(Ricetta ricetta) throws SQLException, RicettaDuplicataException {
 		if(controllaSeEsistente(ricetta.getNome(),ricetta.getAutore())) {
 			RicettaDuplicataException eccezione = new RicettaDuplicataException("Ricetta già esistente nel file!");
@@ -168,6 +271,7 @@ public class RicettaDaoFS implements RicettaDao {
 			logger.info("Ricetta non aggiunta al database");
 		}	
 	}
+	*/
 	
 	private boolean controllaSeEsistente(String nome,String autore) {  //METODO PER VERIFICARE SE LA RICETTA è GIA' PRESENTE NEL FILE
 		ArrayList<String> linee = new ArrayList<>();
@@ -196,6 +300,32 @@ public class RicettaDaoFS implements RicettaDao {
 	}
 
 	@Override
+	public void eliminaRicetta(String nome, String autore) throws DaoException {
+	    ArrayList<String> lineeNuove = new ArrayList<>();
+
+	    try (BufferedReader lettore = new BufferedReader(new FileReader(PATH))) {
+	        String linea;
+	        while ((linea = lettore.readLine()) != null) {
+	            String[] campi = linea.split(";");
+	            if (!campi[0].equals(nome) || !campi[1].equals(autore)) {
+	                lineeNuove.add(linea);
+	            }
+	        }
+
+	        // Riscrivi tutto il file con le linee filtrate
+	        try (BufferedWriter scrittore = new BufferedWriter(new FileWriter(PATH))) {
+	            for (String s : lineeNuove) {
+	                scrittore.write(s);
+	                scrittore.newLine();
+	            }
+	        }
+
+	    } catch (IOException e) {
+	        throw new DaoException("eliminaRicetta: " + e.getMessage());
+	    }
+	}
+
+	/*
 	public void eliminaRicetta(String nome, String autore) throws SQLException {
 		ArrayList<String> lineeVecchie = new ArrayList<>();
         ArrayList<String> lineeNuove = new ArrayList<>();
@@ -234,8 +364,26 @@ public class RicettaDaoFS implements RicettaDao {
 	        logger.info("Ricetta non eliminata dal database");
 	    }
 	}
+	*/
 
 	@Override
+	public Ricetta ottieniDatiRicetta(String nome, String autore) throws DaoException {
+	    try (BufferedReader lettore = new BufferedReader(new FileReader(PATH))) {
+	        String linea;
+	        while ((linea = lettore.readLine()) != null) {
+	            String[] campi = linea.split(";");
+	            if (campi.length >= 2 && campi[0].equals(nome) && campi[1].equals(autore)) {
+	                return costruisciRicetta(campi);
+	            }
+	        }
+	        // Nessuna ricetta trovata
+	        return null;
+	    } catch (IOException e) {
+	        throw new DaoException("ottieniDatiRicetta: " + e.getMessage());
+	    }
+	}
+
+	/*
 	public Ricetta ottieniDatiRicetta(String nome, String autore) throws SQLException {
 		ArrayList<String> linee = new ArrayList<>();
 	    try(BufferedReader lettore = new BufferedReader(new FileReader(PATH));) {//MI CARICO TUTTE LE RIGHE DEL FILE  
@@ -261,5 +409,6 @@ public class RicettaDaoFS implements RicettaDao {
 	        return null;
 	    }
 	}
+	*/
 
 }

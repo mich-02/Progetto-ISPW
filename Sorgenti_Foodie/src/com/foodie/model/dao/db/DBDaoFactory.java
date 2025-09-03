@@ -15,8 +15,8 @@ public class DBDaoFactory implements DaoFactory {
 
 	@Override
 	public DispensaDao creaDispensaDao() {
-		return new DispensaDaoFS();
-		//return new DispensaDaoDB();
+		//return new DispensaDaoFS();
+		return new DispensaDaoDB();
 	}
 
 	

@@ -1,10 +1,10 @@
 package com.foodie.model.dao.memo;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.foodie.exception.DaoException;
 import com.foodie.model.Alimento;
 import com.foodie.model.Dispensa;
 import com.foodie.model.dao.DispensaDao;
@@ -15,14 +15,14 @@ public class DispensaDaoMemo implements DispensaDao{
     private final static Map<String, List<Alimento>> memoriaUtenti = new HashMap<>();
 
     @Override
-    public void salvaDispensa(String username) throws SQLException {
+    public void salvaDispensa(String username) throws DaoException {
         // Copio la lista corrente della Dispensa per l'utente
         List<Alimento> alimentiCorrenti = Dispensa.ottieniIstanza().getAlimenti();
         memoriaUtenti.put(username, new ArrayList<>(alimentiCorrenti));
     }
 
     @Override
-    public List<Alimento> caricaDispensa(String username) throws SQLException {
+    public List<Alimento> caricaDispensa(String username) throws DaoException {
         // Recupeo la lista salvata per l'utente oppure creiamo una nuova
         List<Alimento> listaUtente = memoriaUtenti.computeIfAbsent(username, k -> new ArrayList<>()); 
 

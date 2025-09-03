@@ -1,9 +1,8 @@
 package com.foodie.model.dao.memo;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-
+import com.foodie.exception.DaoException;
 import com.foodie.model.dao.UtenteDao;
 
 public class UtenteDaoMemo implements UtenteDao {
@@ -12,7 +11,7 @@ public class UtenteDaoMemo implements UtenteDao {
     private static final Map<String, Integer> usernameRuolo = new HashMap<>();
 
     @Override
-    public int validazioneLogin(String username, String password) throws SQLException {
+    public int validazioneLogin(String username, String password) throws DaoException {
         String storedPassword = usernamePassword.get(username);
         if (storedPassword != null && storedPassword.equals(password)) {
             return usernameRuolo.get(username); //restituisce il ruolo associato
@@ -21,12 +20,12 @@ public class UtenteDaoMemo implements UtenteDao {
     }
 
     @Override
-    public int controllaUsername(String username) throws SQLException {
+    public int controllaUsername(String username) throws DaoException {
         return usernamePassword.containsKey(username) ? 0 : 1;
     }
 
     @Override
-    public void registraUtente(String nome, String cognome, String username, int ruolo, String password) throws SQLException {
+    public void registraUtente(String nome, String cognome, String username, int ruolo, String password) throws DaoException {
     	//per la versione demo nome e cognome sono stati ignorati
         if (usernamePassword.containsKey(username)) {
             return; //username già presente, non registrato

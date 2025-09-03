@@ -3,7 +3,7 @@ package com.foodie.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Logger;
+
 
 public class Ricetta extends SubjectPatternObserver {  //OSSERVATO CONCRETO, ESTENDE SUBJECT PATTERN OBSERVER
 
@@ -13,7 +13,6 @@ public class Ricetta extends SubjectPatternObserver {  //OSSERVATO CONCRETO, EST
 	private List<Alimento> ingredienti;
 	private String autore;
 	private List<String> quantita;
-	private static final Logger logger = Logger.getLogger(Ricetta.class.getName());
 
 	
 	public Ricetta() {
@@ -22,12 +21,12 @@ public class Ricetta extends SubjectPatternObserver {  //OSSERVATO CONCRETO, EST
 	}
 	
 	public Ricetta(String nome, String descrizione, int difficolta, List<Alimento> ingredienti, String autore, List<String> quantita){
-		this.nome=nome;
-		this.descrizione=descrizione;
-		this.difficolta=difficolta;
-		this.ingredienti= ingredienti;
-		this.autore=autore;
-		this.quantita=quantita;
+		this.nome = nome;
+		this.descrizione = descrizione;
+		this.difficolta = difficolta;
+		this.ingredienti = ingredienti;
+		this.autore = autore;
+		this.quantita = quantita;
 	}
 	
 	public String getNome() {  //GETTERS DEGLI ATTRIBUTI DELLA CLASSE
@@ -55,57 +54,47 @@ public class Ricetta extends SubjectPatternObserver {  //OSSERVATO CONCRETO, EST
 	}
 	
 	public void setNome(String nome) {  //SETTERS DEGLI ATTRIBUTI
-		this.nome=nome;
-		logger.info("Nome ricetta impostato");
+		this.nome = nome;
 	}
 	
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
-		logger.info("Descrizione ricetta impostata");
 	}
 	
 	public void setDifficolta(int difficolta) {
 		this.difficolta = difficolta;
-		logger.info("Difficoltà ricetta impostata");
 	}
 	
 	public void setIngredienti(List<Alimento> ingredienti) {
 		this.ingredienti = ingredienti;
-		logger.info("Ingredienti ricetta impostati");
 	}
 	
 	public void setAutore(String autore) {
 		this.autore=autore;
-		logger.info("Autore ricetta impostato");
 	}
 	
 	public void setQuantita(List<String> quantita) {
 		this.quantita = quantita;
-		logger.info("Quantità ingredienti ricetta impostati");
 	}
 	
 	public void aggiungiIngrediente(Alimento alimento, String quantita) {  //METODO PER AGGIUNGERE UN ALIMENTO CON LA RISPETTIVA QUANTITA' SE NON PRESENTE
 		if(!ingredienti.contains(alimento)) {
 			ingredienti.add(alimento);
 			this.quantita.add(quantita);
-			logger.info("Ingrediente aggiunto alla ricetta");
 			notifica();
 		}
 		else {
-			logger.info("Ingrediente già presente nella ricetta");
 		}
 	}
 	
 	public void eliminaIngrediente(Alimento alimento) {  //METODO PER ELIMINARE UN ALIMENTO CON LA RISPETTIVA QUANTITA' SE PRESENTE
-		int indice=ingredienti.indexOf(alimento);
-		if(indice!=-1) {
+		int indice = ingredienti.indexOf(alimento);
+		if(indice != -1) {
 			ingredienti.remove(indice);
 			quantita.remove(indice);
-			logger.info("Ingrediente rimosso dalla ricetta");
 			notifica();
 		}
 		else {
-			logger.info("Ingrediente non presente nella ricetta");
 		}
 	}
 	

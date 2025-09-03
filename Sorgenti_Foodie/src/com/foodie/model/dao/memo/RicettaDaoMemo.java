@@ -1,16 +1,13 @@
 package com.foodie.model.dao.memo;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import com.foodie.exception.DaoException;
+import com.foodie.exception.RicettaDuplicataException;
 import com.foodie.model.Alimento;
-import com.foodie.model.Dispensa;
 import com.foodie.model.Ricetta;
-import com.foodie.model.RicettaDuplicataException;
-import com.foodie.model.dao.DaoFactoryProvider;
 import com.foodie.model.dao.DispensaDao;
 import com.foodie.model.dao.RicettaDao;
 import com.foodie.model.dao.RicetteDaApprovareDao;
@@ -31,7 +28,7 @@ public class RicettaDaoMemo implements RicettaDao {
     
 
     @Override
-    public List<Ricetta> trovaRicettePerDispensa(int difficolta, String username) throws SQLException {
+    public List<Ricetta> trovaRicettePerDispensa(int difficolta, String username) throws DaoException {
         List<Ricetta> risultato = new ArrayList<>();
         List<Alimento> alimentiUtente = dispensaDao.caricaDispensa(username);
 
@@ -53,7 +50,7 @@ public class RicettaDaoMemo implements RicettaDao {
     }
 
     @Override
-    public List<Ricetta> trovaRicettePerAutore(String autore) throws SQLException {
+    public List<Ricetta> trovaRicettePerAutore(String autore) throws DaoException {
         if (ricettePerAutore.containsKey(autore)) {
             return new ArrayList<>(ricettePerAutore.get(autore));
         } else {
@@ -62,7 +59,30 @@ public class RicettaDaoMemo implements RicettaDao {
     }
 
     @Override
-    public void aggiungiRicetta(Ricetta ricetta) throws SQLException, RicettaDuplicataException {
+    public void aggiungiRicetta(Ricetta ricetta) throws DaoException, RicettaDuplicataException {
+        // Rimuovo la ricetta dalla lista delle ricette da approvare
+        ricetteDaApprovareDao.rifiutaRicetta(ricetta);
+
+        // Recupero la lista di ricette dell'autore, oppure ne creo una nuova
+        List<Ricetta> ricette = ricettePerAutore.get(ricetta.getAutore());
+        if (ricette == null) {
+            ricette = new ArrayList<>();
+            ricettePerAutore.put(ricetta.getAutore(), ricette);
+        }
+
+        // Controllo duplicati 
+        boolean esiste = ricette.stream()
+                                 .anyMatch(r -> r.getNome().equals(ricetta.getNome()));
+        if (esiste) {
+            throw new RicettaDuplicataException();
+        }
+
+        // Aggiungo la ricetta alla lista definitiva
+        ricette.add(ricetta);
+    }
+
+    /*
+    public void aggiungiRicetta(Ricetta ricetta) throws DaoException, RicettaDuplicataException {
     	 //Rimuovo la ricetta dalla lista delle ricette da approvare
         ricetteDaApprovareDao.rifiutaRicetta(ricetta);
 
@@ -76,10 +96,11 @@ public class RicettaDaoMemo implements RicettaDao {
         //Aggiungo la ricetta alla lista definitiva
         ricette.add(ricetta);
     }
+    */
     
 
     @Override
-    public void eliminaRicetta(String nome, String autore) throws SQLException {
+    public void eliminaRicetta(String nome, String autore) throws DaoException {
         if (ricettePerAutore.containsKey(autore)) {
             List<Ricetta> ricette = ricettePerAutore.get(autore);
             ricette.removeIf(r -> r.getNome().equals(nome));
@@ -87,7 +108,7 @@ public class RicettaDaoMemo implements RicettaDao {
     }
 
     @Override
-    public Ricetta ottieniDatiRicetta(String nome, String autore) throws SQLException {
+    public Ricetta ottieniDatiRicetta(String nome, String autore) throws DaoException {
         if (ricettePerAutore.containsKey(autore)) {
             List<Ricetta> ricette = ricettePerAutore.get(autore);
             for (Ricetta r : ricette) {
@@ -96,7 +117,7 @@ public class RicettaDaoMemo implements RicettaDao {
                 }
             }
         }
-        return null; // oppure new Ricetta() se preferisci un oggetto vuoto
+        return null; 
     }
     
 

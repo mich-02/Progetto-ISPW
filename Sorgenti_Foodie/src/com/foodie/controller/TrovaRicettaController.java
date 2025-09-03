@@ -1,14 +1,11 @@
 package com.foodie.controller;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import com.foodie.bean.AlimentoBean;
 import com.foodie.bean.RicettaBean;
-import com.foodie.bean.UtenteBean;
+import com.foodie.exception.DaoException;
 import com.foodie.model.Alimento;
 import com.foodie.model.Dispensa;
 import com.foodie.model.LoggedUser;
@@ -16,12 +13,11 @@ import com.foodie.model.Observer;
 import com.foodie.model.Ricetta;
 import com.foodie.model.dao.AlimentiDao;
 import com.foodie.model.dao.AlimentiDaoAPI;
-import com.foodie.model.dao.ChefDao;
 import com.foodie.model.dao.DaoFactoryProvider;
 import com.foodie.model.dao.DispensaDao;
 import com.foodie.model.dao.RicettaDao;
 
-@SuppressWarnings("unused")
+
 public class TrovaRicettaController {  
 	
 	private static Dispensa dispensa;
@@ -46,7 +42,7 @@ public class TrovaRicettaController {
 		dispensa.eliminaAlimento(alimento);
 	}
 	
-	public void svuotaDispensa() {  //METODO PER SVUOTARE LA DISPENSA
+	public void svuotaDispensa() {  
 		dispensa.svuotaDispensa();
 	}
 	
@@ -97,14 +93,14 @@ public class TrovaRicettaController {
 	    List<Alimento> alimentiDispensa;
 	    try {
 	        alimentiDispensa = dispensaDao.caricaDispensa(utente.getUsername());
-	    } catch (SQLException e) {
+	    } catch (DaoException e) {
 	    	logger.severe("Errore durante il caricamento della dispensa: " + e.getMessage());
 	        return; // esce dal metodo se c'è un errore
 	    }
 
 	    if (alimentiDispensa != null && !alimentiDispensa.isEmpty()) {
 	        for (Alimento a : alimentiDispensa) {
-	            dispensa.aggiungiAlimento(a); // usa direttamente l'oggetto recuperato
+	            dispensa.aggiungiAlimento(a); 
 	        }
 	        logger.info("Dispensa caricata con successo per l'utente: " + utente.getUsername());
 	    } else {
@@ -116,7 +112,7 @@ public class TrovaRicettaController {
 		LoggedUser utente = LoggedUser.ottieniIstanza();
 		try {
 			dispensaDao.salvaDispensa(utente.getUsername());
-		} catch (SQLException e) {
+		} catch (DaoException e) {
 			logger.severe("Errore durante il salvataggio della dispensa: " + e.getMessage());
 		}
 	}

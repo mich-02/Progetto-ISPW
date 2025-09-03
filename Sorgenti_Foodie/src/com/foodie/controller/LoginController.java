@@ -3,19 +3,19 @@ package com.foodie.controller;
 import java.util.logging.Logger;
 import com.foodie.bean.CredenzialiBean;
 import com.foodie.bean.UtenteBean;
+import com.foodie.exception.DaoException;
+import com.foodie.exception.UtenteEsistenteException;
 import com.foodie.model.Chef;
 import com.foodie.model.LoggedUser;
 import com.foodie.model.Moderatore;
 import com.foodie.model.Standard;
 import com.foodie.model.Utente;
-import com.foodie.model.UtenteEsistenteException;
 import com.foodie.model.dao.DaoFactoryProvider;
 import com.foodie.model.dao.UtenteDao;
 
 
 public class LoginController {
 	
-	private static final String MESSAGGIO = "PROBLEMA CON IL DB";
 	private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 	private LoggedUser utenteCorrente = LoggedUser.ottieniIstanza();
 	private Utente utente;
@@ -47,8 +47,8 @@ public class LoginController {
 			setUtente(credenzialiBean.getUsername(), ruolo);
 			return ruolo;
 			//return utenteDao.validazioneLogin(credenzialiBean.getUsername(), credenzialiBean.getPassword());
-		} catch (Exception e) {
-			logger.severe("Errore durante la fase di login.");
+		} catch (DaoException e) {
+			logger.severe("Errore durante la fase di login: " + e.getMessage());
 			return -1;
 		}
 	}
@@ -63,10 +63,8 @@ public class LoginController {
 			e.suggerimento();
 			logger.severe("USERNAME GIA' IN USO");
 			return 0;
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.severe("ERRORE NEL CONTROLLO DELL'USERNAME, RIPROVA");
-			logger.info(MESSAGGIO);
+		} catch (DaoException e) {
+			logger.severe("errore nel controllo username: " + e.getMessage());
 			return 0;  //username esistente 
 		}
 	}
@@ -75,10 +73,8 @@ public class LoginController {
 	//public void registraUtente(String nome,String cognome,String username,int ruolo,String password) {  
 		try {
 			utenteDao.registraUtente(credenzialiBean.getNome(), credenzialiBean.getCognome(), credenzialiBean.getUsername(), credenzialiBean.getRuolo(), credenzialiBean.getPassword());
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.severe("ERRORE NELLA REGISTRAZIONE DELL'UTENTE");
-			logger.info(MESSAGGIO);
+		} catch (DaoException e) {
+			logger.severe("errore nella registrazione dell'utente: " + e.getMessage());
 		}
 	}	
 	

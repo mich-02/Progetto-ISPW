@@ -1,4 +1,4 @@
-package com.foodie.model;
+package com.foodie.exception;
 
 import java.util.logging.Logger;
 

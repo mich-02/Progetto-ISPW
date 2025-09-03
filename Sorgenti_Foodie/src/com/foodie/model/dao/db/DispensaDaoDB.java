@@ -8,18 +8,86 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
-
+import com.foodie.exception.DaoException;
 import com.foodie.model.Alimento;
 import com.foodie.model.Dispensa;
 import com.foodie.model.dao.DBConnection;
 import com.foodie.model.dao.DispensaDao;
 
 public class DispensaDaoDB implements DispensaDao {
-	private static final Logger logger = Logger.getLogger(DispensaDaoDB.class.getName());
 
 	@Override
-	public void salvaDispensa(String username) throws SQLException{
+	public void salvaDispensa(String username) throws DaoException {
+	    Connection connessione = DBConnection.ottieniIstanza().getConnection();
+	    Dispensa dispensa = Dispensa.ottieniIstanza();
+	    List<Alimento> alimentiInMemoria = dispensa.getAlimenti();
+
+	    if (alimentiInMemoria == null) {
+	        alimentiInMemoria = new ArrayList<>();
+	    }
+
+	    try {
+	        connessione.setAutoCommit(false); // inizio transazione
+
+	        // Recupera gli alimenti già presenti nel DB
+	        Set<String> alimentiNelDB = new HashSet<>();
+	        String selectQuery = "SELECT alimento FROM dispense WHERE username = ?";
+	        try (PreparedStatement selectStmt = connessione.prepareStatement(selectQuery)) {
+	            selectStmt.setString(1, username);
+	            try (ResultSet rs = selectStmt.executeQuery()) {
+	                while (rs.next()) {
+	                    alimentiNelDB.add(rs.getString("alimento"));
+	                }
+	            }
+	        }
+
+	        // Inserisci solo i nuovi alimenti
+	        String insertQuery = "INSERT INTO dispense (username, alimento) VALUES (?, ?)";
+	        try (PreparedStatement insertStmt = connessione.prepareStatement(insertQuery)) {
+	            for (Alimento a : alimentiInMemoria) {
+	                String nome = a.getNome();
+	                if (nome == null || nome.isEmpty()) {
+	                    continue; // skip nomi nulli o vuoti
+	                }
+	                if (!alimentiNelDB.contains(nome)) {
+	                    insertStmt.setString(1, username);
+	                    insertStmt.setString(2, nome);
+	                    insertStmt.executeUpdate();
+	                }
+	            }
+	        }
+
+	        // Elimina gli alimenti che non sono più presenti in memoria
+	        String deleteQuery = "DELETE FROM dispense WHERE username = ? AND alimento = ?";
+	        try (PreparedStatement deleteStmt = connessione.prepareStatement(deleteQuery)) {
+	            for (String nomeDB : alimentiNelDB) {
+	                boolean ancoraPresente = alimentiInMemoria.stream()
+	                        .anyMatch(a -> nomeDB.equals(a.getNome()));
+	                if (!ancoraPresente) {
+	                    deleteStmt.setString(1, username);
+	                    deleteStmt.setString(2, nomeDB);
+	                    deleteStmt.executeUpdate();
+	                }
+	            }
+	        }
+
+	        connessione.commit();
+
+	    } catch (SQLException e) {
+	        try {
+	            connessione.rollback();
+	        } catch (SQLException ignored) {}
+	        throw new DaoException("salvaDispensa: " + e.getMessage());
+	    } finally {
+	        try {
+	            connessione.setAutoCommit(true); // ripristino autoCommit, ma NON chiudo la connessione
+	        } catch (SQLException ignored) {}
+	    }
+	}
+
+
+	/*
+	public void salvaDispensa(String username) throws DaoException{
 		Connection connessione = DBConnection.ottieniIstanza().getConnection();
 	    Dispensa dispensa = Dispensa.ottieniIstanza();
 	    List<Alimento> alimentiInMemoria = dispensa.getAlimenti();
@@ -88,28 +156,30 @@ public class DispensaDaoDB implements DispensaDao {
 	        connessione.setAutoCommit(true);
 	    }
 	}
+	*/
 
 	@Override
-	public List<Alimento> caricaDispensa(String username) throws SQLException{
-		List<Alimento> alimenti = new ArrayList<>();
+	public List<Alimento> caricaDispensa(String username) throws DaoException {
+	    List<Alimento> alimenti = new ArrayList<>();
 	    Connection connessione = DBConnection.ottieniIstanza().getConnection();
 
 	    String query = "SELECT alimento FROM dispense WHERE username = ?";
+
 	    try (PreparedStatement stmt = connessione.prepareStatement(query)) {
 	        stmt.setString(1, username);
 
 	        try (ResultSet rs = stmt.executeQuery()) {
 	            while (rs.next()) {
-	                Alimento a = new Alimento(rs.getString("alimento"));
-	                alimenti.add(a);
+	                String nomeAlimento = rs.getString("alimento");
+	                if (nomeAlimento != null && !nomeAlimento.isEmpty()) {
+	                    alimenti.add(new Alimento(nomeAlimento));
+	                }
 	            }
 	        }
+	    } catch (SQLException e) {
+	        throw new DaoException("caricaDispensa: " + e.getMessage());
 	    }
-
-	    if (alimenti.isEmpty()) {
-	        logger.warning("Nessuna dispensa salvata per l'utente: " + username);
-	    }
-
+	    
 	    return alimenti;
 	}
 	
