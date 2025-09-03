@@ -244,7 +244,7 @@ public class RicettaDaoDB implements RicettaDao {
 	            try {
 	                connessione.setAutoCommit(true);
 	            } catch (SQLException e) {
-	                throw new DaoException("aggiungiRicetta - Errore nel ripristinare auto-commit: " + e.getMessage());
+	            	
 	            }
 	        }
 	    }
