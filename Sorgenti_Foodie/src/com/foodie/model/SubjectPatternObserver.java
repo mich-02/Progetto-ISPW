@@ -16,15 +16,10 @@ public abstract class SubjectPatternObserver {        //CLASSE ASTRATTA DEL PATT
 		if(!viewRegistrate.contains(o)) {
 			this.viewRegistrate.add(o);
 		}
-		else {
-		}
 	}
 	
 	public void cancella(Observer o) {  //CANCELLA L'OSSERVATORE DALLA PROPRIA LISTA SE PRESENTE
-		if(this.viewRegistrate.remove(o)) {
-		}
-		else {
-		}
+		this.viewRegistrate.remove(o); 
 	}
 	
 	protected void notifica() {         //NOTIFICA TUTTI GLI OSSERVATORI DI UNA EVENTUALE MODIFICA DELL'OSSERVATO
