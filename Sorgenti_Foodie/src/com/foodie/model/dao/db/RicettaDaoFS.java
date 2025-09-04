@@ -60,52 +60,6 @@ public class RicettaDaoFS implements RicettaDao {
 	    
 	    return ricetteTrovate;
 	}
-
-	/*
-	public List<Ricetta> trovaRicettePerDispensa(int difficolta, String username) throws SQLException {
-		List<Ricetta> ricetteTrovate = new ArrayList<>();
-	    List<Alimento> alimentiDispensa = Dispensa.ottieniIstanza().getAlimenti(); 
-
-	    if (alimentiDispensa == null || alimentiDispensa.isEmpty()) {
-	        logger.info("Dispensa vuota!!! Riempila prima");
-	        return new ArrayList<>();
-	    }
-
-	    ArrayList<String> linee = new ArrayList<>();
-	    try (BufferedReader lettore = new BufferedReader(new FileReader(PATH))) {
-	        String linea;
-	        while ((linea = lettore.readLine()) != null) {
-	            linee.add(linea);
-	        }
-
-	        if (!linee.isEmpty()) {
-	            for (String s : linee) {
-	                String[] campi = s.split(";");
-	                String[] alimenti = campi[4].split(",");
-	                int diff = Integer.parseInt(campi[3]);
-
-	                if (diff == difficolta && controllaIngredienti(alimentiDispensa, alimenti)) {
-	                    Ricetta ricetta = costruisciRicetta(campi);
-	                    ricetteTrovate.add(ricetta);
-	                }
-	            }
-	        }
-
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        logger.severe("Errore lettura catalogo ricette");
-	        return new ArrayList<>();
-	    }
-
-	    if (ricetteTrovate.isEmpty()) {
-	        logger.info("Nessuna ricetta trovata per utente " + username);
-	    } else {
-	        logger.info("Ricette trovate: " + ricetteTrovate.size() + " per utente " + username);
-	    }
-
-	    return ricetteTrovate;
-	}
-	*/
 	
 	private boolean controllaIngredienti(List<Alimento> alimentiDispensa,String[] alimenti) {//METODO PRIVATO CHE MI CONSENTE DI VEDERE SE LA DISPENSA CONTIENE GLI INGREDIENTI NECESSARI ALLA RICETTA
 		for(String s:alimenti) {  //INGREDIENTI RICETTA
@@ -160,43 +114,6 @@ public class RicettaDaoFS implements RicettaDao {
 	    return ricetteTrovate;
 	}
 
-	/*
-	public List<Ricetta> trovaRicettePerAutore(String autore) throws SQLException {
-		List<Ricetta> ricetteTrovate = new ArrayList<>();
-	    ArrayList<String> linee = new ArrayList<>();
-
-	    try (BufferedReader lettore = new BufferedReader(new FileReader(PATH))) {
-	        String linea;
-	        while ((linea = lettore.readLine()) != null) {
-	            linee.add(linea);
-	        }
-
-	        if (!linee.isEmpty()) {
-	            for (String s : linee) {
-	                String[] campi = s.split(";");
-	                if (campi[1].equals(autore)) {
-	                    Ricetta ricetta = costruisciRicetta(campi);
-	                    ricetteTrovate.add(ricetta);
-	                }
-	            }
-	        }
-
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        logger.severe("Errore lettura catalogo ricette");
-	        return new ArrayList<>();
-	    }
-
-	    if (ricetteTrovate.isEmpty()) {
-	        logger.info("Nessuna ricetta trovata per autore " + autore);
-	    } else {
-	        logger.info("Ricette trovate per autore " + autore + ": " + ricetteTrovate.size());
-	    }
-
-	    return ricetteTrovate;
-	}
-	*/
-
 	@Override
 	public void aggiungiRicetta(Ricetta ricetta) throws DaoException, RicettaDuplicataException {
 	    // Controlla se la ricetta esiste già nel file
@@ -235,42 +152,6 @@ public class RicettaDaoFS implements RicettaDao {
 	        throw new DaoException("aggiungiRicetta: " + e.getMessage());
 	    }
 	}
-
-	/*
-	public void aggiungiRicetta(Ricetta ricetta) throws SQLException, RicettaDuplicataException {
-		if(controllaSeEsistente(ricetta.getNome(),ricetta.getAutore())) {
-			RicettaDuplicataException eccezione = new RicettaDuplicataException("Ricetta già esistente nel file!");
-			eccezione.suggerimento();
-			throw eccezione;
-		}
-		try(BufferedWriter scrittore = new BufferedWriter(new FileWriter(PATH,true))) {//FORMATTAZIONE NOME;AUTORE;DESCRIZIONE;DIFFICOLTA;ALIMENTO1,ALIMENTO2;QUANTITA'1,QUANTITA'2.
-			String nome=ricetta.getNome();
-			String descrizione=ricetta.getDescrizione();
-			String autore=ricetta.getAutore();
-			int difficolta=ricetta.getDifficolta();
-			StringBuilder alimentiBuilder = new StringBuilder();
-			StringBuilder quantitaBuilder = new StringBuilder();
-			for (int i = 0; i < ricetta.getIngredienti().size(); i++) {
-			    Alimento alimento = ricetta.getIngredienti().get(i);
-			    alimentiBuilder.append(alimento.getNome());
-			    quantitaBuilder.append(ricetta.getQuantita().get(i));
-			    if (i != ricetta.getIngredienti().size() - 1) {
-			        alimentiBuilder.append(",");
-			        quantitaBuilder.append(",");
-			    }
-			}
-			String alimenti = alimentiBuilder.toString();
-			String quantita = quantitaBuilder.toString();
-			scrittore.write(nome+";"+autore+";"+descrizione+";"+Integer.toString(difficolta)+";"+alimenti+";"+quantita);
-			scrittore.newLine();
-			logger.info("Ricetta aggiunta al database");
-		}catch(IOException e) {
-			e.printStackTrace();
-			logger.severe("ERRORE NELLA SCRITTURA NEL CATALOGO DELLE RICETTE (FILE)");
-			logger.info("Ricetta non aggiunta al database");
-		}	
-	}
-	*/
 	
 	private boolean controllaSeEsistente(String nome,String autore) {  //METODO PER VERIFICARE SE LA RICETTA è GIA' PRESENTE NEL FILE
 		ArrayList<String> linee = new ArrayList<>();
@@ -324,47 +205,6 @@ public class RicettaDaoFS implements RicettaDao {
 	    }
 	}
 
-	/*
-	public void eliminaRicetta(String nome, String autore) throws SQLException {
-		ArrayList<String> lineeVecchie = new ArrayList<>();
-        ArrayList<String> lineeNuove = new ArrayList<>();
-	    try(BufferedReader lettore = new BufferedReader(new FileReader(PATH))) {
-	        String linea;
-	        while ((linea = lettore.readLine()) != null) {
-	            lineeVecchie.add(linea);
-	        }
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        logger.severe(MESSAGGIO);
-	        logger.info("Ricetta eliminata dal database");
-	        return;
-	    }
-	    if (!lineeVecchie.isEmpty()) {
-	        for (String s : lineeVecchie) {
-	            String[] campi = s.split(";");
-	            if (!campi[0].equals(nome) || !campi[1].equals(autore)) {
-	                lineeNuove.add(s);
-	            }
-	        }
-	    }
-	    try(BufferedWriter scrittore = new BufferedWriter(new FileWriter(PATH))) {
-	        if (!lineeNuove.isEmpty()) {
-	            for (String s : lineeNuove) {
-	                scrittore.write(s);
-	                scrittore.newLine();
-	            }
-	            logger.info("Ricetta eliminata dal database");
-	            return;
-	        }
-	        logger.info("Ricetta non presente nel database");  //LEVO 16° if per codesmell
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        logger.severe("ERRORE NELLA SCRITTURA NEL CATALOGO DELLE RICETTE (FILE)");
-	        logger.info("Ricetta non eliminata dal database");
-	    }
-	}
-	*/
-
 	@Override
 	public Ricetta ottieniDatiRicetta(String nome, String autore) throws DaoException {
 	    try (BufferedReader lettore = new BufferedReader(new FileReader(PATH))) {
@@ -381,33 +221,4 @@ public class RicettaDaoFS implements RicettaDao {
 	        throw new DaoException("ottieniDatiRicetta: " + e.getMessage());
 	    }
 	}
-
-	/*
-	public Ricetta ottieniDatiRicetta(String nome, String autore) throws SQLException {
-		ArrayList<String> linee = new ArrayList<>();
-	    try(BufferedReader lettore = new BufferedReader(new FileReader(PATH));) {//MI CARICO TUTTE LE RIGHE DEL FILE  
-	        String linea;
-	        while ((linea = lettore.readLine()) != null) {
-	            linee.add(linea);
-	        }
-	        if (!linee.isEmpty()) {
-		        for (String s : linee) {
-		            String[] campi = s.split(";");
-					if(campi[0].equals(nome) && campi[1].equals(autore)) {
-						return costruisciRicetta(campi);
-					}
-		        }
-		        return null;
-		    }
-	        else {
-	        	return null;
-	        }
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        logger.severe(MESSAGGIO);
-	        return null;
-	    }
-	}
-	*/
-
 }

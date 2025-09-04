@@ -48,13 +48,13 @@ public class ModeratoreView2Controller implements Observer{
 	}
 	
 	@FXML
-	public void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
+	public void tornaAlLogin(MouseEvent event) { 
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 
 	}
 
 	@Override
-	public void aggiornaView() {  //AGGIORNA VIEW IN FUZNIONE DELLE RICETTE DA APPROVARE , LE MOSTRA SUBITO COMPLETE 
+	public void aggiornaView() {  //AGGIORNA VIEW IN FUNZIONE DELLE RICETTE DA APPROVARE , LE MOSTRA SUBITO COMPLETE 
 		contenitoreRicetteDaApprovare.getChildren().clear();
 		List<RicettaBean> ricetteBean = controller.mostraRicetteDaApprovare();
 		if(!ricetteBean.isEmpty()) {

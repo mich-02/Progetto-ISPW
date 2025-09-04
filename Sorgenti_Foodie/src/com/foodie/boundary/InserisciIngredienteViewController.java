@@ -75,32 +75,6 @@ public class InserisciIngredienteViewController implements Observer{
 			this.quantita.setPromptText("QUANTITA?");
 		}
 	}
-/*
-	@FXML
-	public void caricaViewRicetta(ActionEvent event) {  //tasto Torna alla ricetta
-		try {
-			if(!bottoneModifica) { //resettare il bottone modifica se attivo
-				bottoneModifica=true;
-				labelIngredienti.setFont(Font.font(FORMATO,30));
-				labelIngredienti.setText("La mia Dispensa");
-			}
-			
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("NuovaRicettaView.fxml"));
-            NuovaRicettaViewController nuovaRicettaViewController = new NuovaRicettaViewController();
-            NuovaRicettaViewController nuovaRicettaViewController= NuovaRicettaViewController.ottieniIstanza();
-            loader.setController(nuovaRicettaViewController);
-            Parent root = loader.load();
-            nuovaRicettaViewController.setPrimaryStage(primaryStage);
-            nuovaRicettaViewController.aggiornaView(nome, descrizione, difficolta);  //RIPOPOLA LO STATO
-            Scene nuovaScena = new Scene(root);
-            primaryStage.setScene(nuovaScena);
-            primaryStage.show();
-        } catch (Exception e) {
-          e.printStackTrace(); 
-	}
-       
-      }
-*/ //old
 	
 	@FXML
 	public void caricaViewRicetta(ActionEvent event) {  //tasto Torna alla ricetta
@@ -117,38 +91,6 @@ public class InserisciIngredienteViewController implements Observer{
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
 	
-	/*
-	private void trovaAlimenti() { //GESTISCE IL TROVA ALIMENTI
-		eliminaAlimenti();
-		AlimentoBean alimentoBean = new AlimentoBean();
-		alimentoBean.setNome(barraDiRicerca.getText());
-		List<AlimentoBean> alimentiBeanTrovati = trovaRicettaController.trovaAlimenti(alimentoBean);
-		if(!alimentiBeanTrovati.isEmpty()) {
-			quantita.setDisable(false);
-			for(AlimentoBean a: alimentiBeanTrovati) {
-				Label labelAlimento = new Label(a.getNome());
-				labelAlimento.setStyle(SFONDOBIANCO);
-				labelAlimento.setMaxWidth(Double.MAX_VALUE);
-				labelAlimento.setMinHeight(30);
-				labelAlimento.setWrapText(true);
-				labelAlimento.setFont(Font.font(FORMATO));
-				labelAlimento.setAlignment(Pos.CENTER);
-				labelAlimento.setOnMouseClicked(event2->salvaAlimento(labelAlimento.getText(),quantita.getText()));
-				contenitoreAlimentiTrovati.getChildren().add(labelAlimento);
-			}
-		}
-		else {//NESSUN RISULTATO
-			Label label = new Label("NESSUN RISULTATO");
-			label.setStyle(SFONDOBIANCO);
-			label.setMaxWidth(Double.MAX_VALUE);
-			label.setMinHeight(30);
-			label.setWrapText(true);
-			label.setFont(Font.font(FORMATO));
-			label.setAlignment(Pos.CENTER);
-			contenitoreAlimentiTrovati.getChildren().add(label);
-		}
-	}
-	*/
 	private void trovaAlimenti() { //GESTISCE IL TROVA ALIMENTI
 		try {
 			eliminaAlimenti();
@@ -243,20 +185,6 @@ public class InserisciIngredienteViewController implements Observer{
 			impostaLabel();
 		}
 	}
-	
-	/*
-	public void setNome(String text) {  //SETTERS PER SALVARE LO STATO DEL NUOVA RICETTA VIEW
-		this.nome = text;
-	}
-	
-	public void setDescrizione(String text) {
-		this.descrizione = text;
-	}
-	
-	public void setDifficolta(int i) {
-		this.difficolta = i;
-	}
-	*/
 	
 	public VBox getContenitoreIngredienti() {  //RESTITUISCE CONTENITORE INGREDIENTI
 		return contenitoreIngredienti;

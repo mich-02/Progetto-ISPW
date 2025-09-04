@@ -44,7 +44,7 @@
             </Pane>
             <HBox alignment="CENTER" layoutX="-6.0" layoutY="568.0" prefHeight="100.0" prefWidth="229.0" spacing="35.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#caricaViewDispensa" prefHeight="29.0" prefWidth="145.0" style="-fx-background-radius: 10; -fx-background-color: rgba(97, 194, 107, 1);" text="Chiudi ricetta" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#caricaViewTrovaRicette" prefHeight="29.0" prefWidth="145.0" style="-fx-background-radius: 10; -fx-background-color: rgba(97, 194, 107, 1);" text="Chiudi ricetta" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="15.0" />
                      </font>

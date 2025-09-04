@@ -1,6 +1,6 @@
 package com.foodie.bean;
 
-public class AlimentoBean {  //BEAN DELLA CLASSE ALIMENTO
+public class AlimentoBean {  
 	
 	private String nome;
     private String quantita;  

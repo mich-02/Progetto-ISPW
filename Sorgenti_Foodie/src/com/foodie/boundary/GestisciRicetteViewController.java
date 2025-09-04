@@ -90,33 +90,6 @@ public class GestisciRicetteViewController {
 		}
 	}
 	
-	/* //old
-	public void caricaViewContenutoRicetta(String nomeRicetta) {  //CARICA VIEW CONTENUTO RICETTA
-		UtenteBean utenteBean = adattatoreLoginController.ottieniUtente();
-		RicettaBean ricettaSelezionata = adattatoreTrovaRicettaController.apriLaRicetta(nomeRicetta,utenteBean.getUsername());
-		try {
-			if(!bottoneModifica) { //resettare il bottone modifica se attivo
-				bottoneModifica=true;
-				eliminaLabel.setFont(Font.font(FORMATO,30));
-				eliminaLabel.setText("");
-			}
-			
-			ViewLoader.caricaView(ViewInfo.CONTENUTO_RIC);
-//			FXMLLoader loader = new FXMLLoader(getClass().getResource("ContenutoRicettaChef.fxml"));
-//	        ContenutoRicettaChefViewController contenutoRicettaChefViewController = ContenutoRicettaChefViewController.ottieniIstanza();
-//	        loader.setController(contenutoRicettaChefViewController);
-//	        Parent root = loader.load();
-	        caricaDatiRicetta(ricettaSelezionata,contenutoRicettaChefViewController);  //METODO PER POPOLARE GRAFICAMENTE I DATI DELLA RICETTA
-	        contenutoRicettaChefViewController.setPrimaryStage(primaryStage);
-	        Scene nuovaScena = new Scene(root);
-	        primaryStage.setScene(nuovaScena);
-	        primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	*/
-	
 	private void caricaViewContenutoRicetta(String nomeRicetta) {  //CARICA VIEW CONTENUTO RICETTA
 		UtenteBean utenteBean = loginController.getUtente();
 		RicettaBean ricettaBean = new RicettaBean();
@@ -137,25 +110,6 @@ public class GestisciRicetteViewController {
 			contenutoRicettaChefViewController.initData(ricettaSelezionata);
 
 	}
-
-	/*//spostato in ContenutoRicettaController
-	private void caricaDatiRicetta(RicettaBean ricettaBean, ContenutoRicettaChefViewController contenutoRicettaChefViewController) {
-		Label labelNome = contenutoRicettaChefViewController.getNome();  //METODO CHIAMATO PER CARICARE I DATI DELLA RICETTA
-		Label labelDescrizione = contenutoRicettaChefViewController.getDescrizione();
-		VBox contenitoreIngredienti= contenutoRicettaChefViewController.getContenitoreIngredienti();
-		labelNome.setText(ricettaBean.getNome());
-		labelDescrizione.setText(ricettaBean.getDescrizione());
-		for(int i=0;i<ricettaBean.getIngredienti().size();i++) {
-			Label label=new Label(ricettaBean.getIngredienti().get(i).getNome()+": "+ricettaBean.getQuantita().get(i));
-			label.setStyle("-fx-background-color: white;");
-			label.setMaxWidth(Double.MAX_VALUE);
-			label.setMinHeight(50);
-			label.setWrapText(true);
-			label.setFont(Font.font(FORMATO,20));
-			contenitoreIngredienti.getChildren().add(label);
-		}
-	}
-	*/
 	
 	@FXML
 	private void modifica(ActionEvent event) {  //GESTISCE IL PULSANTE ELIMINA
@@ -218,7 +172,7 @@ public class GestisciRicetteViewController {
 	
 	private void popolaLabel(int indiceLabel,HBox contenitoreRicetta) {
 		String nomeRicetta = "";
-		for (Node labelNode : contenitoreRicetta.getChildren()) {	  //POPOLA LABEL USATO PER EVITARE SMELL COMPLESSITA'        
+		for (Node labelNode : contenitoreRicetta.getChildren()) { //POPOLA LABEL USATO PER EVITARE SMELL COMPLESSITA'        
             Label label = (Label) labelNode;
             if(indiceLabel==1)
             	nomeRicetta = label.getText();

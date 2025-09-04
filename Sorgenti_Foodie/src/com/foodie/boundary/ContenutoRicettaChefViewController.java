@@ -5,13 +5,12 @@ import javafx.fxml.FXML;
 import com.foodie.bean.RicettaBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
-
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-//import javafx.stage.Stage;
+
 
 public class ContenutoRicettaChefViewController {
 	
@@ -24,18 +23,7 @@ public class ContenutoRicettaChefViewController {
 	private VBox contenitoreIngredienti;
 	
 	private RicettaBean ricettaSelezionata;
-	
-	/*
-	private ContenutoRicettaChefViewController() {	
-	}
-	
-	public static synchronized ContenutoRicettaChefViewController ottieniIstanza() { //SINGLETON	
-		if(istanza == null) {
-			istanza = new ContenutoRicettaChefViewController();
-		}
-		return istanza;
-	}
-	*/
+
 	
 	public Label getNome() {  //RESTITUISCO LABEL E INFINE VBOX
 		return nome;
@@ -51,19 +39,16 @@ public class ContenutoRicettaChefViewController {
 	
 	@FXML  
     private void tornaAlLogin(MouseEvent event) { 
-        //caricaView.tornaAlLogin(primaryStage);
         ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     }
 	
 	@FXML
     private void caricaViewGestisciRicette(ActionEvent event) {  //CARICA VIEW GESTISCI RICETTE
-        //caricaView.caricaViewGestisciRicette(primaryStage);
 		ViewLoader.caricaView(ViewInfo.GESTISCI_RICETTE1);
     }
 	
 	@FXML
 	private void caricaViewRicetta(ActionEvent event) {  //CARICA VIEW NUOVA RICETTA DA CREARE
-		//caricaView.caricaViewRicetta(primaryStage);
 		ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
 	}
 	

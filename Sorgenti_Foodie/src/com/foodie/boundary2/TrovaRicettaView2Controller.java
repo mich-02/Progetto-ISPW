@@ -62,12 +62,12 @@ public class TrovaRicettaView2Controller {
 	}
 	
 	@FXML
-    private void caricaViewAlimenti(ActionEvent event) {  //CARICA VIEW TROVA ALIMENTI
+    private void caricaViewAlimenti(ActionEvent event) {  
 		ViewLoader.caricaView(ViewInfo.AGGIUNGI_ALIMENTO);
     }
 	
 	@FXML
-	private void trovaRicette(ActionEvent event) {  //METODO PER TROVARE RICETTE
+	private void trovaRicette(ActionEvent event) {  
 		contenitoreRicette.getChildren().clear();
 		List<RicettaBean> ricetteTrovate= null;
 		String difficolta="";

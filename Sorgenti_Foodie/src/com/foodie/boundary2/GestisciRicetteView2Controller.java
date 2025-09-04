@@ -2,7 +2,6 @@ package com.foodie.boundary2;
 
 import java.util.List;
 import java.util.logging.Logger;
-
 import com.foodie.bean.AlimentoBean;
 import com.foodie.bean.RicettaBean;
 import com.foodie.bean.UtenteBean;
@@ -10,20 +9,13 @@ import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.LoginController;
 import com.foodie.controller.PubblicaRicettaController;
-import com.foodie.controller.TrovaRicettaController;
-
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 public class GestisciRicetteView2Controller {
-	//private static GestisciRicetteView2Controller istanza;
-//	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
-//	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
-//	private ControllerAdapter adattatoreLoginController = factory.creaLoginAdapter();
 	private LoginController loginController = new LoginController();
 	private PubblicaRicettaController pubblicaRicettaontroller = new PubblicaRicettaController();
 	private static final String FORMATO = "Arial";
@@ -32,18 +24,6 @@ public class GestisciRicetteView2Controller {
 	private VBox contenitoreRicette;
 	@FXML
 	private Label eliminaLabel;
-	
-	/*
-	private GestisciRicetteView2Controller() {
-	}
-	
-	public static synchronized GestisciRicetteView2Controller ottieniIstanza() {  //SINGLETON METODO PER OTTENERE L'ISTANZA
-		if(istanza == null) {
-			istanza = new GestisciRicetteView2Controller();
-		}
-		return istanza;
-	}
-	*/
 	
 	@FXML
 	public void initialize() {
@@ -148,14 +128,12 @@ public class GestisciRicetteView2Controller {
 	}
 	
 	@FXML
-    private void tornaAlLogin() {  //CARICA VIEW LOGIN
-        //caricaView2.tornaAlLogin(primaryStage);
+    private void tornaAlLogin() {  
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     }
 	
 	@FXML
-	private void caricaViewRicetta() {  //CARICA VIEW RICETTA 
-		//caricaView2.caricaViewRicetta(primaryStage);
+	private void caricaViewRicetta() {   
 		ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA2);
 	}
 

@@ -4,9 +4,6 @@ import java.io.Serializable;
 
 public class AlimentoSerializzabile implements Serializable{  //COME CLASSE ALIMENTO MA E' POSSIBILE SERIALIZZARLO
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String nome;
 	

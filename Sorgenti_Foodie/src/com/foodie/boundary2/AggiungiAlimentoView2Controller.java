@@ -29,17 +29,17 @@ public class AggiungiAlimentoView2Controller {
 	private VBox contenitoreAlimentiTrovati;
 	
 	@FXML
-    private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
+    private void tornaAlLogin(MouseEvent event) {  
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     }
 	
 	@FXML
-	private void caricaViewDispensa(ActionEvent event) {  //CARICA VIEW DISPENSA
+	private void caricaViewDispensa(ActionEvent event) {  
 		ViewLoader.caricaView(ViewInfo.DISPENSA2);
 	}
 	
 	@FXML
-    private void caricaViewTrovaRicetta(ActionEvent event) {  //CARICA VIEW TROVA RICETTA
+    private void caricaViewTrovaRicetta(ActionEvent event) {  
 		ViewLoader.caricaView(ViewInfo.TROVA_RICETTE2);
     }
 	
@@ -52,39 +52,7 @@ public class AggiungiAlimentoView2Controller {
 			eliminaAlimenti();
 		}
 	}
-	/*
-	private void trovaAlimenti() {  //METODO TROVA ALIMENTI
-		eliminaAlimenti();
-		AlimentoBean alimentoBean = new AlimentoBean();
-		alimentoBean.setNome(barraDiRicerca.getText());
-		List<AlimentoBean> alimentiBeanTrovati = trovaRicettaController.trovaAlimenti(alimentoBean);
-		if(!alimentiBeanTrovati.isEmpty()) {
-			for(AlimentoBean a: alimentiBeanTrovati) {
-				Label labelAlimento = new Label(a.getNome());
-				labelAlimento.setStyle("-fx-background-color: white;");
-				labelAlimento.setMaxWidth(Double.MAX_VALUE);
-				labelAlimento.setMinHeight(30);
-				labelAlimento.setWrapText(true);
-				labelAlimento.setFont(Font.font("Arial"));
-				labelAlimento.setAlignment(Pos.CENTER);  //LI RENDE CLICCABILI
-				labelAlimento.setOnMouseClicked(event2->{salvaAlimento(labelAlimento.getText());eliminaAlimenti();});
-				contenitoreAlimentiTrovati.getChildren().add(labelAlimento);
-			}
-		}
-		else {
-			Label label = new Label("NESSUN RISULTATO");
-			label.setStyle("-fx-background-color: white;");
-			label.setMaxWidth(Double.MAX_VALUE);
-			label.setMinHeight(30);
-			label.setWrapText(true);
-			label.setFont(Font.font("Arial"));
-			label.setAlignment(Pos.CENTER);
-			contenitoreAlimentiTrovati.getChildren().add(label);
-		}
-		
-	}
-	*/
-	
+
 	private void trovaAlimenti() {  //METODO TROVA ALIMENTI
 		try {
 			eliminaAlimenti();

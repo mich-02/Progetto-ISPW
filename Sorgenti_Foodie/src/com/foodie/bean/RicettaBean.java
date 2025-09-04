@@ -2,7 +2,7 @@ package com.foodie.bean;
 
 import java.util.List;
 
-public class RicettaBean {  //BEAN DELLA CLASSE RICETTA
+public class RicettaBean {  
 	
 	private String nome;
 	private String descrizione;
@@ -10,9 +10,9 @@ public class RicettaBean {  //BEAN DELLA CLASSE RICETTA
 	private List<AlimentoBean> ingredienti;
 	private String autore;
 	private List<String> quantita;
-    private Boolean publish;   //MODIFICATO DA BALDUZ
+    private Boolean publish;   
 	
-	public String getNome() {  //GETTERS E SETTERS DEGLI ATTRIBUTI
+	public String getNome() {  
 		return nome;
 	}
 	
@@ -60,11 +60,11 @@ public class RicettaBean {  //BEAN DELLA CLASSE RICETTA
 		this.quantita = quantita;
 	}
 
-    public Boolean getPublish() {  //MODIFICATO DA BALDUZ
+    public Boolean getPublish() {  
         return publish;
-    }   //AGGIUNTO DA BALDUZ
+    }   
 
-    public void setPublish(Boolean publish) {  //MODIFICATO DA BALDUZ
+    public void setPublish(Boolean publish) {  
         this.publish = publish;
-    }   //AGGIUNTO DA BALDUZ
+    }  
 }

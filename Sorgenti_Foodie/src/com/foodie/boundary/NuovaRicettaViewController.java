@@ -41,78 +41,8 @@ public class NuovaRicettaViewController {
 	@FXML
 	private Button pubblica;
 	
-	//private VBox ingredientiRicetta;
-	
-	/*
-	public void initData(VBox contenitoreIngredienti) {
-		this.ingredientiRicetta = contenitoreIngredienti;
-	}
-	*/
-	
-	/*
-	public void aggiornaView(String nome, String descrizione, int diff) {  //AGGIORNA I VARI CAMPI
-		this.nome.setText(nome);
-		this.descrizione.setText(descrizione);
-		switch(diff) {
-		case 1:
-				facile.setSelected(true);
-				disabilitaPulsanti(null);
-				break;
-		case 2:
-				medio.setSelected(true);
-				disabilitaPulsanti(null);
-				break;
-		case 3:
-				difficile.setSelected(true);
-				disabilitaPulsanti(null);
-				break;
-		default:
-			logger.severe("difficoltà non riconosciuta");
-			disabilitaPulsanti(null);
-		}
-	}
-	*/
-	
-	/*
 	@FXML
 	private void caricaViewIngredienti(ActionEvent event) {  // tasto in basso a sx
-		InserisciIngredienteViewController inserisciIngredienteViewController = new InserisciIngredienteViewController();
-		if(nome.getText()!=null) {  //PASSA LO STATO ATTUALE PER RIPOPOLARLO IN SEGUITO
-			inserisciIngredienteViewController.setNome(nome.getText());
-		}
-		if(descrizione.getText()!=null) {
-			inserisciIngredienteViewController.setDescrizione(descrizione.getText());
-		}
-		if(facile.isSelected()) {
-			inserisciIngredienteViewController.setDifficolta(1);
-		}
-		else if(medio.isSelected()) {
-			inserisciIngredienteViewController.setDifficolta(2);
-		}
-		else if(difficile.isSelected()) {
-			inserisciIngredienteViewController.setDifficolta(3);
-		}
-		
-		try {
-          FXMLLoader loader = new FXMLLoader(getClass().getResource("InserisciIngredienteView.fxml"));
-          loader.setController(inserisciIngredienteViewController);
-          controller.registraOsservatore(inserisciIngredienteViewController, 2);
-          Parent root = loader.load();
-          inserisciIngredienteViewController.setPrimaryStage(primaryStage);
-          inserisciIngredienteViewController.aggiornaView();
-          Scene nuovaScena = new Scene(root);
-          primaryStage.setScene(nuovaScena);
-          primaryStage.show();
-		} catch (Exception e) {
-          e.printStackTrace(); 
-      }	
-	}
-	*/ //old
-	
-	@FXML
-	private void caricaViewIngredienti(ActionEvent event) {  // tasto in basso a sx
-		//InserisciIngredienteViewController inserisciIngredienteViewController = loader.getController();
-		//inserisciIngredienteViewController.initData();
 		ViewLoader.caricaView(ViewInfo.INSERISCI_INGR);
 	}
 	
@@ -193,8 +123,6 @@ public class NuovaRicettaViewController {
 		ricettaBean.setDifficolta(diff);
 		UtenteBean utenteBean = loginController.getUtente();
 		ricettaBean.setAutore(utenteBean.getUsername());
-		//VBox ingredienti= InserisciIngredienteViewController.ottieniIstanza().getContenitoreIngredienti();
-		//VBox ingredienti = ingredientiRicetta;
 		ArrayList<AlimentoBean> alimentiBean = pubblicaRicettacontroller.mostraIngredientiRicetta();
 		if(!alimentiBean.isEmpty()) {
 		

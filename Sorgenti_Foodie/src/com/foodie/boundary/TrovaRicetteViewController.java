@@ -76,28 +76,6 @@ public class TrovaRicetteViewController {
 		}
 	}
 	
-	/*
-	private void trovaRicette() {  //AGGIORNO DINAMICAMENTE L'FXML TROVANDO SUBITO LE RICETTE
-		int count = 0;
-		VBox contenitoreRicette = getContenitoreRicette();
-		for(int i=1;i<4;i++) {  //TROVO TUTTE LE DIFFICOLTA'
-			if(creaRicetteTrovate(i) == -1) {
-				count++;
-			}
-		}
-		if(count == 3) {  //SE NON TROVO 3 VOLTE RISULTATI
-			Label label = new Label("NESSUN RISULTATO");
-			label.setStyle("-fx-background-color: rgba(217, 217, 217, 0.75);-fx-border-color: black;");
-			label.setMaxWidth(Double.MAX_VALUE);
-			label.setMinHeight(110);
-			label.setWrapText(true);
-			label.setFont(Font.font(FORMATO,50));
-			label.setAlignment(Pos.CENTER);
-			contenitoreRicette.getChildren().add(label);
-		}
-	}
-	*/
-	
 	private void trovaRicette() {  //AGGIORNO DINAMICAMENTE L'FXML TROVANDO SUBITO LE RICETTE
 		int count = 0;
 		VBox contenitoreRicette = getContenitoreRicette();
@@ -142,7 +120,7 @@ public class TrovaRicetteViewController {
 				labelAutore.setMinHeight(65);
 				labelAutore.setFont(Font.font(FORMATO,20));
 				labelAutore.setAlignment(Pos.CENTER);
-				String difficolta="";
+				String difficolta = "";
 				switch(difficoltaInt) {
 				case 1:
 						difficolta = "facile";
@@ -173,60 +151,6 @@ public class TrovaRicetteViewController {
 			return -1; //SE NON TROVATE
 		}
 	}
-	
-	/*
-	private int creaRicetteTrovate(int difficoltaInt) {  //TROVA LE RICETTE E LE MOSTRA GRAFICAMENTE
-		List<RicettaBean> ricetteTrovate= null;
-		ricetteTrovate = trovaRicettaController.trovaRicetteUtente(difficoltaInt);
-		if(!ricetteTrovate.isEmpty()) {
-			for(RicettaBean r: ricetteTrovate) {  //PER OGNI RICETTA CREA PARTI GRAFICHE
-				HBox contenitoreRicettaSingola = new HBox();
-				contenitoreRicettaSingola.setAlignment(Pos.CENTER_LEFT);
-				contenitoreRicettaSingola.setStyle("-fx-background-color: rgba(217, 217, 217, 0.75);-fx-border-color: black;");
-				contenitoreRicettaSingola.setMinHeight(110);
-				contenitoreRicettaSingola.setMaxWidth(Double.MAX_VALUE);
-				Label labelNome = new Label(r.getNome());
-				labelNome.setMinWidth(313);
-				labelNome.setMinHeight(65);
-				labelNome.setFont(Font.font(FORMATO,20));
-				labelNome.setAlignment(Pos.CENTER);
-				Label labelAutore = new Label(r.getAutore());
-				labelAutore.setMinWidth(313);
-				labelAutore.setMinHeight(65);
-				labelAutore.setFont(Font.font(FORMATO,20));
-				labelAutore.setAlignment(Pos.CENTER);
-				String difficolta="";
-				switch(difficoltaInt) {
-				case 1:
-						difficolta = "facile";
-						break;
-				case 2:
-						difficolta = "intermedio";
-						break;
-				case 3:
-						difficolta = "difficile";
-						break;
-				default:
-					logger.severe("difficoltà non riconosciuta");
-					contenitoreRicette.getChildren().clear();
-					return -1;
-				}
-				Label labelDifficolta = new Label(difficolta);
-				labelDifficolta.setMinWidth(313);
-				labelDifficolta.setMinHeight(65);
-				labelDifficolta.setFont(Font.font(FORMATO,20));
-				labelDifficolta.setAlignment(Pos.CENTER);
-				contenitoreRicettaSingola.getChildren().addAll(labelNome,labelAutore,labelDifficolta);
-				contenitoreRicette.getChildren().add(contenitoreRicettaSingola);
-			}
-			impostaHBox();  //RENDO RICETTE CLICCABILI
-			return 1;  //SE TROVATA ALMENO 1
-		}
-		else {
-			return -1; //SE NON TROVATE
-		}
-	}
-	*/
 	
 	private void impostaHBox() {  //METODO CHE IMPOSTA CLICCABILI LE RICETTE TROVATE
 		contenitoreRicette.getChildren().forEach(node -> {  //E' LA PARTE DI SETTAGGIO DELLE LABEL CLICCABILI

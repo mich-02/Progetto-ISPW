@@ -51,30 +51,6 @@ public class DispensaUtenteViewController implements Observer {
 		trovaRicettaController.svuotaDispensa();
 	}
 	
-	/*
-	@FXML
-	private void caricaViewTrovaRicetta(ActionEvent event) {  //CARICA LA VIEW TROVA RICETTA
-		try {
-			if(!bottoneModifica) { //resettare il bottone modifica se attivo
-				bottoneModifica=true;
-				labelDispensa.setFont(Font.font(FORMATO,30));
-				labelDispensa.setText(DISPENSA);
-			}
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("TrovaRicetteView.fxml"));
-            TrovaRicetteViewController trovaRicetteViewController = TrovaRicetteViewController.ottieniIstanza();
-            loader.setController(trovaRicetteViewController);
-            Parent root = loader.load();
-            trovaRicette(trovaRicetteViewController);  //TROVO LE RICETTE SUBITO
-            trovaRicetteViewController.setPrimaryStage(primaryStage);
-            Scene nuovaScena = new Scene(root);
-            primaryStage.setScene(nuovaScena);
-            primaryStage.show();
-        } catch (Exception e) {
-            e.printStackTrace(); 
-        }
-	}
-	*/ //old
-	
 	@FXML
 	private void caricaViewTrovaRicetta(ActionEvent event) {  //CARICA LA VIEW TROVA RICETTA
 		
@@ -85,28 +61,6 @@ public class DispensaUtenteViewController implements Observer {
 			}
 			ViewLoader.caricaView(ViewInfo.TROVA_RICETTE);
 	}
-	
-	/*
-	private void trovaRicette(TrovaRicetteViewController trovaRicetteViewController) {  //AGGIORNO DINAMICAMENTE L'FXML TROVANDO SUBITO LE RICETTE 									//LE RICETTE TROVATE SONO PER TUTTE LE DIFFICOLTA' INIZIALMENTE
-		int count=0;
-		VBox contenitoreRicette=trovaRicetteViewController.getContenitoreRicette();
-		for(int i=1;i<4;i++) {  //TROVO TUTTE LE DIFFICOLTA'
-			if(trovaRicetteViewController.creaRicetteTrovate(i)==-1) {
-				count++;
-			}
-		}
-		if(count==3) {  //SE NON TROVO 3 VOLTE RISULTATI
-			Label label=new Label("NESSUN RISULTATO");
-			label.setStyle("-fx-background-color: rgba(217, 217, 217, 0.75);-fx-border-color: black;");
-			label.setMaxWidth(Double.MAX_VALUE);
-			label.setMinHeight(110);
-			label.setWrapText(true);
-			label.setFont(Font.font(FORMATO,50));
-			label.setAlignment(Pos.CENTER);
-			contenitoreRicette.getChildren().add(label);
-		}
-	}
-	*/
 	
 	@FXML
 	private void tornaAlLogin(MouseEvent event) {  
@@ -123,38 +77,7 @@ public class DispensaUtenteViewController implements Observer {
 			eliminaAlimenti();
 		}
 	}
-	/*
-	private void trovaAlimenti() {  //GESTISCE IL TROVA ALIMENTI
-			eliminaAlimenti();
-			AlimentoBean alimentoBean = new AlimentoBean();
-			alimentoBean.setNome(barraDiRicerca.getText());
-			List<AlimentoBean> alimentiBeanTrovati = trovaRicettaController.trovaAlimenti(alimentoBean);
-			if(!alimentiBeanTrovati.isEmpty()) {
-				for(AlimentoBean a: alimentiBeanTrovati) {
-					Label labelAlimento = new Label(a.getNome());
-					labelAlimento.setStyle(SFONDOBIANCO);
-					labelAlimento.setMaxWidth(Double.MAX_VALUE);
-					labelAlimento.setMinHeight(30);
-					labelAlimento.setWrapText(true);
-					labelAlimento.setFont(Font.font(FORMATO));
-					labelAlimento.setAlignment(Pos.CENTER);
-					labelAlimento.setOnMouseClicked(event2->{salvaAlimento(labelAlimento.getText());eliminaAlimenti();});
-					contenitoreAlimentiTrovati.getChildren().add(labelAlimento);
-				}
-			}
-			else {  //NESSUN RISULTATO
-				Label label = new Label("NESSUN RISULTATO");
-				label.setStyle(SFONDOBIANCO);
-				label.setMaxWidth(Double.MAX_VALUE);
-				label.setMinHeight(30);
-				label.setWrapText(true);
-				label.setFont(Font.font(FORMATO));
-				label.setAlignment(Pos.CENTER);
-				contenitoreAlimentiTrovati.getChildren().add(label);
-			}
-			
-	}
-	*/
+	
 	private void trovaAlimenti() {  //GESTISCE IL TROVA ALIMENTI
 		try {
 			eliminaAlimenti();

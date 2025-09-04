@@ -34,11 +34,11 @@ public class PubblicaRicettaController {
 		
 	}
 	
-	public static void creaRicetta() {  //CREA LA RICETTA
+	public static void creaRicetta() { 
 		ricetta = new Ricetta();
 	}
 	
-	public Ricetta getRicetta() {  //RESTITUISCE L'ISTANZA DELLA RICETTA
+	public Ricetta getRicetta() {  
 		return ricetta;
 	}
 	
@@ -80,9 +80,7 @@ public class PubblicaRicettaController {
 	
 	private void notificaModeratore() {  //NOTIFICA IL MODERATORE DOPO AVER COMPILATO
 		logger.info("MODERATORE NOTIFICATO");
-		//ricetteDaApprovare.aggiungiRicettaDaVerificare(ricetta);
 		salvaRicettaDaApprovare(ricetta);
-		//moderatore.aggiungiRicettaDaVerificare(ricetta);
 		creaRicetta(); //resetto la ricetta corrente
 	}
 	

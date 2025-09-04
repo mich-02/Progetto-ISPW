@@ -83,34 +83,12 @@ public class LoginViewController {
 		credenzialiBean.setPassword(password);
 		int tipo = loginController.effettuaLogin(credenzialiBean); //ritorna il tipo dell'utenza 
 		if(tipo != -1) {
-		/*
-		String ruolo = ""; 
-		if(tipo != -1) {
-			if(tipo == 0) {
-				ruolo = "Standard";		
-			}
-			else if(tipo == 1){
-				ruolo = "Chef";
-			}
-			else {
-				ruolo = "Moderatore";
-			}
-			*/
-		//loginController.setUtente(username.toLowerCase(), ruolo); 
-			
 			if(interfaccia1RadioButton.isSelected()) { // verifico la GUI da attivare 
 				interfaccia = 1;
 			} else {
 				interfaccia = 2;
 			}
 			String viewIniziale = loginController.ottieniView(interfaccia);
-			/*
-			if(tipo == 0) {
-				//Dispensa dispensa = Dispensa.ottieniIstanza();
-            	//dispensa.svuotaDispensa();
-            //	loginController.caricaDispense();
-			}
-			*/
 			ViewLoader.caricaView(ViewInfo.fromFxmlPath(viewIniziale));
 		} else {  	//se tipo == -1 errore nel login
 			loginMessageLabel.setText("credenziali errate. Se non hai ancora un account, registrati.");

@@ -47,7 +47,6 @@ public class ModeratoreViewController implements Observer {
 	    }
 	}
 
-	
 	@Override
 	public void aggiornaView() {  //AGGIORNA VIEW IN BASE ALLE RICHIESTE DA APPROVARE DEL MODERATORE
 		contenitoreRicetteDaApprovare.getChildren().clear();

@@ -62,14 +62,12 @@ public class NuovaRicettaView2Controller implements Observer{
 	
 	@FXML
 	public void initialize() {
-		//PubblicaRicettaController.creaRicetta();
 		pubblicaRicettaController.registraOsservatoreRicetta(this);
 		aggiornaView();
 	}
 	
 	@FXML
 	private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
-		//caricaView2.tornaAlLogin(primaryStage);
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
 	
@@ -225,42 +223,9 @@ public class NuovaRicettaView2Controller implements Observer{
 		else {
 			this.quantita.setPromptText("QUANTITA?");
 		}
-	}
-	/*
-	private void trovaAlimenti() {  //TROVA GLI ALIMENTI
-		eliminaAlimenti();
-		AlimentoBean alimentoBean = new AlimentoBean();
-		alimentoBean.setNome(barraDiRicerca.getText());
-		List<AlimentoBean> alimentiBeanTrovati = trovaRicettaController.trovaAlimenti(alimentoBean);
-		if(!alimentiBeanTrovati.isEmpty()) {
-			quantita.setDisable(false);
-			for(AlimentoBean a: alimentiBeanTrovati) {
-				Label labelAlimento = new Label(a.getNome());
-				labelAlimento.setStyle(SFONDOBIANCO);
-				labelAlimento.setMaxWidth(Double.MAX_VALUE);
-				labelAlimento.setMinHeight(30);
-				labelAlimento.setWrapText(true);
-				labelAlimento.setFont(Font.font(FORMATO));
-				labelAlimento.setAlignment(Pos.CENTER);  //LI RENDE CLICCABILI
-				labelAlimento.setOnMouseClicked(event2->salvaAlimento(labelAlimento.getText(),quantita.getText()));
-				contenitoreAlimentiTrovati.getChildren().add(labelAlimento);
-			}
-		}
-		else {  //NESSUN RISULTATO
-			Label label = new Label("NESSUN RISULTATO");
-			label.setStyle(SFONDOBIANCO);
-			label.setMaxWidth(Double.MAX_VALUE);
-			label.setMinHeight(30);
-			label.setWrapText(true);
-			label.setFont(Font.font(FORMATO));
-			label.setAlignment(Pos.CENTER);
-			contenitoreAlimentiTrovati.getChildren().add(label);
-		}
-	}
-	*/
+	}	
 	
-	
-	private void trovaAlimenti() {  //TROVA GLI ALIMENTI
+	private void trovaAlimenti() {  
 		
 		try {
 			eliminaAlimenti();
@@ -292,8 +257,6 @@ public class NuovaRicettaView2Controller implements Observer{
 		}
 	}
 
-
-	
 	@Override
 	public void aggiornaView() {  //AGGIORNA GLI INGREDIENTI IN FUNZIONE DEI CAMBIAMENTI DELLA RICETTA
 		ingredienti.getChildren().clear();

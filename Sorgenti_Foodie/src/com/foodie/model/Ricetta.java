@@ -16,8 +16,8 @@ public class Ricetta extends SubjectPatternObserver {  //OSSERVATO CONCRETO, EST
 
 	
 	public Ricetta() {
-		this.ingredienti= new ArrayList<>();
-		this.quantita=new ArrayList<>();
+		this.ingredienti = new ArrayList<>();
+		this.quantita = new ArrayList<>();
 	}
 	
 	public Ricetta(String nome, String descrizione, int difficolta, List<Alimento> ingredienti, String autore, List<String> quantita){

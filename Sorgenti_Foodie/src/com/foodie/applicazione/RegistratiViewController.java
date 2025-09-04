@@ -28,7 +28,7 @@ public class RegistratiViewController {
     private RadioButton chefRadioButton;
     @FXML
     private RadioButton moderatoreRadioButton;
-    
+   
     private ToggleGroup userTypeToggleGroup;
     
     @FXML
@@ -82,7 +82,7 @@ public class RegistratiViewController {
    }
    
    @FXML
-   public void registratiButtonOnAction(ActionEvent event) {  //CHIAMA I METODI PER REGISTRARSI
+   public void registratiButtonOnAction(ActionEvent event) {  //chiama i metodi per registrarsi
     	handleRegistration();
     	registrazioneUser();	
    }
@@ -126,52 +126,4 @@ public class RegistratiViewController {
 	    });
 	    pause.play();
 	}
-
-   
-   /*
-   private void registrazioneUser() {
-    	    	
-    	// Prendo input utente e verifico che non sia vuoto
-    	String nome = nomeTextField.getText().trim();
-    	String cognome = cognomeTextField.getText().trim();
-    	String username = usernameTextField.getText().trim();
-    	String password = setPasswordField.getText().trim();
-    	int role = ruolo;
-    	
-    	CredenzialiBean credenzialiBean = new CredenzialiBean();
-    	
-    	if (nome.isEmpty() || cognome.isEmpty() || username.isEmpty() || password.isEmpty()) {
-            // Uno o più campi sono vuoti
-    		esitoRegistrazioneLabel.setText("Per favore, completa tutti i campi");
-            return; // Interrompi l'esecuzione se ci sono campi vuoti
-        }
-        credenzialiBean.setUsername(username);
-    	// Controllo se l'username è già presente nella base di dati
-        if (controller.controllaUsername(credenzialiBean) == 0) {
-        //if (usernameEsistente(username) == 0) {
-            esitoRegistrazioneLabel.setText("L'username è già in uso. Scegli un altro username.");
-            return; // Interrompi l'esecuzione se l'username è già in uso
-        }
-        
-        credenzialiBean.setNome(nome);
-        credenzialiBean.setCognome(cognome);
-        credenzialiBean.setRuolo(role);
-        credenzialiBean.setPassword(password);
-    	controller.registraUtente(credenzialiBean);
-    	
-    	esitoRegistrazioneLabel.setText("Registrazione andata a buon fine.");
-    	PauseTransition pause = new PauseTransition(Duration.seconds(2));
-    	pause.setOnFinished(event -> {
-    		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
-    	});
-    		pause.play();
-    }
-    */
-
-   /*
-	private int usernameEsistente(String username) {  //METODO CHE CONTROLLA SE L'USERNAME E' ESISTENTE
-		return controller.controllaUsername(username);
-	}
-	*/
-	
 }

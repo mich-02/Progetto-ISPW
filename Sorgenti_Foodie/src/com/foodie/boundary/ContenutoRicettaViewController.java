@@ -1,23 +1,18 @@
 package com.foodie.boundary;
 
 import javafx.fxml.FXML;
-
 import com.foodie.bean.RicettaBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
-
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-//import javafx.stage.Stage;
+
 
 public class ContenutoRicettaViewController {
 	
-//	private static ContenutoRicettaViewController istanza;
-//	private Stage primaryStage;
-//	private CaricaView caricaView= CaricaView.ottieniIstanza();
 	@FXML
 	private Label nome;
 	@FXML
@@ -27,33 +22,18 @@ public class ContenutoRicettaViewController {
 	
 	private static final String FORMATO = "Arial";
 	
-	/*
-	private ContenutoRicettaViewController() {	
-	}
-	
-	public static synchronized ContenutoRicettaViewController ottieniIstanza() { //SINGLETON
-		if(istanza == null) {
-			istanza = new ContenutoRicettaViewController();
-		}
-		return istanza;
-	}
-	*/
-	
-	/*
-	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
-		this.primaryStage = primaryStage;
-	}
-	*/
-	
 	@FXML
 	public void caricaViewDispensa(ActionEvent event) {  //CARICA VIEW DISPENSA
-		//caricaView.caricaViewDispensa(primaryStage);
 		ViewLoader.caricaView(ViewInfo.DISPENSA_UTENTE);
 	}
 	
 	@FXML
+	public void caricaViewTrovaRicette(ActionEvent event) {
+		ViewLoader.caricaView(ViewInfo.TROVA_RICETTE);
+	}
+	
+	@FXML
 	public void tornaAlLogin(MouseEvent event) {  
-		//caricaView.tornaAlLogin(primaryStage);
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
 	
@@ -70,7 +50,7 @@ public class ContenutoRicettaViewController {
 	}
 	
 	private void caricaDatiRicetta(RicettaBean ricettaBean) {  //POPOLA GRAFICAMENTE IL CONTENUTO DELLA RICETTA NEL FXML
-		Label labelNome= getNome();
+		Label labelNome = getNome();
 		Label labelDescrizione = getDescrizione();
 		VBox contenitoreIngredienti= getContenitoreIngredienti();
 		labelNome.setText(ricettaBean.getNome());

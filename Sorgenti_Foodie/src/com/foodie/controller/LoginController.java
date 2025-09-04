@@ -25,8 +25,7 @@ public class LoginController {
 		utenteDao = DaoFactoryProvider.ottieniIstanza().creaUtenteDao();
 	}
 	
-	private void setUtente(String username, int tipo) {
-	//private void setUtente(String username, String tipo) {  //ISTANZIA L'UTENTE IN FUNZIONE DEL TIPO
+	private void setUtente(String username, int tipo) { //ISTANZIA L'UTENTE IN FUNZIONE DEL TIPO
 		if(tipo == 0) {
 			utente = new Standard(username);
 		}
@@ -40,13 +39,11 @@ public class LoginController {
 		logger.info(username);
 	}
 	
-	public int effettuaLogin(CredenzialiBean credenzialiBean) {
-	//public int effettuaLogin(String username, String pwd) {  
+	public int effettuaLogin(CredenzialiBean credenzialiBean) { 
 		try {
 			int ruolo = utenteDao.validazioneLogin(credenzialiBean.getUsername(), credenzialiBean.getPassword());
 			setUtente(credenzialiBean.getUsername(), ruolo);
 			return ruolo;
-			//return utenteDao.validazioneLogin(credenzialiBean.getUsername(), credenzialiBean.getPassword());
 		} catch (DaoException e) {
 			logger.severe("Errore durante la fase di login: " + e.getMessage());
 			return -1;
@@ -66,8 +63,7 @@ public class LoginController {
 		}
 	}
 	
-	public void registraUtente(CredenzialiBean credenzialiBean) { 
-	//public void registraUtente(String nome,String cognome,String username,int ruolo,String password) {  
+	public void registraUtente(CredenzialiBean credenzialiBean) {  
 		try {
 			utenteDao.registraUtente(credenzialiBean.getNome(), credenzialiBean.getCognome(), credenzialiBean.getUsername(), credenzialiBean.getRuolo(), credenzialiBean.getPassword());
 		} catch (DaoException e) {
