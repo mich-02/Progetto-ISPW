@@ -48,7 +48,7 @@ public class DBConnection { //NOSONAR
                 connection.close();
             }
         } catch (SQLException e) {
-            logger.severe("Errore nella chiusura della connessione: " + e.getMessage());
+            logger.severe("Errore durante la chiusura della connessione: " + e.getMessage());
         }
     }
 }
