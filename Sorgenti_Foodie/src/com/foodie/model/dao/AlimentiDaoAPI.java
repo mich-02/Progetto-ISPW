@@ -29,12 +29,10 @@ public class AlimentiDaoAPI implements AlimentiDao{  //IMPLEMENTAZIONE DAO CHE U
 			//modo buono://li metto in un arrayList di alimenti ignorando tutti i campi tranne food_name
 			return mapper.readValue(nodo.toString(), mapper.getTypeFactory().constructCollectionType(ArrayList.class, Alimento.class));
 		} catch (JsonMappingException e) {
-			e.printStackTrace();
-			logger.severe("PROBLEMA LIBRERIA JSON MAPPING");
+			logger.severe("PROBLEMA LIBRERIA JSON MAPPING: " + e.getMessage());
 			return new ArrayList<>();
 		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-			logger.severe("PROBLEMA LIBRERIA JSON");
+			logger.severe("PROBLEMA LIBRERIA JSON: " + e.getMessage());
 			return new ArrayList<>();
 		}
 	}

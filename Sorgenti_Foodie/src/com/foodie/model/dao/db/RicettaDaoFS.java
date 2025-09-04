@@ -153,7 +153,7 @@ public class RicettaDaoFS implements RicettaDao {
 	    }
 	}
 	
-	private boolean controllaSeEsistente(String nome,String autore) {  //METODO PER VERIFICARE SE LA RICETTA è GIA' PRESENTE NEL FILE
+	private boolean controllaSeEsistente(String nome,String autore) throws DaoException {  //METODO PER VERIFICARE SE LA RICETTA è GIA' PRESENTE NEL FILE
 		ArrayList<String> linee = new ArrayList<>();
 		try(BufferedReader lettore = new BufferedReader(new FileReader(PATH))) {
 	        String linea;
@@ -173,9 +173,7 @@ public class RicettaDaoFS implements RicettaDao {
 	        	return false;
 	        }
 	    } catch (IOException e) {
-	        e.printStackTrace();
-	        logger.severe(MESSAGGIO);
-	        return false;
+	    	throw new DaoException("controllaSeEsistente: " + e.getMessage());
 	    }
 	}
 
