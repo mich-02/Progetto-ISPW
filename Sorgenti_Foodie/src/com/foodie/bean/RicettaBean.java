@@ -60,7 +60,7 @@ public class RicettaBean {
 		this.quantita = quantita;
 	}
 
-    public Boolean getPublish() {  
+    public boolean getPublish() {  
         return publish;
     }   
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class RicetteDaApprovare extends SubjectPatternObserver{  
 
-    private static ArrayList<Ricetta> ricetteDaVerificare = new ArrayList<Ricetta>();
+    private static ArrayList<Ricetta> ricetteDaVerificare = new ArrayList<>();
 
     public void aggiungiRicettaDaVerificare(Ricetta ricetta) {  //AGGIUNGI LE RICETTE DA VERIFICARE
         if(ricetteDaVerificare!=null && !ricetteDaVerificare.contains(ricetta)) {

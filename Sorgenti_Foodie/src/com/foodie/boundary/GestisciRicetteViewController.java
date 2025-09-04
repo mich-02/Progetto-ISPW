@@ -105,9 +105,7 @@ public class GestisciRicetteViewController {
 			
 			FXMLLoader loader = ViewLoader.caricaView(ViewInfo.CONTENUTO_RIC_CHEF);
 			ContenutoRicettaChefViewController contenutoRicettaChefViewController = loader.getController();
-			
-			// Passiamo il bean al controller tramite initData
-			contenutoRicettaChefViewController.initData(ricettaSelezionata);
+			contenutoRicettaChefViewController.caricaDatiRicetta(ricettaSelezionata);
 
 	}
 	

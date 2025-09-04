@@ -115,8 +115,7 @@ public class RicettaDaoFS implements RicettaDao {
 	public void aggiungiRicetta(Ricetta ricetta) throws DaoException, RicettaDuplicataException {
 	    // Controlla se la ricetta esiste già nel file
 	    if (controllaSeEsistente(ricetta.getNome(), ricetta.getAutore())) {
-	        RicettaDuplicataException eccezione = new RicettaDuplicataException();
-	        throw eccezione;
+	        throw new RicettaDuplicataException();
 	    }
 
 	    // Scrittura nel file

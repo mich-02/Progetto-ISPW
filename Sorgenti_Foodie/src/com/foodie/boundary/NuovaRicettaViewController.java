@@ -1,6 +1,6 @@
 package com.foodie.boundary;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -11,7 +11,6 @@ import com.foodie.bean.UtenteBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.LoginController;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -123,7 +122,7 @@ public class NuovaRicettaViewController {
 		ricettaBean.setDifficolta(diff);
 		UtenteBean utenteBean = loginController.getUtente();
 		ricettaBean.setAutore(utenteBean.getUsername());
-		ArrayList<AlimentoBean> alimentiBean = pubblicaRicettacontroller.mostraIngredientiRicetta();
+		List<AlimentoBean> alimentiBean = pubblicaRicettacontroller.mostraIngredientiRicetta();
 		if(!alimentiBean.isEmpty()) {
 			ricettaBean.setIngredienti(alimentiBean);
         	pubblicaRicettacontroller.compilaRicetta(ricettaBean);

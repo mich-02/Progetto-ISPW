@@ -48,7 +48,7 @@ public class TrovaRicettaController {
 		dispensa.svuotaDispensa();
 	}
 	
-	public ArrayList<RicettaBean> trovaRicetteUtente(int difficolta) {
+	public List<RicettaBean> trovaRicetteUtente(int difficolta) {
 		List<Ricetta> ricetteTrovate = null;
 		LoggedUser utente = LoggedUser.ottieniIstanza();
 		try {
@@ -102,7 +102,6 @@ public class TrovaRicettaController {
 		    }
 	    } catch (DaoException e) {
 	    	logger.severe("Errore durante il caricamento della dispensa: " + e.getMessage());
-	        return; // esce dal metodo se c'è un errore
 	    }
 	}
 	
@@ -128,7 +127,7 @@ public class TrovaRicettaController {
 		}
 	}
 	
-	public ArrayList<AlimentoBean> trovaAlimenti(AlimentoBean alimentoBeanInserito) throws OperazioneNonEseguitaException {
+	public List<AlimentoBean> trovaAlimenti(AlimentoBean alimentoBeanInserito) throws OperazioneNonEseguitaException {
 		List<Alimento> alimentiTrovati;
 		try {
 			ArrayList<AlimentoBean> alimentiTrovatiBean = null;
@@ -163,7 +162,7 @@ public class TrovaRicettaController {
 		}
 	}
 	
-	public ArrayList<AlimentoBean> mostraDispensa() {
+	public List<AlimentoBean> mostraDispensa() {
 		List<Alimento> alimentiInDispensa = null;
 		alimentiInDispensa = dispensa.getAlimenti();
 		if(alimentiInDispensa != null && !alimentiInDispensa.isEmpty()) {

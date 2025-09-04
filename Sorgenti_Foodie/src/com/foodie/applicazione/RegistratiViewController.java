@@ -121,9 +121,7 @@ public class RegistratiViewController {
 
 	    esitoRegistrazioneLabel.setText("Registrazione andata a buon fine.");
 	    PauseTransition pause = new PauseTransition(Duration.seconds(2));
-	    pause.setOnFinished(event -> {
-	        ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
-	    });
+	    pause.setOnFinished(event -> ViewLoader.caricaView(ViewInfo.LOGIN_VIEW));
 	    pause.play();
 	}
 }

@@ -37,13 +37,13 @@ public class ModeratoreViewController implements Observer {
 	        controller.caricaRicetteDaApprovare();
 	        aggiornaView();
 	    } catch (OperazioneNonEseguitaException e) {
-	        Platform.runLater(() -> {
-	            AlertUtils.showAlert(
-	                Alert.AlertType.INFORMATION, 
-	                "Nessuna ricetta da approvare", 
-	                e.getMessage()
-	            );
-	        });
+	    	Platform.runLater(() ->
+	        AlertUtils.showAlert(
+	            Alert.AlertType.INFORMATION, 
+	            "Nessuna ricetta da approvare", 
+	            e.getMessage()
+	        )
+	    );
 	    }
 	}
 

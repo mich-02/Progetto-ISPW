@@ -21,8 +21,6 @@ public class ContenutoRicettaChefViewController {
 	private Label descrizione;
 	@FXML
 	private VBox contenitoreIngredienti;
-	
-	private RicettaBean ricettaSelezionata;
 
 	
 	public Label getNome() {  //RESTITUISCO LABEL E INFINE VBOX
@@ -39,17 +37,17 @@ public class ContenutoRicettaChefViewController {
     }
 	
 	@FXML
-    private void caricaViewGestisciRicette(ActionEvent event) {  //CARICA VIEW GESTISCI RICETTE
+    private void caricaViewGestisciRicette(ActionEvent event) { 
 		ViewLoader.caricaView(ViewInfo.GESTISCI_RICETTE1);
     }
 	
 	@FXML
-	private void caricaViewRicetta(ActionEvent event) {  //CARICA VIEW NUOVA RICETTA DA CREARE
+	private void caricaViewRicetta(ActionEvent event) { 
 		ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
 	}
 	
 	
-	private void caricaDatiRicetta(RicettaBean ricettaBean) {  //METODO PER POPOLARE GRAFICAMENTE I DATI DELLA RICETTA
+	public void caricaDatiRicetta(RicettaBean ricettaBean) {  //METODO PER POPOLARE GRAFICAMENTE I DATI DELLA RICETTA
 		Label labelNome = getNome();
 		Label labelDescrizione = getDescrizione();
 		labelNome.setText(ricettaBean.getNome());
@@ -63,11 +61,5 @@ public class ContenutoRicettaChefViewController {
 			label.setFont(Font.font(FORMATO,20));
 			contenitoreIngredienti.getChildren().add(label);
 		}
-	}
-	
-	public void initData(RicettaBean ricettaBean) {
-        this.ricettaSelezionata = ricettaBean;  // memorizzo il bean
-        caricaDatiRicetta(ricettaSelezionata);  // popolo la GUI
-    }
-	
+	}	
 }

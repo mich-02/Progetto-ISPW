@@ -51,7 +51,7 @@ public class PubblicaRicettaController {
 	}
 
 	
-	public ArrayList<AlimentoBean> mostraIngredientiRicetta() {
+	public List<AlimentoBean> mostraIngredientiRicetta() {
 		List<Alimento> alimentiRicetta = ricetta.getIngredienti();
 		if(alimentiRicetta != null && !alimentiRicetta.isEmpty()) {
 			ArrayList<AlimentoBean> alimentiRicettaBean = new ArrayList<>();
@@ -153,7 +153,7 @@ public class PubblicaRicettaController {
 		}
 	}
 	
-	public ArrayList<RicettaBean> mostraRicetteDaApprovare() {
+	public List<RicettaBean> mostraRicetteDaApprovare() {
 		List<Ricetta> ricette = null;
 		ricette = ricetteDaApprovare.getRicetteDaVerificare();
 		if(ricette!=null && !ricette.isEmpty()) {
@@ -182,7 +182,7 @@ public class PubblicaRicettaController {
 		}
 	}
 	
-	public ArrayList<RicettaBean> trovaRicetteChef(UtenteBean utenteBean) {
+	public List<RicettaBean> trovaRicetteChef(UtenteBean utenteBean) {
 		List<Ricetta> ricetteTrovate = null;
 		try {
 			ricetteTrovate = ricettaDao.trovaRicettePerAutore(utenteBean.getUsername());

@@ -73,11 +73,8 @@ public class DispensaDaoFS implements DispensaDao{
 	    // Provo a caricare la mappa dal file
 	    try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(PATH))) {
 	        dispensaMap = (Map<String, ArrayList<AlimentoSerializzabile>>) objectInputStream.readObject();
-	    } catch (FileNotFoundException e) {
-	        // Se il file non esiste, ritorno lista vuota
-	        return new ArrayList<>();
-	    } catch (EOFException e) {
-	        // File esistente ma vuoto
+	    } catch (FileNotFoundException | EOFException e) {
+	        // Se il file non esiste o esiste ma è vuoto, ritorno lista vuota
 	        return new ArrayList<>();
 	    } catch (ClassNotFoundException e) {
 	        throw new DaoException("caricaDispensa - Errore nella deserializzazione della dispensa: " + e.getMessage());
