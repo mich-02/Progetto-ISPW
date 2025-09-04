@@ -1,9 +1,9 @@
 package com.foodie.exception;
 
-public class OperazioneFallitaException extends Exception {
+public class OperazioneNonEseguitaException extends Exception {
 	
 	private static final long serialVersionUID = -1058399577241961958L;
-	public OperazioneFallitaException(String messaggio) {
+	public OperazioneNonEseguitaException(String messaggio) {
 		super(messaggio);
 	}
 	

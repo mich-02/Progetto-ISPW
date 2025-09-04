@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.bean.AlimentoBean;
 import com.foodie.bean.RicettaBean;
@@ -26,7 +25,6 @@ public class NuovaRicettaViewController {
 	
 	private PubblicaRicettaController pubblicaRicettacontroller = new PubblicaRicettaController();
 	private LoginController loginController = new LoginController();
-	private static final Logger logger = Logger.getLogger(NuovaRicettaViewController.class.getName());
 	
 	@FXML
 	private Button gestisciRicetteButton;
@@ -48,18 +46,6 @@ public class NuovaRicettaViewController {
 	/*
 	public void initData(VBox contenitoreIngredienti) {
 		this.ingredientiRicetta = contenitoreIngredienti;
-	}
-	*/
-	
-	/*
-	private NuovaRicettaViewController() {
-	}
-	
-	public static synchronized NuovaRicettaViewController ottieniIstanza() { //METODO PER OTTENERE L'ISTANZA
-		if(istanza == null) {
-			istanza = new NuovaRicettaViewController();
-		}
-		return istanza;
 	}
 	*/
 	
@@ -233,6 +219,7 @@ public class NuovaRicettaViewController {
 
 	        // Chiudere il thread scheduler dopo l'esecuzione della task
 	        scheduler.shutdown();	
+	        
 		}
 	}
 	

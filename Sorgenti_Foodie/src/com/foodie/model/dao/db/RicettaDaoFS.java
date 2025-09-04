@@ -6,11 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import com.foodie.exception.DaoException;
 import com.foodie.exception.RicettaDuplicataException;
 import com.foodie.model.Alimento;
@@ -59,6 +57,7 @@ public class RicettaDaoFS implements RicettaDao {
 	    } catch (IOException e) {
 	        throw new DaoException("trovaRicettePerDispensa " + e.getMessage());
 	    }
+	    
 	    return ricetteTrovate;
 	}
 

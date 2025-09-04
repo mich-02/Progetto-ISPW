@@ -45,7 +45,7 @@ public class RicettaDaoMemo implements RicettaDao {
                 }
             }
         }
-
+       
         return risultato;
     }
 

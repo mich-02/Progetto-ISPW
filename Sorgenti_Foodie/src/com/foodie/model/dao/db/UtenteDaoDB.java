@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Logger;
-
 import com.foodie.exception.DaoException;
 import com.foodie.model.dao.DBConnection;
 import com.foodie.model.dao.UtenteDao;

@@ -6,6 +6,7 @@ import com.foodie.bean.AlimentoBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.TrovaRicettaController;
+import com.foodie.exception.OperazioneNonEseguitaException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,26 +21,12 @@ import javafx.scene.text.Font;
 
 public class AggiungiAlimentoView2Controller {
 	
-//	private ControllerAdapter adattatoreTrovaRicettaController = factory.creaTrovaRicettaAdapter();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
-//	private LoginController loginController = new LoginController(); //tolto singleton
 
 	@FXML
 	private TextField barraDiRicerca;
 	@FXML
 	private VBox contenitoreAlimentiTrovati;
-	
-	/*
-	private AggiungiAlimentoView2Controller() {
-	}
-	
-	public static synchronized AggiungiAlimentoView2Controller ottieniIstanza() { //METODO PER OTTENERE L'ISTANZA
-		if(istanza == null) {
-			istanza = new AggiungiAlimentoView2Controller();
-		}
-		return istanza;
-	}	
-	*/
 	
 	@FXML
     private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
@@ -65,7 +52,7 @@ public class AggiungiAlimentoView2Controller {
 			eliminaAlimenti();
 		}
 	}
-	
+	/*
 	private void trovaAlimenti() {  //METODO TROVA ALIMENTI
 		eliminaAlimenti();
 		AlimentoBean alimentoBean = new AlimentoBean();
@@ -85,6 +72,38 @@ public class AggiungiAlimentoView2Controller {
 			}
 		}
 		else {
+			Label label = new Label("NESSUN RISULTATO");
+			label.setStyle("-fx-background-color: white;");
+			label.setMaxWidth(Double.MAX_VALUE);
+			label.setMinHeight(30);
+			label.setWrapText(true);
+			label.setFont(Font.font("Arial"));
+			label.setAlignment(Pos.CENTER);
+			contenitoreAlimentiTrovati.getChildren().add(label);
+		}
+		
+	}
+	*/
+	
+	private void trovaAlimenti() {  //METODO TROVA ALIMENTI
+		try {
+			eliminaAlimenti();
+			AlimentoBean alimentoBean = new AlimentoBean();
+			alimentoBean.setNome(barraDiRicerca.getText());
+			List<AlimentoBean> alimentiBeanTrovati;
+			alimentiBeanTrovati = trovaRicettaController.trovaAlimenti(alimentoBean);
+			for(AlimentoBean a: alimentiBeanTrovati) {
+				Label labelAlimento = new Label(a.getNome());
+				labelAlimento.setStyle("-fx-background-color: white;");
+				labelAlimento.setMaxWidth(Double.MAX_VALUE);
+				labelAlimento.setMinHeight(30);
+				labelAlimento.setWrapText(true);
+				labelAlimento.setFont(Font.font("Arial"));
+				labelAlimento.setAlignment(Pos.CENTER);  //LI RENDE CLICCABILI
+				labelAlimento.setOnMouseClicked(event2->{salvaAlimento(labelAlimento.getText());eliminaAlimenti();});
+				contenitoreAlimentiTrovati.getChildren().add(labelAlimento);
+			}
+		} catch (OperazioneNonEseguitaException e) {
 			Label label = new Label("NESSUN RISULTATO");
 			label.setStyle("-fx-background-color: white;");
 			label.setMaxWidth(Double.MAX_VALUE);

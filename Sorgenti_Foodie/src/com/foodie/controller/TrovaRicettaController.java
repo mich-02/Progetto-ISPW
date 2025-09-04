@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 import com.foodie.bean.AlimentoBean;
 import com.foodie.bean.RicettaBean;
 import com.foodie.exception.DaoException;
+import com.foodie.exception.NessunAlimentoTrovatoException;
+import com.foodie.exception.OperazioneNonEseguitaException;
 import com.foodie.model.Alimento;
 import com.foodie.model.Dispensa;
 import com.foodie.model.LoggedUser;
@@ -77,10 +79,8 @@ public class TrovaRicettaController {
 				return new ArrayList<>();
 			}
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-			logger.severe("ERRORE NELL'OTTENIMENTO DELLE RICETTE");
-			logger.info("Problema con il DB");
+		catch (DaoException e) {
+			logger.severe("Errore nell'ottenimento delle ricette: " + e.getMessage());
 			return new ArrayList<>();
 		}
 	}
@@ -93,18 +93,17 @@ public class TrovaRicettaController {
 	    List<Alimento> alimentiDispensa;
 	    try {
 	        alimentiDispensa = dispensaDao.caricaDispensa(utente.getUsername());
+	        if (alimentiDispensa != null && !alimentiDispensa.isEmpty()) {
+		        for (Alimento a : alimentiDispensa) {
+		            dispensa.aggiungiAlimento(a); 
+		        }
+		        logger.info("Dispensa caricata con successo per l'utente: " + utente.getUsername());
+		    } else {
+		        logger.info("La dispensa dell'utente " + utente.getUsername() + " è vuota.");
+		    }
 	    } catch (DaoException e) {
 	    	logger.severe("Errore durante il caricamento della dispensa: " + e.getMessage());
 	        return; // esce dal metodo se c'è un errore
-	    }
-
-	    if (alimentiDispensa != null && !alimentiDispensa.isEmpty()) {
-	        for (Alimento a : alimentiDispensa) {
-	            dispensa.aggiungiAlimento(a); 
-	        }
-	        logger.info("Dispensa caricata con successo per l'utente: " + utente.getUsername());
-	    } else {
-	        logger.info("La dispensa dell'utente " + utente.getUsername() + " è vuota.");
 	    }
 	}
 	
@@ -130,11 +129,12 @@ public class TrovaRicettaController {
 		}
 	}
 	
-	public ArrayList<AlimentoBean> trovaAlimenti(AlimentoBean alimentoBeanInserito) {
-		List<Alimento> alimentiTrovati = null;
-		ArrayList<AlimentoBean> alimentiTrovatiBean = null;
-		alimentiTrovati = databaseAlimenti.trovaAlimenti(alimentoBeanInserito.getNome());
-		if(alimentiTrovati!=null && !alimentiTrovati.isEmpty()) {
+	public ArrayList<AlimentoBean> trovaAlimenti(AlimentoBean alimentoBeanInserito) throws OperazioneNonEseguitaException {
+		//List<Alimento> alimentiTrovati = null;
+		try {
+			List<Alimento> alimentiTrovati = new ArrayList<>();
+			ArrayList<AlimentoBean> alimentiTrovatiBean = null;
+			alimentiTrovati = databaseAlimenti.trovaAlimenti(alimentoBeanInserito.getNome());
 			alimentiTrovatiBean = new ArrayList<>();
 			for(Alimento a:alimentiTrovati) {
 				AlimentoBean alimentoBean= new AlimentoBean();
@@ -143,10 +143,15 @@ public class TrovaRicettaController {
 			}
 			mostraAlimenti(alimentiTrovati);
 			return alimentiTrovatiBean;
+		} catch (NessunAlimentoTrovatoException e) {
+			throw new OperazioneNonEseguitaException("Nessun alimento trovato che inizi per " + alimentoBeanInserito.getNome());
 		}
-		else {
-			return new ArrayList<>();
-		}
+	//	if(alimentiTrovati!=null && !alimentiTrovati.isEmpty()) {
+			
+	//	}
+	//	else {
+	//		return new ArrayList<>();
+	//	}
 	}
 	
 	private void mostraAlimenti(List<Alimento> alimenti) {  //METODO PRIVATO PER STAMPARE SU CONSOLE TUTTI GLI ALIMENTI
@@ -206,10 +211,8 @@ public class TrovaRicettaController {
 			else {
 				return null;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.severe("ERRORE NELL'OTTENIMENTO DEI DATI DELLA RICETTA");
-			logger.info("Problema con il DB");
+		} catch (DaoException e) {
+			logger.severe("errore nell'ottenimento dei dati della ricetta: " + e.getMessage());
 			return null;
 		}
 	}

@@ -94,8 +94,6 @@ public class Ricetta extends SubjectPatternObserver {  //OSSERVATO CONCRETO, EST
 			quantita.remove(indice);
 			notifica();
 		}
-		else {
-		}
 	}
 	
 	@Override

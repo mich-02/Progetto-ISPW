@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.foodie.exception.NessunAlimentoTrovatoException;
 import com.foodie.model.Alimento;
 
 public class AlimentiDaoAPI implements AlimentiDao{  //IMPLEMENTAZIONE DAO CHE USA UN API PER COMUNICARE CON IL DB DI NUTRIXIONIX
@@ -39,7 +40,7 @@ public class AlimentiDaoAPI implements AlimentiDao{  //IMPLEMENTAZIONE DAO CHE U
 	}
 	
 	@Override
-	public ArrayList<Alimento> trovaAlimenti(String nome) {
+	public ArrayList<Alimento> trovaAlimenti(String nome) throws NessunAlimentoTrovatoException {
 		try {
 			ArrayList<Alimento> alimentiTrovati=null;
 			String nomeCodificato = URLEncoder.encode(nome, "UTF-8"); //da stringa codificato per l'url
@@ -50,8 +51,8 @@ public class AlimentiDaoAPI implements AlimentiDao{  //IMPLEMENTAZIONE DAO CHE U
 			connessione.setRequestMethod("GET");
             connessione.setRequestProperty("x-app-id", APP_ID);
             connessione.setRequestProperty("x-app-key", API_KEY);
-            int codiceDiRisposta= connessione.getResponseCode(); //ottengo codice di risposta di http
-            if(codiceDiRisposta== HttpURLConnection.HTTP_OK) {//controllo se ==2 00 per capire se la connessione http ha ottenuto esito positivo
+            int codiceDiRisposta = connessione.getResponseCode(); //ottengo codice di risposta di http
+            if(codiceDiRisposta == HttpURLConnection.HTTP_OK) {//controllo se == 2 00 per capire se la connessione http ha ottenuto esito positivo
             	BufferedReader lettore = new BufferedReader(new InputStreamReader(connessione.getInputStream()));
                 String stringa;  //converto i dati ottenuti in una stringa
                 StringBuilder risposta = new StringBuilder();
@@ -65,20 +66,20 @@ public class AlimentiDaoAPI implements AlimentiDao{  //IMPLEMENTAZIONE DAO CHE U
                 	return alimentiTrovati;
                 }
                 else {
-                	return new ArrayList<>();
+                	throw new NessunAlimentoTrovatoException(nome);
                 }
             }
             else {
-            	String warning= "Errore: codice di risposta " + codiceDiRisposta;
+            	String warning = "Errore: codice di risposta " + codiceDiRisposta;
             	logger.warning(warning);
             	connessione.disconnect();
-            	return new ArrayList<>();
+            	//return new ArrayList<>();
+            	throw new NessunAlimentoTrovatoException(nome);
             }
-		}catch(Exception e) {
-			e.printStackTrace();
-			logger.severe("PROBLEMA CON LA CONNESSIONE HTTML PER L'UTILIZZO DELL'API NUTRIXIONIX");
-			logger.info("L'API sta dando problemi...riprova in seguito");
-			return new ArrayList<>();
+		} catch(Exception e) {
+			logger.severe("Errore generico di connessione con l'API Nutrixionix: " + e.getMessage());
+			throw new NessunAlimentoTrovatoException(nome);
+			
 		}
 	}
 

@@ -3,6 +3,7 @@ package com.foodie.model.dao.memo;
 import java.util.ArrayList;
 import java.util.List;
 import com.foodie.exception.DaoException;
+import com.foodie.exception.NessunaRicettaDaApprovareException;
 import com.foodie.model.Ricetta;
 import com.foodie.model.RicetteDaApprovare;
 import com.foodie.model.dao.RicetteDaApprovareDao;
@@ -13,7 +14,10 @@ public class RicetteDaApprovareDaoMemo implements RicetteDaApprovareDao {
 	private static final List<Ricetta> ricetteDaApprovare = new ArrayList<>();
 	
     @Override
-    public void caricaRicetteDaApprovare() throws DaoException {
+    public void caricaRicetteDaApprovare() throws DaoException, NessunaRicettaDaApprovareException {
+    	if (ricetteDaApprovare.isEmpty()) {
+            throw new NessunaRicettaDaApprovareException();
+        }
     	for(Ricetta r : ricetteDaApprovare) {
     		ricetteDaApprovare1.aggiungiRicettaDaVerificare(r);
     	}

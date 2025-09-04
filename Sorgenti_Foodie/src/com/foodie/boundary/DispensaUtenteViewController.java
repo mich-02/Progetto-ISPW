@@ -6,6 +6,8 @@ import com.foodie.bean.AlimentoBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.TrovaRicettaController;
+import com.foodie.exception.OperazioneNonEseguitaException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -121,7 +123,7 @@ public class DispensaUtenteViewController implements Observer {
 			eliminaAlimenti();
 		}
 	}
-	
+	/*
 	private void trovaAlimenti() {  //GESTISCE IL TROVA ALIMENTI
 			eliminaAlimenti();
 			AlimentoBean alimentoBean = new AlimentoBean();
@@ -151,6 +153,35 @@ public class DispensaUtenteViewController implements Observer {
 				contenitoreAlimentiTrovati.getChildren().add(label);
 			}
 			
+	}
+	*/
+	private void trovaAlimenti() {  //GESTISCE IL TROVA ALIMENTI
+		try {
+			eliminaAlimenti();
+			AlimentoBean alimentoBean = new AlimentoBean();
+			alimentoBean.setNome(barraDiRicerca.getText());
+			List<AlimentoBean> alimentiBeanTrovati = trovaRicettaController.trovaAlimenti(alimentoBean);
+			for(AlimentoBean a: alimentiBeanTrovati) {
+				Label labelAlimento = new Label(a.getNome());
+				labelAlimento.setStyle(SFONDOBIANCO);
+				labelAlimento.setMaxWidth(Double.MAX_VALUE);
+				labelAlimento.setMinHeight(30);
+				labelAlimento.setWrapText(true);
+				labelAlimento.setFont(Font.font(FORMATO));
+				labelAlimento.setAlignment(Pos.CENTER);
+				labelAlimento.setOnMouseClicked(event2->{salvaAlimento(labelAlimento.getText());eliminaAlimenti();});
+				contenitoreAlimentiTrovati.getChildren().add(labelAlimento);
+			}
+		} catch (OperazioneNonEseguitaException e) {
+			Label label = new Label("NESSUN RISULTATO");
+			label.setStyle(SFONDOBIANCO);
+			label.setMaxWidth(Double.MAX_VALUE);
+			label.setMinHeight(30);
+			label.setWrapText(true);
+			label.setFont(Font.font(FORMATO));
+			label.setAlignment(Pos.CENTER);
+			contenitoreAlimentiTrovati.getChildren().add(label);
+		}
 	}
 	
 	private void salvaAlimento(String nomeAlimento) {  //SALVA ALIMENTO IN DISPENSA

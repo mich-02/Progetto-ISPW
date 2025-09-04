@@ -1,16 +1,15 @@
 package com.foodie.boundary;
 
 import java.util.List;
-
 import com.foodie.bean.AlimentoBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.controller.TrovaRicettaController;
+import com.foodie.exception.OperazioneNonEseguitaException;
 import com.foodie.model.Observer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -38,27 +37,12 @@ public class InserisciIngredienteViewController implements Observer{
 	private TextField barraDiRicerca;
 	@FXML
 	private TextField quantita;
-	private String nome;
-	private String descrizione;
-	private int difficolta;
 	
 	@FXML
 	public void initialize() {
 		pubblicaRicettaController.registraOsservatoreRicetta(this);
 		aggiornaView();
 	}
-	
-/*	
-	private InserisciIngredienteViewController() {
-	}
-	
-	public static synchronized InserisciIngredienteViewController ottieniIstanza() { //METODO PER OTTENERE L'ISTANZA
-		if(istanza == null) {
-			istanza = new InserisciIngredienteViewController();
-		}
-		return istanza;
-	}
-*/	
 	
 	@FXML
 	private void gestioneRisultati(KeyEvent event) {  //GESTISCE LA BARRA DI RICERCA DEGLI ALIMENTI
@@ -126,17 +110,14 @@ public class InserisciIngredienteViewController implements Observer{
 				labelIngredienti.setText("La mia Dispensa");
 			}
 			ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
-			//FXMLLoader loader =  ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
-			//NuovaRicettaViewController nuovaRicettaController = loader.getController();
-			//nuovaRicettaController.initData(contenitoreIngredienti);
 	}
 	
 	@FXML
 	public void tornaAlLogin(MouseEvent event) { 
-		//caricaView.tornaAlLogin(primaryStage);
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
 	
+	/*
 	private void trovaAlimenti() { //GESTISCE IL TROVA ALIMENTI
 		eliminaAlimenti();
 		AlimentoBean alimentoBean = new AlimentoBean();
@@ -157,6 +138,36 @@ public class InserisciIngredienteViewController implements Observer{
 			}
 		}
 		else {//NESSUN RISULTATO
+			Label label = new Label("NESSUN RISULTATO");
+			label.setStyle(SFONDOBIANCO);
+			label.setMaxWidth(Double.MAX_VALUE);
+			label.setMinHeight(30);
+			label.setWrapText(true);
+			label.setFont(Font.font(FORMATO));
+			label.setAlignment(Pos.CENTER);
+			contenitoreAlimentiTrovati.getChildren().add(label);
+		}
+	}
+	*/
+	private void trovaAlimenti() { //GESTISCE IL TROVA ALIMENTI
+		try {
+			eliminaAlimenti();
+			AlimentoBean alimentoBean = new AlimentoBean();
+			alimentoBean.setNome(barraDiRicerca.getText());
+			List<AlimentoBean> alimentiBeanTrovati = trovaRicettaController.trovaAlimenti(alimentoBean);
+			quantita.setDisable(false);
+			for(AlimentoBean a: alimentiBeanTrovati) {
+				Label labelAlimento = new Label(a.getNome());
+				labelAlimento.setStyle(SFONDOBIANCO);
+				labelAlimento.setMaxWidth(Double.MAX_VALUE);
+				labelAlimento.setMinHeight(30);
+				labelAlimento.setWrapText(true);
+				labelAlimento.setFont(Font.font(FORMATO));
+				labelAlimento.setAlignment(Pos.CENTER);
+				labelAlimento.setOnMouseClicked(event2->salvaAlimento(labelAlimento.getText(),quantita.getText()));
+				contenitoreAlimentiTrovati.getChildren().add(labelAlimento);
+			}
+		} catch (OperazioneNonEseguitaException e) {
 			Label label = new Label("NESSUN RISULTATO");
 			label.setStyle(SFONDOBIANCO);
 			label.setMaxWidth(Double.MAX_VALUE);
@@ -233,17 +244,19 @@ public class InserisciIngredienteViewController implements Observer{
 		}
 	}
 	
+	/*
 	public void setNome(String text) {  //SETTERS PER SALVARE LO STATO DEL NUOVA RICETTA VIEW
-		this.nome=text;
+		this.nome = text;
 	}
 	
 	public void setDescrizione(String text) {
-		this.descrizione=text;
+		this.descrizione = text;
 	}
 	
 	public void setDifficolta(int i) {
-		this.difficolta=i;
+		this.difficolta = i;
 	}
+	*/
 	
 	public VBox getContenitoreIngredienti() {  //RESTITUISCE CONTENITORE INGREDIENTI
 		return contenitoreIngredienti;

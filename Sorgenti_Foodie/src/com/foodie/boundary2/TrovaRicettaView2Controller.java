@@ -21,10 +21,7 @@ import javafx.scene.text.Font;
 
 public class TrovaRicettaView2Controller {
 	
-//	private static TrovaRicettaView2Controller istanza;
-//	private ControllerAdapter adattatoreTrovaRicettaController= factory.creaTrovaRicettaAdapter();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
-
 	private static final String FORMATO = "Arial";
 	private static final String SFONDOGRIGIO = "-fx-background-color: rgba(217, 217, 217, 0.75);-fx-border-color: black;";
 	@FXML
@@ -35,31 +32,19 @@ public class TrovaRicettaView2Controller {
 	private RadioButton difficile;
 	@FXML
 	private VBox contenitoreRicette;
-	
-	/*
-	private TrovaRicettaView2Controller() {	
-	}
-	
-	public static synchronized TrovaRicettaView2Controller ottieniIstanza() { //SINGLETON
-		if(istanza == null) {
-			istanza = new TrovaRicettaView2Controller();
-		}
-		return istanza;
-	}
-	*/
 
 	@FXML
-    private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
+    private void tornaAlLogin(MouseEvent event) {  
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     }
 	
 	@FXML
-	private void caricaViewDispensa(ActionEvent event) {  //CARICA VIEW DISPENSA
+	private void caricaViewDispensa(ActionEvent event) { 
 		ViewLoader.caricaView(ViewInfo.DISPENSA2);
 	}
 	
 	@FXML
-	private void disabilitaPulsanti(ActionEvent event) {  //GESTISCE PULSANTI DIFFICOLTA'
+	private void disabilitaPulsanti(ActionEvent event) {  
 		if (facile.isSelected()) {
 		    medio.setDisable(true);
 		    difficile.setDisable(true);

@@ -3,22 +3,18 @@ package com.foodie.applicazione;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import com.foodie.bean.CredenzialiBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.LoginController;
+import com.foodie.exception.UtenteEsistenteException;
 
 
 public class RegistratiViewController {
@@ -88,11 +84,52 @@ public class RegistratiViewController {
    @FXML
    public void registratiButtonOnAction(ActionEvent event) {  //CHIAMA I METODI PER REGISTRARSI
     	handleRegistration();
-    	registrazioneUser();
-    	
+    	registrazioneUser();	
    }
-    
-   private void registrazioneUser() { 
+   
+   private void registrazioneUser() {
+	    // Prendo input utente e verifico che non sia vuoto
+	    String nome = nomeTextField.getText().trim();
+	    String cognome = cognomeTextField.getText().trim();
+	    String username = usernameTextField.getText().trim();
+	    String password = setPasswordField.getText().trim();
+	    int role = ruolo;
+
+	    CredenzialiBean credenzialiBean = new CredenzialiBean();
+
+	    if (nome.isEmpty() || cognome.isEmpty() || username.isEmpty() || password.isEmpty()) {
+	        // Uno o più campi sono vuoti
+	        esitoRegistrazioneLabel.setText("Per favore, completa tutti i campi");
+	        return; // Interrompi l'esecuzione se ci sono campi vuoti
+	    }
+
+	    credenzialiBean.setUsername(username);
+
+	    try {
+	        // Controllo se l'username è già presente nella base di dati
+	        controller.controllaUsername(credenzialiBean);
+	    } catch (UtenteEsistenteException e) {
+	        esitoRegistrazioneLabel.setText("L'username è già in uso. Scegli un altro username.");
+	        return; // Interrompi l'esecuzione se l'username è già in uso
+	    }
+
+	    credenzialiBean.setNome(nome);
+	    credenzialiBean.setCognome(cognome);
+	    credenzialiBean.setRuolo(role);
+	    credenzialiBean.setPassword(password);
+	    controller.registraUtente(credenzialiBean);
+
+	    esitoRegistrazioneLabel.setText("Registrazione andata a buon fine.");
+	    PauseTransition pause = new PauseTransition(Duration.seconds(2));
+	    pause.setOnFinished(event -> {
+	        ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
+	    });
+	    pause.play();
+	}
+
+   
+   /*
+   private void registrazioneUser() {
     	    	
     	// Prendo input utente e verifico che non sia vuoto
     	String nome = nomeTextField.getText().trim();
@@ -129,6 +166,7 @@ public class RegistratiViewController {
     	});
     		pause.play();
     }
+    */
 
    /*
 	private int usernameEsistente(String username) {  //METODO CHE CONTROLLA SE L'USERNAME E' ESISTENTE

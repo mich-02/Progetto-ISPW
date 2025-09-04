@@ -2,18 +2,19 @@ package com.foodie.boundary;
 
 import java.util.List;
 import com.foodie.controller.PubblicaRicettaController;
-import com.foodie.exception.OperazioneFallitaException;
+import com.foodie.exception.OperazioneNonEseguitaException;
 import com.foodie.model.Observer;
 import com.foodie.bean.RicettaBean;
+import com.foodie.boundary.components.AlertUtils;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -31,10 +32,21 @@ public class ModeratoreViewController implements Observer {
 	
 	@FXML
 	public void initialize() {
-		controller.registraOsservatoreModeratore(this);
-		controller.caricaRicetteDaApprovare();
-		aggiornaView();
+	    try {
+	        controller.registraOsservatoreModeratore(this);
+	        controller.caricaRicetteDaApprovare();
+	        aggiornaView();
+	    } catch (OperazioneNonEseguitaException e) {
+	        Platform.runLater(() -> {
+	            AlertUtils.showAlert(
+	                Alert.AlertType.INFORMATION, 
+	                "Nessuna ricetta da approvare", 
+	                e.getMessage()
+	            );
+	        });
+	    }
 	}
+
 	
 	@Override
 	public void aggiornaView() {  //AGGIORNA VIEW IN BASE ALLE RICHIESTE DA APPROVARE DEL MODERATORE
@@ -99,8 +111,8 @@ public class ModeratoreViewController implements Observer {
 			ricettaBean.setPublish(true);
 			try {
 				controller.pubblicaRicetta(ricettaBean);
-			} catch (OperazioneFallitaException e) {
-				showAlert(Alert.AlertType.ERROR, "Pubblicazione fallita", "Ricetta già esistente per questo chef");
+			} catch (OperazioneNonEseguitaException e) {
+				AlertUtils.showAlert(Alert.AlertType.ERROR, "Pubblicazione fallita", "Ricetta già esistente per questo chef");
 			}
 		}
 	}
@@ -125,8 +137,7 @@ public class ModeratoreViewController implements Observer {
 			ricettaBean.setPublish(false);
 			try {
 				controller.pubblicaRicetta(ricettaBean);
-			} catch (OperazioneFallitaException e) {
-				showAlert(Alert.AlertType.ERROR, "Pubblicazione fallita", e.getMessage());
+			} catch (OperazioneNonEseguitaException e) {
 			}
 		}
 	}
@@ -135,13 +146,6 @@ public class ModeratoreViewController implements Observer {
 	private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 		
-	}
-	
-	private void showAlert(AlertType alertType, String titolo, String contenuto) {
-		Alert alert = new Alert(alertType);
-		alert.setTitle(titolo);
-		alert.setContentText(contenuto);
-		alert.showAndWait();
 	}
 	
 }

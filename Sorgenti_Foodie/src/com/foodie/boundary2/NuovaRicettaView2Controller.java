@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import com.foodie.bean.AlimentoBean;
 import com.foodie.bean.RicettaBean;
 import com.foodie.bean.UtenteBean;
@@ -13,8 +12,8 @@ import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.LoginController;
 import com.foodie.controller.PubblicaRicettaController;
 import com.foodie.controller.TrovaRicettaController;
+import com.foodie.exception.OperazioneNonEseguitaException;
 import com.foodie.model.Observer;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,15 +28,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 public class NuovaRicettaView2Controller implements Observer{
 	
-//	private static NuovaRicettaView2Controller istanza;
-//	private ControllerAdapter adattatorePubblicaRicettaController= factory.creaPubblicaRicettaAdapter();
-//	private ControllerAdapter adattatoreLoginController= factory.creaLoginAdapter();
 	private LoginController loginController = new LoginController();
-//	private ControllerAdapter adattatoreTrovaRicettaController=factory.creaTrovaRicettaAdapter();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
 	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
 
@@ -66,28 +60,11 @@ public class NuovaRicettaView2Controller implements Observer{
 	@FXML
 	private TextField quantita;
 	
-	
-	/*
-	private NuovaRicettaView2Controller() {
-	}
-	
-	public static synchronized NuovaRicettaView2Controller ottieniIstanza() { //METODO PER OTTENERE L'ISTANZA
-		if(istanza == null) {
-			istanza = new NuovaRicettaView2Controller();
-		}
-		return istanza;
-	}
-	
-	
-	public void setPrimaryStage(Stage primaryStage) {  //PASSO LO STAGE
-		this.primaryStage= primaryStage;
-	}
-	*/
-	
 	@FXML
 	public void initialize() {
 		//PubblicaRicettaController.creaRicetta();
 		pubblicaRicettaController.registraOsservatoreRicetta(this);
+		aggiornaView();
 	}
 	
 	@FXML
@@ -116,7 +93,6 @@ public class NuovaRicettaView2Controller implements Observer{
 	
 	@FXML
     private void caricaViewGestisciRicette(ActionEvent event) {  //CARICA VIEW GESTISCI RICETTE
-        //caricaView2.caricaViewGestisciRicette(primaryStage);
 		ViewLoader.caricaView(ViewInfo.GESTISCI_RICETTE2);
     }
 	
@@ -250,7 +226,7 @@ public class NuovaRicettaView2Controller implements Observer{
 			this.quantita.setPromptText("QUANTITA?");
 		}
 	}
-	
+	/*
 	private void trovaAlimenti() {  //TROVA GLI ALIMENTI
 		eliminaAlimenti();
 		AlimentoBean alimentoBean = new AlimentoBean();
@@ -281,6 +257,42 @@ public class NuovaRicettaView2Controller implements Observer{
 			contenitoreAlimentiTrovati.getChildren().add(label);
 		}
 	}
+	*/
+	
+	
+	private void trovaAlimenti() {  //TROVA GLI ALIMENTI
+		
+		try {
+			eliminaAlimenti();
+			AlimentoBean alimentoBean = new AlimentoBean();
+			alimentoBean.setNome(barraDiRicerca.getText());
+			List<AlimentoBean> alimentiBeanTrovati = trovaRicettaController.trovaAlimenti(alimentoBean);
+			quantita.setDisable(false);
+			for(AlimentoBean a: alimentiBeanTrovati) {
+				Label labelAlimento = new Label(a.getNome());
+				labelAlimento.setStyle(SFONDOBIANCO);
+				labelAlimento.setMaxWidth(Double.MAX_VALUE);
+				labelAlimento.setMinHeight(30);
+				labelAlimento.setWrapText(true);
+				labelAlimento.setFont(Font.font(FORMATO));
+				labelAlimento.setAlignment(Pos.CENTER);  //LI RENDE CLICCABILI
+				labelAlimento.setOnMouseClicked(event2->salvaAlimento(labelAlimento.getText(),quantita.getText()));
+				contenitoreAlimentiTrovati.getChildren().add(labelAlimento);
+			}
+		} catch (OperazioneNonEseguitaException e) {
+			Label label = new Label("NESSUN RISULTATO");
+			label.setStyle(SFONDOBIANCO);
+			label.setMaxWidth(Double.MAX_VALUE);
+			label.setMinHeight(30);
+			label.setWrapText(true);
+			label.setFont(Font.font(FORMATO));
+			label.setAlignment(Pos.CENTER);
+			contenitoreAlimentiTrovati.getChildren().add(label);
+
+		}
+	}
+
+
 	
 	@Override
 	public void aggiornaView() {  //AGGIORNA GLI INGREDIENTI IN FUNZIONE DEI CAMBIAMENTI DELLA RICETTA

@@ -84,6 +84,31 @@ public class DispensaDaoDB implements DispensaDao {
 	        } catch (SQLException ignored) {}
 	    }
 	}
+	
+	@Override
+	public List<Alimento> caricaDispensa(String username) throws DaoException {
+	    List<Alimento> alimenti = new ArrayList<>();
+	    Connection connessione = DBConnection.ottieniIstanza().getConnection();
+
+	    String query = "SELECT alimento FROM dispense WHERE username = ?";
+
+	    try (PreparedStatement stmt = connessione.prepareStatement(query)) {
+	        stmt.setString(1, username);
+
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            while (rs.next()) {
+	                String nomeAlimento = rs.getString("alimento");
+	                if (nomeAlimento != null && !nomeAlimento.isEmpty()) {
+	                    alimenti.add(new Alimento(nomeAlimento));
+	                }
+	            }
+	        }
+	    } catch (SQLException e) {
+	        throw new DaoException("caricaDispensa: " + e.getMessage());
+	    }
+	    
+	    return alimenti;
+	}
 
 
 	/*
@@ -157,31 +182,6 @@ public class DispensaDaoDB implements DispensaDao {
 	    }
 	}
 	*/
-
-	@Override
-	public List<Alimento> caricaDispensa(String username) throws DaoException {
-	    List<Alimento> alimenti = new ArrayList<>();
-	    Connection connessione = DBConnection.ottieniIstanza().getConnection();
-
-	    String query = "SELECT alimento FROM dispense WHERE username = ?";
-
-	    try (PreparedStatement stmt = connessione.prepareStatement(query)) {
-	        stmt.setString(1, username);
-
-	        try (ResultSet rs = stmt.executeQuery()) {
-	            while (rs.next()) {
-	                String nomeAlimento = rs.getString("alimento");
-	                if (nomeAlimento != null && !nomeAlimento.isEmpty()) {
-	                    alimenti.add(new Alimento(nomeAlimento));
-	                }
-	            }
-	        }
-	    } catch (SQLException e) {
-	        throw new DaoException("caricaDispensa: " + e.getMessage());
-	    }
-	    
-	    return alimenti;
-	}
 	
 	/*
 	@Override

@@ -1,17 +1,18 @@
 package com.foodie.boundary2;
 
-
 import java.util.List;
-
 import com.foodie.bean.RicettaBean;
+import com.foodie.boundary.components.AlertUtils;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.PubblicaRicettaController;
+import com.foodie.exception.OperazioneNonEseguitaException;
 import com.foodie.model.Observer;
-
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
@@ -31,9 +32,19 @@ public class ModeratoreView2Controller implements Observer{
 	
 	@FXML
 	public void initialize() {
-		controller.registraOsservatoreModeratore(this);
-		controller.caricaRicetteDaApprovare();
-		aggiornaView();
+	    try {
+	        controller.registraOsservatoreModeratore(this);
+	        controller.caricaRicetteDaApprovare();
+	        aggiornaView();
+	    } catch (OperazioneNonEseguitaException e) {
+	        Platform.runLater(() -> {
+	            AlertUtils.showAlert(
+	                Alert.AlertType.INFORMATION, 
+	                "Nessuna ricetta da approvare", 
+	                e.getMessage()
+	            );
+	        });
+	    }
 	}
 	
 	@FXML
@@ -101,7 +112,11 @@ public class ModeratoreView2Controller implements Observer{
 		ricettaBean.setNome(nome);
 		ricettaBean.setAutore(autore);
 		ricettaBean.setPublish(true);
-		controller.pubblicaRicetta(ricettaBean);
+		try {
+			controller.pubblicaRicetta(ricettaBean);
+		} catch (OperazioneNonEseguitaException e) {
+			AlertUtils.showAlert(Alert.AlertType.ERROR, "Pubblicazione fallita", e.getMessage());
+		}
 	}
 	
 	@FXML
@@ -130,7 +145,10 @@ public class ModeratoreView2Controller implements Observer{
 			ricettaBean.setNome(nome);
 			ricettaBean.setAutore(autore);
 			ricettaBean.setPublish(false);
-			controller.pubblicaRicetta(ricettaBean);
+			try {
+				controller.pubblicaRicetta(ricettaBean);
+			} catch (OperazioneNonEseguitaException e) {
+			}
 		}
 	}
 	

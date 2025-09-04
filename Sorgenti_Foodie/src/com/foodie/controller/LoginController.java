@@ -53,19 +53,16 @@ public class LoginController {
 		}
 	}
 	
-	public int controllaUsername(CredenzialiBean credenzialiBean) {  //controlla se esiste già l'username
+	public int controllaUsername(CredenzialiBean credenzialiBean) throws UtenteEsistenteException {  //controlla se esiste già l'username
 		try {
 			if(utenteDao.controllaUsername(credenzialiBean.getUsername()) == 0) {
-				throw new UtenteEsistenteException("Utente già esistente nel database!");
+				logger.severe("username già presente");	
+				throw new UtenteEsistenteException();
 			}
 			return 1;
-		}catch(UtenteEsistenteException e) {
-			e.suggerimento();
-			logger.severe("USERNAME GIA' IN USO");
-			return 0;
 		} catch (DaoException e) {
 			logger.severe("errore nel controllo username: " + e.getMessage());
-			return 0;  //username esistente 
+			return 0; //username esistente 
 		}
 	}
 	
