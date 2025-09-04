@@ -8,16 +8,16 @@ import org.junit.Test;
 import com.foodie.model.Moderatore;
 import com.foodie.model.Ricetta;
 
-public class TestModeratore {   //VALERIO BALDAZZI
+public class TestRicetteDaApprovare {   //VALERIO BALDAZZI
 	
-	private static final String NOME1= "Pasta alla Carbonara";
-	private static final String NOME2= "Pasta alla Gricia";
-	private static final String AUTORE= "Barbieri";
+	private static final String NOME1 = "Pasta alla Carbonara";
+	private static final String NOME2 = "Pasta alla Gricia";
+	private static final String AUTORE = "Barbieri";
 	
 	@Before
 	public void riempiLista() {
 		Moderatore moderatore = Moderatore.ottieniIstanza();
-		Ricetta ricettaDiProva= new Ricetta();
+		Ricetta ricettaDiProva = new Ricetta();
 		ricettaDiProva.setNome(NOME1);
 		ricettaDiProva.setAutore(AUTORE);
 		moderatore.aggiungiRicettaDaVerificare(ricettaDiProva);	
@@ -64,7 +64,7 @@ public class TestModeratore {   //VALERIO BALDAZZI
 	@Test
 	public void testRicettaVerificataNonPresente() {
 		Moderatore moderatore=Moderatore.ottieniIstanza();
-		int oldSize= Moderatore.getRicetteDaVerificare().size();
+		int oldSize = Moderatore.getRicetteDaVerificare().size();
 		Ricetta ricettaDiProva= new Ricetta();
 		ricettaDiProva.setNome(NOME2);
 		ricettaDiProva.setAutore(AUTORE);
