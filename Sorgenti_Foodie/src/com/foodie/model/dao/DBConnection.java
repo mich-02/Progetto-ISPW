@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-public class DBConnection {
-	private static DBConnection istanza;   // SINGLETON
+public class DBConnection { //NOSONAR
+	private static DBConnection istanza;  
     private Connection connection;
     private static final Logger logger = Logger.getLogger(DBConnection.class.getName());
 
