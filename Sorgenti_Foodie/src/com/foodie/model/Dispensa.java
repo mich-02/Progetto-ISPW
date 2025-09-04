@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class Dispensa extends SubjectPatternObserver { //SINGLETON, LA DISPENSA DEVE AVERE SOLO 1 ISTANZA!
+public class Dispensa extends SubjectPatternObserver { //NOSONAR
 
 	private static Dispensa istanza;                  //OSSERVATO CONCRETO, ESTENDE SUBJECT PATTERN OBSERVER
 	private static ArrayList<Alimento> lista;
