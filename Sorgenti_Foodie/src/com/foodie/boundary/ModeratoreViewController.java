@@ -137,6 +137,7 @@ public class ModeratoreViewController implements Observer {
 			try {
 				controller.pubblicaRicetta(ricettaBean);
 			} catch (OperazioneNonEseguitaException e) {
+				//non faccio nulla
 			}
 		}
 	}

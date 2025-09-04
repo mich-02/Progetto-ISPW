@@ -93,10 +93,9 @@ public class RicettaDaoDB implements RicettaDao {
 
 	            nomeCorrente = nome;
 	        }
-
 	        String alimento = rs.getString("alimento");
 	        String quantita = rs.getString("quantita");
-	        if (alimento != null && ricettaCorrente != null) {
+	        if (alimento != null) {
 	            ricettaCorrente.aggiungiIngrediente(new Alimento(alimento), quantita);
 	        }
 	    }
@@ -159,24 +158,20 @@ public class RicettaDaoDB implements RicettaDao {
 
 	    } catch (SQLException e) {
 	        // Rollback in caso di errore SQL
-	        if (connessione != null) {
-	            try {
-	                connessione.rollback();
-	            } catch (SQLException rollbackEx) {
+	    	try {
+	    		connessione.rollback();
+	    		} catch (SQLException rollbackEx) {
 	                throw new DaoException("aggiungiRicetta - Errore durante il rollback: " + rollbackEx.getMessage());
 	            }
-	        }
 	        throw new DaoException("aggiungiRicetta - Errore durante l'aggiunta della ricetta: " + e.getMessage());
 
 	    } finally {
 	        // Riattiva l'auto-commit
-	        if (connessione != null) {
 	            try {
 	                connessione.setAutoCommit(true);
 	            } catch (SQLException e) {
-	            	
-	            }
-	        }
+	            	throw new DaoException("aggiungiRicetta - ripristino autoCommit fallito: " + e.getMessage());
+	            } 
 	    }
 	}
 	

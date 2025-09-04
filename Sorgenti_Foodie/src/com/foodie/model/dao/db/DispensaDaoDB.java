@@ -44,13 +44,13 @@ public class DispensaDaoDB implements DispensaDao {
 	        // Inserisci solo i nuovi alimenti
 	        String insertQuery = "INSERT INTO dispense (username, alimento) VALUES (?, ?)";
 	        try (PreparedStatement insertStmt = connessione.prepareStatement(insertQuery)) {
+	        	insertStmt.setString(1, username);
 	            for (Alimento a : alimentiInMemoria) {
 	                String nome = a.getNome();
 	                if (nome == null || nome.isEmpty()) {
 	                    continue; // skip nomi nulli o vuoti
 	                }
 	                if (!alimentiNelDB.contains(nome)) {
-	                    insertStmt.setString(1, username);
 	                    insertStmt.setString(2, nome);
 	                    insertStmt.executeUpdate();
 	                }
@@ -60,11 +60,11 @@ public class DispensaDaoDB implements DispensaDao {
 	        // Elimina gli alimenti che non sono più presenti in memoria
 	        String deleteQuery = "DELETE FROM dispense WHERE username = ? AND alimento = ?";
 	        try (PreparedStatement deleteStmt = connessione.prepareStatement(deleteQuery)) {
+	        	deleteStmt.setString(1, username);
 	            for (String nomeDB : alimentiNelDB) {
 	                boolean ancoraPresente = alimentiInMemoria.stream()
 	                        .anyMatch(a -> nomeDB.equals(a.getNome()));
 	                if (!ancoraPresente) {
-	                    deleteStmt.setString(1, username);
 	                    deleteStmt.setString(2, nomeDB);
 	                    deleteStmt.executeUpdate();
 	                }
@@ -73,15 +73,19 @@ public class DispensaDaoDB implements DispensaDao {
 
 	        connessione.commit();
 
-	    } catch (SQLException e) {
+	    }  catch (SQLException ex) {
 	        try {
 	            connessione.rollback();
-	        } catch (SQLException ignored) {}
-	        throw new DaoException("salvaDispensa: " + e.getMessage());
+	        } catch (SQLException rollbackEx) {
+	            throw new DaoException("salvaDispensa - rollback fallito: " + rollbackEx.getMessage());
+	        }
+	        throw new DaoException("salvaDispensa - errore SQL: " + ex.getMessage());
 	    } finally {
 	        try {
 	            connessione.setAutoCommit(true); // ripristino autoCommit, ma NON chiudo la connessione
-	        } catch (SQLException ignored) {}
+	        } catch (SQLException autoCommitEx) {
+	            throw new DaoException("salvaDispensa - ripristino autoCommit fallito: " + autoCommitEx.getMessage());
+	        }
 	    }
 	}
 	

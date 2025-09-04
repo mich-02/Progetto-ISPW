@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import com.foodie.exception.DaoException;
 import com.foodie.exception.RicettaDuplicataException;
 import com.foodie.model.Alimento;
@@ -23,8 +22,6 @@ public class RicettaDaoFS implements RicettaDao {
 	private static Path otherDirectory = projectPath.resolve("CatalogoRicette");
 	private static Path filePath = otherDirectory.resolve("CatalogoRicette.txt");
 	private static final String PATH = filePath.toString();
-	private static final String MESSAGGIO = "ERRORE NELL'APERTURA DEL CATALOGO DELLE RICETTE (FILE)";
-	private static final Logger logger = Logger.getLogger(RicettaDaoFS.class.getName());
 
 	@Override
 	public List<Ricetta> trovaRicettePerDispensa(int difficolta, String username) throws DaoException {

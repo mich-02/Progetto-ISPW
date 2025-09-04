@@ -22,14 +22,14 @@ import com.foodie.model.dao.RicetteDaApprovareDao;
 public class PubblicaRicettaController {  
 	
 	private static Ricetta ricetta = new Ricetta();
-	private static RicetteDaApprovare ricetteDaApprovare;
+	private static RicetteDaApprovare ricetteDaApprovare = new RicetteDaApprovare();
 	private RicetteDaApprovareDao ricetteDaApprovareDao;
 	private RicettaDao ricettaDao;
 	private static final Logger logger = Logger.getLogger(PubblicaRicettaController.class.getName());
 	
 	public PubblicaRicettaController() {
 		ricettaDao = DaoFactoryProvider.ottieniIstanza().creaRicettaDao();
-		ricetteDaApprovare = new RicetteDaApprovare();
+		//ricetteDaApprovare = new RicetteDaApprovare();
 		ricetteDaApprovareDao = DaoFactoryProvider.ottieniIstanza().creaRicetteDaApprovareDao();
 		
 	}
@@ -126,23 +126,23 @@ public class PubblicaRicettaController {
     }
 
 	public RicettaBean ottieniRicetta(RicettaBean ricettaBean) { // metodo per ottenere i dati di una ricetta in funzione del nome-autore
-		Ricetta ricetta = null;
+		Ricetta ricettaCur = null;
 		try {
-			ricetta = ricettaDao.ottieniDatiRicetta(ricettaBean.getNome(), ricettaBean.getAutore());
-			if(ricetta != null) {
-				ricettaBean.setNome(ricetta.getNome());
-				ricettaBean.setDescrizione(ricetta.getDescrizione());
-				ricettaBean.setDifficolta(ricetta.getDifficolta());
+			ricettaCur = ricettaDao.ottieniDatiRicetta(ricettaBean.getNome(), ricettaBean.getAutore());
+			if(ricettaCur != null) {
+				ricettaBean.setNome(ricettaCur.getNome());
+				ricettaBean.setDescrizione(ricettaCur.getDescrizione());
+				ricettaBean.setDifficolta(ricettaCur.getDifficolta());
 				ArrayList<AlimentoBean> alimentiTrovatiBean = new ArrayList<>();
-				List<Alimento> alimentiTrovati = ricetta.getIngredienti();
+				List<Alimento> alimentiTrovati = ricettaCur.getIngredienti();
 				for(Alimento a:alimentiTrovati) {
 					AlimentoBean alimentoBean = new AlimentoBean();
 					alimentoBean.setNome(a.getNome());
 					alimentiTrovatiBean.add(alimentoBean);
 				}
 				ricettaBean.setIngredienti(alimentiTrovatiBean);
-				ricettaBean.setAutore(ricetta.getAutore());
-				ricettaBean.setQuantita(ricetta.getQuantita());
+				ricettaBean.setAutore(ricettaCur.getAutore());
+				ricettaBean.setQuantita(ricettaCur.getQuantita());
 				return ricettaBean;
 			}
 			else {

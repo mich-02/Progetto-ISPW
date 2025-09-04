@@ -15,7 +15,6 @@ public class DBDaoFactory implements DaoFactory {
 
 	@Override
 	public DispensaDao creaDispensaDao() {
-		//return new DispensaDaoFS();
 		return new DispensaDaoDB();
 	}
 
@@ -29,7 +28,6 @@ public class DBDaoFactory implements DaoFactory {
 	@Override
 	public RicettaDao creaRicettaDao() {
 		return new RicettaDaoDB();
-		//return new RicettaDaoFS();
 	}
 
 }

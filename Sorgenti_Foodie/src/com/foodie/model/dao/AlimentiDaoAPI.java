@@ -71,7 +71,6 @@ public class AlimentiDaoAPI implements AlimentiDao{  //IMPLEMENTAZIONE DAO CHE U
             	String warning = "Errore: codice di risposta " + codiceDiRisposta;
             	logger.warning(warning);
             	connessione.disconnect();
-            	//return new ArrayList<>();
             	throw new NessunAlimentoTrovatoException(nome);
             }
 		} catch(Exception e) {

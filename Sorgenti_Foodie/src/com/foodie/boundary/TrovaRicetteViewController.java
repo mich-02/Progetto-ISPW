@@ -40,10 +40,6 @@ public class TrovaRicetteViewController {
 		trovaRicette();
 	}
 	
-	public VBox getContenitoreRicette() {  //RESTITUISCO IL VBOX
-		return contenitoreRicette;
-	}
-	
 	@FXML
 	private void tornaAlLogin(MouseEvent event) {  
 		trovaRicettaController.svuotaDispensa();
@@ -78,7 +74,6 @@ public class TrovaRicetteViewController {
 	
 	private void trovaRicette() {  //AGGIORNO DINAMICAMENTE L'FXML TROVANDO SUBITO LE RICETTE
 		int count = 0;
-		VBox contenitoreRicette = getContenitoreRicette();
 		for(int i = 1; i<4; i++) {  //TROVO TUTTE LE DIFFICOLTA'
 			if(creaRicetteTrovate(i) == -1) {
 				count++;

@@ -23,7 +23,7 @@ public class ContenutoRicettaViewController {
 	private static final String FORMATO = "Arial";
 	
 	@FXML
-	public void caricaViewDispensa(ActionEvent event) {  //CARICA VIEW DISPENSA
+	public void caricaViewDispensa(ActionEvent event) { 
 		ViewLoader.caricaView(ViewInfo.DISPENSA_UTENTE);
 	}
 	
@@ -45,14 +45,9 @@ public class ContenutoRicettaViewController {
 		return descrizione;
 	}
 	
-	public VBox getContenitoreIngredienti() {
-		return contenitoreIngredienti;
-	}
-	
 	private void caricaDatiRicetta(RicettaBean ricettaBean) {  //POPOLA GRAFICAMENTE IL CONTENUTO DELLA RICETTA NEL FXML
 		Label labelNome = getNome();
 		Label labelDescrizione = getDescrizione();
-		VBox contenitoreIngredienti= getContenitoreIngredienti();
 		labelNome.setText(ricettaBean.getNome());
 		labelDescrizione.setText(ricettaBean.getDescrizione());
 		for(int i=0;i<ricettaBean.getIngredienti().size();i++) {

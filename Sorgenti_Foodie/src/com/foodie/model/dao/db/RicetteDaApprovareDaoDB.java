@@ -102,10 +102,11 @@ public class RicetteDaApprovareDaoDB implements RicetteDaApprovareDao{
 	                psIng.setString(2, ricetta.getAutore());
 	                psIng.setString(3, alimento.getNome());
 	                psIng.setString(4, quantita);
-	                psIng.executeUpdate();
+	                
+	                psIng.addBatch(); // aggiunge l'istruzione al batch
 	            }
+	            psIng.executeBatch(); // esegue tutte le insert in un colpo solo     
 	        }
-
 	    } catch (SQLException e) {
 	        throw new DaoException("salvaRicettaDaApprovare: " + e.getMessage());
 	    }

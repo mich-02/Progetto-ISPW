@@ -22,8 +22,8 @@ import com.foodie.model.dao.RicettaDao;
 
 public class TrovaRicettaController {  
 	
-	private static Dispensa dispensa;
-	private static AlimentiDao databaseAlimenti;
+	private Dispensa dispensa;
+	private AlimentiDao databaseAlimenti;
 	private static final Logger logger = Logger.getLogger(TrovaRicettaController.class.getName());
 	private RicettaDao ricettaDao;
 	private DispensaDao dispensaDao;
@@ -86,7 +86,6 @@ public class TrovaRicettaController {
 	}
 	
 	public void caricaDispense() {  //CARICA GLI INGREDIENTI DELLA DISPENSA DA DB
-		Dispensa dispensa = Dispensa.ottieniIstanza();
 	    dispensa.svuotaDispensa(); // svuota prima di ricaricare
 	    LoggedUser utente = LoggedUser.ottieniIstanza();
 
@@ -130,8 +129,8 @@ public class TrovaRicettaController {
 	}
 	
 	public ArrayList<AlimentoBean> trovaAlimenti(AlimentoBean alimentoBeanInserito) throws OperazioneNonEseguitaException {
+		List<Alimento> alimentiTrovati;
 		try {
-			List<Alimento> alimentiTrovati = new ArrayList<>();
 			ArrayList<AlimentoBean> alimentiTrovatiBean = null;
 			alimentiTrovati = databaseAlimenti.trovaAlimenti(alimentoBeanInserito.getNome());
 			alimentiTrovatiBean = new ArrayList<>();
@@ -211,7 +210,6 @@ public class TrovaRicettaController {
 	}
 	
 	public void registraOsservatoreDispensa(Observer observer) {
-		Dispensa dispensa = Dispensa.ottieniIstanza();
 		dispensa.registra(observer);
 	}	
 }

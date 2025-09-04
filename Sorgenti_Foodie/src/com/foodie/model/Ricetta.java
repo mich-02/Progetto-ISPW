@@ -83,8 +83,6 @@ public class Ricetta extends SubjectPatternObserver {  //OSSERVATO CONCRETO, EST
 			this.quantita.add(quantita);
 			notifica();
 		}
-		else {
-		}
 	}
 	
 	public void eliminaIngrediente(Alimento alimento) {  //METODO PER ELIMINARE UN ALIMENTO CON LA RISPETTIVA QUANTITA' SE PRESENTE

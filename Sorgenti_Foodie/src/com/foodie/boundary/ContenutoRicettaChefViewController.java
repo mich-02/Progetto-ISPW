@@ -33,10 +33,6 @@ public class ContenutoRicettaChefViewController {
 		return descrizione;
 	}
 	
-	public VBox getContenitoreIngredienti() {
-		return contenitoreIngredienti;
-	}
-	
 	@FXML  
     private void tornaAlLogin(MouseEvent event) { 
         ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
@@ -56,7 +52,6 @@ public class ContenutoRicettaChefViewController {
 	private void caricaDatiRicetta(RicettaBean ricettaBean) {  //METODO PER POPOLARE GRAFICAMENTE I DATI DELLA RICETTA
 		Label labelNome = getNome();
 		Label labelDescrizione = getDescrizione();
-		VBox contenitoreIngredienti= getContenitoreIngredienti();
 		labelNome.setText(ricettaBean.getNome());
 		labelDescrizione.setText(ricettaBean.getDescrizione());
 		for(int i=0;i<ricettaBean.getIngredienti().size();i++) {

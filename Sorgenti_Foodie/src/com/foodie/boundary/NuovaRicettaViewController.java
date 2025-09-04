@@ -125,8 +125,6 @@ public class NuovaRicettaViewController {
 		ricettaBean.setAutore(utenteBean.getUsername());
 		ArrayList<AlimentoBean> alimentiBean = pubblicaRicettacontroller.mostraIngredientiRicetta();
 		if(!alimentiBean.isEmpty()) {
-		
-        //if(ingredienti!=null && !(ingredienti.getChildren().isEmpty())) { 
 			ricettaBean.setIngredienti(alimentiBean);
         	pubblicaRicettacontroller.compilaRicetta(ricettaBean);
         	gestisciRicetteButton.fire();  //SE INGREDIENTI MESSI, ALLORA PUBBLICA E SIMULA CLICK PER TORNARE ALL'AREA PERSONALE
