@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import com.foodie.exception.DaoException;
 import com.foodie.exception.RicettaDuplicataException;
 import com.foodie.model.Alimento;
@@ -14,6 +15,8 @@ import com.foodie.model.dao.DBConnection;
 import com.foodie.model.dao.RicettaDao;
 
 public class RicettaDaoDB implements RicettaDao {
+	
+	private static final Logger logger = Logger.getLogger(RicettaDaoDB.class.getName());
 	
 	@Override
 	public List<Ricetta> trovaRicettePerDispensa(int difficolta, String username) throws DaoException {
@@ -170,7 +173,7 @@ public class RicettaDaoDB implements RicettaDao {
 	            try {
 	                connessione.setAutoCommit(true);
 	            } catch (SQLException e) {
-	            	throw new DaoException("aggiungiRicetta - ripristino autoCommit fallito: " + e.getMessage());
+	            	logger.severe("aggiungiRicetta - impossibile ripristinare autocommit: " + e.getMessage());
 	            } 
 	    }
 	}

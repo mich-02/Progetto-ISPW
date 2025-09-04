@@ -29,7 +29,6 @@ public class PubblicaRicettaController {
 	
 	public PubblicaRicettaController() {
 		ricettaDao = DaoFactoryProvider.ottieniIstanza().creaRicettaDao();
-		//ricetteDaApprovare = new RicetteDaApprovare();
 		ricetteDaApprovareDao = DaoFactoryProvider.ottieniIstanza().creaRicetteDaApprovareDao();
 		
 	}

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import com.foodie.exception.DaoException;
 import com.foodie.model.Alimento;
 import com.foodie.model.Dispensa;
@@ -15,6 +16,8 @@ import com.foodie.model.dao.DBConnection;
 import com.foodie.model.dao.DispensaDao;
 
 public class DispensaDaoDB implements DispensaDao {
+	
+	private static final Logger logger = Logger.getLogger(DispensaDaoDB.class.getName());
 
 	@Override
 	public void salvaDispensa(String username) throws DaoException {
@@ -84,7 +87,7 @@ public class DispensaDaoDB implements DispensaDao {
 	        try {
 	            connessione.setAutoCommit(true); // ripristino autoCommit, ma NON chiudo la connessione
 	        } catch (SQLException autoCommitEx) {
-	            throw new DaoException("salvaDispensa - ripristino autoCommit fallito: " + autoCommitEx.getMessage());
+	        	logger.severe("salvaDispensa - impossibile ripristinare autocommit: " + autoCommitEx.getMessage());
 	        }
 	    }
 	}
