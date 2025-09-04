@@ -18,7 +18,7 @@ public class AlimentiDaoAPI implements AlimentiDao{  //IMPLEMENTAZIONE DAO CHE U
 	
 	private static final String API_URL = "https://trackapi.nutritionix.com/v2/search/instant";
 	private static final String APP_ID = "103947a7";
-	private static final String API_KEY = "726892d58f85bf82f8f8ab4171671c42";
+	private static final String API_CHIAVE = "726892d58f85bf82f8f8ab4171671c42";
 	private static final Logger logger = Logger.getLogger(AlimentiDaoAPI.class.getName());
 	
 	private ArrayList<Alimento> estraiFoodName(String stringa) {  //INIZIALIZZO I VARI ALIMENTI DAL CAMPO FOOD NAME ESTRATTO DAL JSON OTTENUTO
@@ -48,7 +48,7 @@ public class AlimentiDaoAPI implements AlimentiDao{  //IMPLEMENTAZIONE DAO CHE U
 			// imposto il modo di richiedere come definito nella documentazione dell'API di Nutrixionix
 			connessione.setRequestMethod("GET");
             connessione.setRequestProperty("x-app-id", APP_ID);
-            connessione.setRequestProperty("x-app-key", API_KEY);
+            connessione.setRequestProperty("x-app-key", API_CHIAVE);
             int codiceDiRisposta = connessione.getResponseCode(); //ottengo codice di risposta di http
             if(codiceDiRisposta == HttpURLConnection.HTTP_OK) {//controllo se == 2 00 per capire se la connessione http ha ottenuto esito positivo
             	BufferedReader lettore = new BufferedReader(new InputStreamReader(connessione.getInputStream()));
