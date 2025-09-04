@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.foodie.model.Moderatore;
 import com.foodie.model.Ricetta;
 
-public class TestModeratore {   //VALERIO BALDAZZ
+public class TestModeratore {   //VALERIO BALDAZZI
 	
 	private static final String NOME1= "Pasta alla Carbonara";
 	private static final String NOME2= "Pasta alla Gricia";
