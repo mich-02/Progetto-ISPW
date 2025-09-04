@@ -15,9 +15,9 @@ public class Dispensa extends SubjectPatternObserver { //NOSONAR
 	}
 	
 	public static synchronized Dispensa ottieniIstanza() { //METODO PER OTTENERE L'ISTANZA
-		if(istanza==null) {
-			istanza=new Dispensa();
-			lista=new ArrayList<>();
+		if(istanza == null) {
+			istanza = new Dispensa();
+			lista = new ArrayList<>();
 		}
 		return istanza;
 	}
