@@ -3,6 +3,11 @@ package com.foodie.boundary.components;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.foodie.bean.RicettaBean;
+import com.foodie.boundary.InserisciIngredienteViewController;
+import com.foodie.boundary.NuovaRicettaViewController;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -36,5 +41,25 @@ public class ViewLoader {
 			logger.log(Level.SEVERE, "Errore durante il caricamento della view", e);
 			return null;
 		}
+	}
+	
+	public static void caricaView(ViewInfo viewInfo, RicettaBean ricettaBean) {
+	    try {
+	        FXMLLoader loader = new FXMLLoader(ViewLoader.class.getResource(viewInfo.getFxmlPath()));
+	        Parent root = loader.load();
+
+	        // Impostiamo il bean se il controller lo supporta
+	        Object controller = loader.getController();
+	        if (controller instanceof NuovaRicettaViewController) {
+	            ((NuovaRicettaViewController) controller).setRicettaBean(ricettaBean);
+	        } else if (controller instanceof InserisciIngredienteViewController) {
+	            ((InserisciIngredienteViewController) controller).setRicettaBean(ricettaBean);
+	        }
+
+	        stage.setScene(new Scene(root));
+	        stage.show();
+	    } catch (IOException e) {
+	    	logger.log(Level.SEVERE, "Errore durante il caricamento della view", e);
+	    }
 	}
 }

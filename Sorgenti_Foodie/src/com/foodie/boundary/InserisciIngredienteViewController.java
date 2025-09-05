@@ -41,7 +41,7 @@ public class InserisciIngredienteViewController implements Observer{
 	
 	private RicettaBean ricettaBean = new RicettaBean();
 	
-	public void setRicettaBean2(RicettaBean ricettaBean) {
+	public void setRicettaBean(RicettaBean ricettaBean) {
 		this.ricettaBean = ricettaBean;
 	}
 	
@@ -85,16 +85,12 @@ public class InserisciIngredienteViewController implements Observer{
 	
 	@FXML
 	public void caricaViewRicetta(ActionEvent event) {  //tasto Torna alla ricetta
+		ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1, ricettaBean);
 		/*
-			if(!bottoneModifica) { //resettare il bottone modifica se attivo
-				bottoneModifica = true;
-				labelIngredienti.setFont(Font.font(FORMATO,30));
-				labelIngredienti.setText("La mia Dispensa");
-			}
-			*/
 		FXMLLoader loader = ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
 		NuovaRicettaViewController controller = loader.getController();
-		controller.setRicettaBean1(this.ricettaBean);
+		controller.setRicettaBean(this.ricettaBean);
+		*/
 	}
 	
 	@FXML
