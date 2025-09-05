@@ -14,7 +14,6 @@ import com.foodie.controller.LoginController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
@@ -86,14 +85,7 @@ public class NuovaRicettaViewController {
 	
 	@FXML
 	private void caricaViewIngredienti(ActionEvent event) {
-		ViewLoader.caricaView(ViewInfo.INSERISCI_INGR, ricettaBean);
-		/*
-		FXMLLoader loader = ViewLoader.caricaView(ViewInfo.INSERISCI_INGR);
-	    InserisciIngredienteViewController controller = loader.getController();
-	    controller.setRicettaBean(this.ricettaBean); // Passo il ricettaBean 
-	    */
-	        
-	    
+		ViewLoader.caricaView(ViewInfo.INSERISCI_INGR, ricettaBean);    
 	}
 	
 	@FXML

@@ -11,7 +11,6 @@ import com.foodie.exception.OperazioneNonEseguitaException;
 import com.foodie.model.Observer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -86,12 +85,6 @@ public class InserisciIngredienteViewController implements Observer{
 	@FXML
 	public void caricaViewRicetta(ActionEvent event) {  //tasto Torna alla ricetta
 		ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1, ricettaBean);
-		/*
-		FXMLLoader loader = ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
-		NuovaRicettaViewController controller = loader.getController();
-		controller.setRicettaBean(this.ricettaBean);
-		*/
-		
 	}
 	
 	@FXML
@@ -193,12 +186,6 @@ public class InserisciIngredienteViewController implements Observer{
 			impostaLabel();
 		}
 	}
-	
-	/*
-	public VBox getContenitoreIngredienti() {  //RESTITUISCE CONTENITORE INGREDIENTI
-		return contenitoreIngredienti;
-	}
-	*/
 	
 	
 	@FXML

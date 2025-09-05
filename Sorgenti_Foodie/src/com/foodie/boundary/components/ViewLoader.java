@@ -5,11 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import com.foodie.bean.RicettaBean;
-import com.foodie.boundary.InserisciIngredienteViewController;
-import com.foodie.boundary.NuovaRicettaViewController;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -52,16 +48,11 @@ public class ViewLoader {
 
 	        // Imposta il bean se il controller ha un metodo pubblico setRicettaBean
 	        Object controller = loader.getController();
-	        try {
-	            Method method = controller.getClass().getMethod("setRicettaBean", RicettaBean.class);
-	            method.invoke(controller, ricettaBean);
-	        } catch (NoSuchMethodException ignored) {
-	            // il controller non ha il metodo, va bene
-	        }
-
+	        Method method = controller.getClass().getMethod("setRicettaBean", RicettaBean.class);
+	        method.invoke(controller, ricettaBean);
 	        stage.setScene(new Scene(root));
 	        stage.show();
-	    } catch (IOException | IllegalAccessException | InvocationTargetException e) {
+	    } catch (IOException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 	        logger.log(Level.SEVERE, "Errore durante il caricamento della view", e);
 	    }
 	}
