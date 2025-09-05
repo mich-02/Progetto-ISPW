@@ -3,6 +3,7 @@ package com.foodie.model.dao;
 import com.foodie.exception.DaoException;
 import com.foodie.exception.NessunaRicettaDaApprovareException;
 import com.foodie.model.Ricetta;
+import com.foodie.model.RicetteDaApprovare;
 
 public interface RicetteDaApprovareDao {
 	

@@ -59,7 +59,7 @@ public class RicetteDaApprovareDaoDB implements RicetteDaApprovareDao{
 
 	            ricetta.setIngredienti(ingredienti);
 	            ricetta.setQuantita(quantita);
-
+	            
 	            ricetteDaApprovare.aggiungiRicettaDaVerificare(ricetta);
 	        }
 

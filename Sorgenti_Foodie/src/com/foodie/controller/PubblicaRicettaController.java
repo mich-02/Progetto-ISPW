@@ -22,7 +22,7 @@ import com.foodie.model.dao.RicetteDaApprovareDao;
 public class PubblicaRicettaController {  
 	
 	private static Ricetta ricetta = new Ricetta();
-	private static RicetteDaApprovare ricetteDaApprovare = new RicetteDaApprovare();
+	private RicetteDaApprovare ricetteDaApprovare = new RicetteDaApprovare();
 	private RicetteDaApprovareDao ricetteDaApprovareDao;
 	private RicettaDao ricettaDao;
 	private static final Logger logger = Logger.getLogger(PubblicaRicettaController.class.getName());
@@ -33,7 +33,7 @@ public class PubblicaRicettaController {
 		
 	}
 	
-	public static void creaRicetta() { 
+	public void creaRicetta() { 
 		ricetta = new Ricetta();
 	}
 	
@@ -179,7 +179,7 @@ public class PubblicaRicettaController {
 		}
 		else {
 			return new ArrayList<>();
-		}
+		} 
 	}
 	
 	public List<RicettaBean> trovaRicetteChef(UtenteBean utenteBean) {
