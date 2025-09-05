@@ -20,7 +20,7 @@ import com.foodie.model.dao.DispensaDao;
 import com.foodie.model.dao.RicettaDao;
 
 
-public class TrovaRicettaController {  //test
+public class TrovaRicettaController {  //test commit
 	
 	private Dispensa dispensa;
 	private AlimentiDao databaseAlimenti;
