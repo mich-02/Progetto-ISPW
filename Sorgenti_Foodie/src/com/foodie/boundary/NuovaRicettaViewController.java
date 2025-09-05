@@ -89,9 +89,10 @@ public class NuovaRicettaViewController {
 		ViewLoader.caricaView(ViewInfo.INSERISCI_INGR, ricettaBean);
 		/*
 		FXMLLoader loader = ViewLoader.caricaView(ViewInfo.INSERISCI_INGR);
-	        InserisciIngredienteViewController controller = loader.getController();
-	        controller.setRicettaBean(this.ricettaBean); // Passo il ricettaBean 
-	        */
+	    InserisciIngredienteViewController controller = loader.getController();
+	    controller.setRicettaBean(this.ricettaBean); // Passo il ricettaBean 
+	    */
+	        
 	    
 	}
 	

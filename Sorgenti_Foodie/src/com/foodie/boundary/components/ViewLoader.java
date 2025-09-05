@@ -1,6 +1,8 @@
 package com.foodie.boundary.components;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,18 +50,19 @@ public class ViewLoader {
 	        FXMLLoader loader = new FXMLLoader(ViewLoader.class.getResource(viewInfo.getFxmlPath()));
 	        Parent root = loader.load();
 
-	        // Impostiamo il bean se il controller lo supporta
+	        // Imposta il bean se il controller ha un metodo pubblico setRicettaBean
 	        Object controller = loader.getController();
-	        if (controller instanceof NuovaRicettaViewController) {
-	            ((NuovaRicettaViewController) controller).setRicettaBean(ricettaBean);
-	        } else if (controller instanceof InserisciIngredienteViewController) {
-	            ((InserisciIngredienteViewController) controller).setRicettaBean(ricettaBean);
+	        try {
+	            Method method = controller.getClass().getMethod("setRicettaBean", RicettaBean.class);
+	            method.invoke(controller, ricettaBean);
+	        } catch (NoSuchMethodException ignored) {
+	            // il controller non ha il metodo, va bene
 	        }
 
 	        stage.setScene(new Scene(root));
 	        stage.show();
-	    } catch (IOException e) {
-	    	logger.log(Level.SEVERE, "Errore durante il caricamento della view", e);
+	    } catch (IOException | IllegalAccessException | InvocationTargetException e) {
+	        logger.log(Level.SEVERE, "Errore durante il caricamento della view", e);
 	    }
 	}
 }

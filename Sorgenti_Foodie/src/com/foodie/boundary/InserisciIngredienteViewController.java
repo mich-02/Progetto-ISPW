@@ -91,6 +91,7 @@ public class InserisciIngredienteViewController implements Observer{
 		NuovaRicettaViewController controller = loader.getController();
 		controller.setRicettaBean(this.ricettaBean);
 		*/
+		
 	}
 	
 	@FXML
