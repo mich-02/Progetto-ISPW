@@ -14,10 +14,12 @@ import com.foodie.controller.LoginController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.input.MouseEvent;
 
 public class NuovaRicettaViewController {
@@ -40,113 +42,107 @@ public class NuovaRicettaViewController {
 	@FXML
 	private Button pubblica;
 	
-	@FXML
-	private void caricaViewIngredienti(ActionEvent event) {  // tasto in basso a sx
-		ViewLoader.caricaView(ViewInfo.INSERISCI_INGR);
+	private RicettaBean ricettaBean = new RicettaBean();
+	
+	public void setRicettaBean(RicettaBean ricettaBean) {
+		this.ricettaBean = ricettaBean;
+		aggiornaView();
+	}
+	
+	private void aggiornaView() {  // aggiorno i vari campi
+		if (ricettaBean == null) {
+	        return;
+	    }
+		nome.setText(ricettaBean.getNome());
+		descrizione.setText(ricettaBean.getDescrizione());
+		switch(ricettaBean.getDifficolta()) {
+		case 1:
+				facile.setSelected(true);
+				disabilitaPulsanti(null);
+				break;
+		case 2:
+				medio.setSelected(true);
+				disabilitaPulsanti(null);
+				break;
+		case 3:
+				difficile.setSelected(true);
+				disabilitaPulsanti(null);
+				break;
+		default:
+			disabilitaPulsanti(null);
+		}
 	}
 	
 	@FXML
-	private void compilaRicetta(ActionEvent event) {  //tasto Richiedi pubblicazione
-		RicettaBean ricettaBean = new RicettaBean();
-		String testo = nome.getText().trim();
-		if(!testo.isEmpty()) {
-			ricettaBean.setNome(nome.getText());
-		}
-		else {  //MOSTRO GRAFICAMENTE UN AVVERTIMENTO! ANCHE PER GLI ELSE SUCCESSIVI!
-			nome.setPromptText("INSERISCI NOME");
-			 // Creazione di un oggetto ScheduledExecutorService
-	        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private void initialize() {
+        // Listener per aggiornare il bean in tempo reale
+        nome.textProperty().addListener((obs, oldText, newText) -> ricettaBean.setNome(newText));
+        descrizione.textProperty().addListener((obs, oldText, newText) -> ricettaBean.setDescrizione(newText));
 
-	        // Creare una task da eseguire dopo 2 secondi
-	        Runnable task = () -> 
-	            // Codice da eseguire dopo 2 secondi
-	            Platform.runLater(() -> nome.setPromptText("Nome Ricetta"));
-	        
-
-	        // Programmare la task per essere eseguita dopo 2 secondi
-	        scheduler.schedule(task, 2, TimeUnit.SECONDS);
-
-	        // Chiudere il thread scheduler dopo l'esecuzione della task
-	        scheduler.shutdown();
-		}
-		testo = descrizione.getText().trim();
-		if(!testo.isEmpty()) {
-			ricettaBean.setDescrizione(descrizione.getText());
-		}
-		else {
-			descrizione.setPromptText("INSERISCI DESCRIZIONE");
-			 // Creazione di un oggetto ScheduledExecutorService
-	        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-	        // Creare una task da eseguire dopo 2 secondi
-	        Runnable task = () -> 
-	            // Codice da eseguire dopo 2 secondi
-	            Platform.runLater(() -> descrizione.setPromptText("Descrizione"));
-	        
-
-	        // Programmare la task per essere eseguita dopo 2 secondi
-	        scheduler.schedule(task, 2, TimeUnit.SECONDS);
-
-	        // Chiudere il thread scheduler dopo l'esecuzione della task
-	        scheduler.shutdown();	
-	        return;
-		}
-		int diff=0;
-		if(facile.isSelected()) {
-			diff=1;
-		}
-		else if(medio.isSelected()) {
-			diff=2;
-		}
-		else if(difficile.isSelected()) {
-			diff=3;
-		}
-		else {
-			pubblica.setText("DIFFICOLTA?");
-			 // Creazione di un oggetto ScheduledExecutorService
-	        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-	        // Creare una task da eseguire dopo 2 secondi
-	        Runnable task = () -> 
-	            // Codice da eseguire dopo 2 secondi
-	            Platform.runLater(() -> pubblica.setText("Pubblica"));
-	        
-
-	        // Programmare la task per essere eseguita dopo 2 secondi
-	        scheduler.schedule(task, 2, TimeUnit.SECONDS);
-
-	        // Chiudere il thread scheduler dopo l'esecuzione della task
-	        scheduler.shutdown();	
-	        return;
-		}
-		ricettaBean.setDifficolta(diff);
-		UtenteBean utenteBean = loginController.getUtente();
-		ricettaBean.setAutore(utenteBean.getUsername());
-		List<AlimentoBean> alimentiBean = pubblicaRicettacontroller.mostraIngredientiRicetta();
-		if(!alimentiBean.isEmpty()) {
-			ricettaBean.setIngredienti(alimentiBean);
-        	pubblicaRicettacontroller.compilaRicetta(ricettaBean);
-        	gestisciRicetteButton.fire();  //SE INGREDIENTI MESSI, ALLORA PUBBLICA E SIMULA CLICK PER TORNARE ALL'AREA PERSONALE
-		}
-		else {  //MOSTRA GARFICAMENTE L'AVVERTIMENTO PER GLI INGREDIENTI
-			pubblica.setText("INGREDIENTI?");
-			 // Creazione di un oggetto ScheduledExecutorService
-	        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-	        // Creare una task da eseguire dopo 2 secondi
-	        Runnable task = () -> 
-	            // Codice da eseguire dopo 2 secondi
-	            Platform.runLater(() -> pubblica.setText("Pubblica"));
-	        
-
-	        // Programmare la task per essere eseguita dopo 2 secondi
-	        scheduler.schedule(task, 2, TimeUnit.SECONDS);
-
-	        // Chiudere il thread scheduler dopo l'esecuzione della task
-	        scheduler.shutdown();	
-	        
-		}
+        facile.selectedProperty().addListener((obs, oldVal, newVal) -> { if (newVal) ricettaBean.setDifficolta(1); });
+        medio.selectedProperty().addListener((obs, oldVal, newVal) -> { if (newVal) ricettaBean.setDifficolta(2); });
+        difficile.selectedProperty().addListener((obs, oldVal, newVal) -> { if (newVal) ricettaBean.setDifficolta(3); });
+    }
+	
+	@FXML
+	private void caricaViewIngredienti(ActionEvent event) {
+		FXMLLoader loader = ViewLoader.caricaView(ViewInfo.INSERISCI_INGR);
+	        InserisciIngredienteViewController controller = loader.getController();
+	        controller.setRicettaBean(this.ricettaBean); // Passo il ricettaBean 
+	    
 	}
+	
+	@FXML
+    private void compilaRicetta(ActionEvent event) {
+        // Verifica campi vuoti
+        boolean valid = true;
+
+        if (nome.getText().trim().isEmpty()) {
+            showTemporaryPrompt(nome, "INSERISCI NOME");
+            valid = false;
+        }
+
+        if (descrizione.getText().trim().isEmpty()) {
+            showTemporaryPrompt(descrizione, "INSERISCI DESCRIZIONE");
+            valid = false;
+        }
+
+        if (!facile.isSelected() && !medio.isSelected() && !difficile.isSelected()) {
+            showTemporaryButtonText(pubblica, "DIFFICOLTA?");
+            valid = false;
+        }
+
+        if (!valid) return;
+
+        // Imposta autore
+        UtenteBean utenteBean = loginController.getUtente();
+        ricettaBean.setAutore(utenteBean.getUsername());
+
+        // Imposta ingredienti
+        List<AlimentoBean> alimentiBean = pubblicaRicettacontroller.mostraIngredientiRicetta();
+        if (!alimentiBean.isEmpty()) {
+            ricettaBean.setIngredienti(alimentiBean);
+            pubblicaRicettacontroller.compilaRicetta(ricettaBean);
+            gestisciRicetteButton.fire(); // simula click per tornare all'area personale
+        } else {
+            showTemporaryButtonText(pubblica, "INGREDIENTI?");
+        }
+    }
+
+    private void showTemporaryPrompt(TextInputControl field, String text) {
+        field.setPromptText(text);
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.schedule(() -> Platform.runLater(() -> field.setPromptText(field.getId().equals("nome") ? "Nome Ricetta" : "Descrizione")), 2, TimeUnit.SECONDS);
+        scheduler.shutdown();
+    }
+
+    private void showTemporaryButtonText(Button button, String text) {
+        String original = button.getText();
+        button.setText(text);
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.schedule(() -> Platform.runLater(() -> button.setText(original)), 2, TimeUnit.SECONDS);
+        scheduler.shutdown();
+    }
 	
 	@FXML
 	private void disabilitaPulsanti(ActionEvent event) {  //per cliccare solo una difficoltà alla volta 

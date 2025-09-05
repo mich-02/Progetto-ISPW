@@ -2,6 +2,7 @@ package com.foodie.boundary;
 
 import java.util.List;
 import com.foodie.bean.AlimentoBean;
+import com.foodie.bean.RicettaBean;
 import com.foodie.boundary.components.ViewInfo;
 import com.foodie.boundary.components.ViewLoader;
 import com.foodie.controller.PubblicaRicettaController;
@@ -10,6 +11,7 @@ import com.foodie.exception.OperazioneNonEseguitaException;
 import com.foodie.model.Observer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -21,7 +23,6 @@ import javafx.scene.text.Font;
 
 public class InserisciIngredienteViewController implements Observer{
 	
-
 	private PubblicaRicettaController pubblicaRicettaController = new PubblicaRicettaController();
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
 	private boolean bottoneModifica = true;
@@ -37,6 +38,12 @@ public class InserisciIngredienteViewController implements Observer{
 	private TextField barraDiRicerca;
 	@FXML
 	private TextField quantita;
+	
+	private RicettaBean ricettaBean = new RicettaBean();
+	
+	public void setRicettaBean(RicettaBean ricettaBean) {
+		this.ricettaBean = ricettaBean;
+	}
 	
 	@FXML
 	public void initialize() {
@@ -78,12 +85,16 @@ public class InserisciIngredienteViewController implements Observer{
 	
 	@FXML
 	public void caricaViewRicetta(ActionEvent event) {  //tasto Torna alla ricetta
+		/*
 			if(!bottoneModifica) { //resettare il bottone modifica se attivo
 				bottoneModifica = true;
 				labelIngredienti.setFont(Font.font(FORMATO,30));
 				labelIngredienti.setText("La mia Dispensa");
 			}
-			ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
+			*/
+		FXMLLoader loader = ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
+		NuovaRicettaViewController controller = loader.getController();
+		controller.setRicettaBean(this.ricettaBean);
 	}
 	
 	@FXML
@@ -186,9 +197,11 @@ public class InserisciIngredienteViewController implements Observer{
 		}
 	}
 	
+	/*
 	public VBox getContenitoreIngredienti() {  //RESTITUISCE CONTENITORE INGREDIENTI
 		return contenitoreIngredienti;
 	}
+	*/
 	
 	
 	@FXML

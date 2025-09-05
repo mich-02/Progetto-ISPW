@@ -39,13 +39,13 @@ public class GestisciRicetteViewController {
 		aggiornaView();
 	}
 	
-	public void aggiornaView() {  //TROVA TUTTE LE RICETTE DELLO CHEF E LE MOSTRA GRAFICAMENTE
+	public void aggiornaView() {  // trovo tutte le ricette dello chef e aggiorno la view 
 		List<RicettaBean> ricetteTrovate = null;
 		contenitoreRicette.getChildren().clear();
 		UtenteBean utenteBean = loginController.getUtente();
-		ricetteTrovate = pubblicaRicettaController.trovaRicetteChef(utenteBean);  //TROVO PER USERNAME CHEF
+		ricetteTrovate = pubblicaRicettaController.trovaRicetteChef(utenteBean);  // ricerco ricette per username dello chef
 		if(!ricetteTrovate.isEmpty()) {
-			for(RicettaBean r: ricetteTrovate) {  //CREO VARIE PARTI GRAFICHE
+			for(RicettaBean r: ricetteTrovate) {  // creazioni delle parti grafiche
 				HBox contenitoreRicettaSingola = new HBox();
 				contenitoreRicettaSingola.setAlignment(Pos.CENTER_LEFT);
 				contenitoreRicettaSingola.setStyle("-fx-background-color: rgba(217, 217, 217, 0.75);-fx-border-color: black;");
@@ -56,7 +56,7 @@ public class GestisciRicetteViewController {
 				labelNome.setMinHeight(65);
 				labelNome.setFont(Font.font(FORMATO,20));
 				labelNome.setAlignment(Pos.CENTER);
-				String difficolta="";
+				String difficolta = "";
 				switch(r.getDifficolta()) {
 					case 1:
 						difficolta = "facile";
@@ -81,16 +81,16 @@ public class GestisciRicetteViewController {
 				contenitoreRicette.getChildren().add(contenitoreRicettaSingola);
 				
 			}
-			impostaHBox(); //RENDO CLICCABILI
+			impostaHBox(); // rendo ricette cliccabili
 		}
-		if(contenitoreRicette.getChildren().isEmpty() && !bottoneModifica) { //PER EVITARE CHE SE LE RICETTE è VUOTA RIMANGA ATTIVO IL BOTTONE E IL TESTO DELLA LABEL
-			bottoneModifica=true;
-			eliminaLabel.setFont(Font.font(FORMATO,30));//ESEMPIO PREMI MODIFICA CANCELLI L'ULTIMA RICETTA ALLORA SI DEVE DISATTIVARE LA MODIFICA
+		if(contenitoreRicette.getChildren().isEmpty() && !bottoneModifica) { // gestione bottone e label di modifica delle ricette
+			bottoneModifica = true;
+			eliminaLabel.setFont(Font.font(FORMATO,30));
 			eliminaLabel.setText("");
 		}
 	}
 	
-	private void caricaViewContenutoRicetta(String nomeRicetta) {  //CARICA VIEW CONTENUTO RICETTA
+	private void caricaViewContenutoRicetta(String nomeRicetta) {  
 		UtenteBean utenteBean = loginController.getUtente();
 		RicettaBean ricettaBean = new RicettaBean();
 		ricettaBean.setNome(nomeRicetta);
@@ -124,7 +124,7 @@ public class GestisciRicetteViewController {
 		impostaHBox();
 	}
 	
-	private void eliminaRicetta(String nome,String autore) {  //ELIMINA RICETTA 
+	private void eliminaRicetta(String nome,String autore) {  
 		if(!contenitoreRicette.getChildren().isEmpty()) {
 			contenitoreRicette.getChildren().clear();
 		}
@@ -135,17 +135,17 @@ public class GestisciRicetteViewController {
 		aggiornaView();
 	}
 	
-	private void impostaHBox() {  //IMPOSTA RICETTE CLICCABILI
+	private void impostaHBox() {  // imposta ricette cliccabili 
 		if(!bottoneModifica) {  //IMPOSTO DI ELIMINARE LE RICETTE
 			if(!contenitoreRicette.getChildren().isEmpty()) {
-				scorriLabel();  //LE RENDE CLICCABILI, EVITI LO SMELL DELLA COMPLESSITA'
+				scorriLabel();  // per smell complessità
 			}
 		}
 		else {  //IMPOSTO DI APRIRE LE RICETTE CLICCATE
 			contenitoreRicette.getChildren().forEach(node -> {
 		        HBox contenitoreRicetta = (HBox) node;
 		        contenitoreRicetta.setOnMouseClicked(event -> {
-		            int indiceLabel=1;
+		            int indiceLabel = 1;
 		            popolaLabel(indiceLabel,contenitoreRicetta);
 		        });
 		    });
@@ -154,13 +154,13 @@ public class GestisciRicetteViewController {
 	
 	private void scorriLabel() {  //SCORRE LE LABEL E LE RENDE CLICCABILI
 		for(Node nodo1: contenitoreRicette.getChildren()) {
-			int indice=1;
-			HBox hBoxRicetta= (HBox)nodo1;
+			int indice = 1;
+			HBox hBoxRicetta = (HBox)nodo1;
 			for(Node nodo: hBoxRicetta.getChildren()) {
-				Label labelNome=(Label)nodo;  //PRENDO SOLO IL NOME 
+				Label labelNome = (Label)nodo;  //PRENDO SOLO IL NOME 
 				UtenteBean utenteBean = loginController.getUtente();
-				hBoxRicetta.setOnMouseClicked(event->eliminaRicetta(labelNome.getText(),utenteBean.getUsername()));
-				if(indice==1) {
+				hBoxRicetta.setOnMouseClicked(event -> eliminaRicetta(labelNome.getText(),utenteBean.getUsername()));
+				if(indice == 1) {
 					break;
 				}
 				indice++;
@@ -170,7 +170,7 @@ public class GestisciRicetteViewController {
 	
 	private void popolaLabel(int indiceLabel,HBox contenitoreRicetta) {
 		String nomeRicetta = "";
-		for (Node labelNode : contenitoreRicetta.getChildren()) { //POPOLA LABEL USATO PER EVITARE SMELL COMPLESSITA'        
+		for (Node labelNode : contenitoreRicetta.getChildren()) {        
             Label label = (Label) labelNode;
             if(indiceLabel==1)
             	nomeRicetta = label.getText();
@@ -183,12 +183,12 @@ public class GestisciRicetteViewController {
 	}
 	
 	@FXML
-    private void tornaAlLogin() {  // carica view login
+    private void tornaAlLogin() {  
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
     }
 	
 	@FXML
-	private void caricaViewRicetta() {  // carica view nuova ricetta 
+	private void caricaViewRicetta() {  
 		ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
 	}
 	

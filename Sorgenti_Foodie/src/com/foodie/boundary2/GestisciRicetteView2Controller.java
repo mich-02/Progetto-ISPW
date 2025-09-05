@@ -30,8 +30,8 @@ public class GestisciRicetteView2Controller {
 		aggiornaView();
 	}
 	
-	public void aggiornaView() {  //TROVA LE RICETTE DELLO CHEF E LE MOSTRA GIA' CON TUTTO IL CONTENUTO
-		List<RicettaBean> ricetteTrovate= null;
+	public void aggiornaView() {  //trova le ricette dello chef e le mostra gia' con tutto il contenuto
+		List<RicettaBean> ricetteTrovate = null;
 		contenitoreRicette.getChildren().clear();
 		UtenteBean utenteBean = loginController.getUtente();
 		ricetteTrovate = pubblicaRicettaontroller.trovaRicetteChef(utenteBean);
@@ -51,13 +51,13 @@ public class GestisciRicetteView2Controller {
 			    
 			    switch(r.getDifficolta()) {
 				case 1:
-						difficolta="facile";
+						difficolta = "facile";
 						break;
 				case 2:
-						difficolta="intermedio";
+						difficolta = "intermedio";
 						break;
 				case 3:
-						difficolta="difficile";
+						difficolta = "difficile";
 						break;
 				default:
 					logger.severe("difficoltà non riconosciuta");
@@ -88,23 +88,23 @@ public class GestisciRicetteView2Controller {
 			    contenitoreRicetta.getChildren().addAll(labelNome,labelAutore,labelDifficolta,labelDescrizione, contenitoreIngredienti);
 			    contenitoreRicette.getChildren().add(contenitoreRicetta);
 			}
-			impostaVBox();  //IMPOSTA RICETTE CLICCABILI PER ELIMINARLE
+			impostaVBox();  //imposta ricette cliccabili per eliminarle
 		}
 	}
 	
-	private void eliminaRicetta(VBox contenitoreRicetta) {  //ELIMINA RICETTA 
+	private void eliminaRicetta(VBox contenitoreRicetta) {   
 		if(!contenitoreRicette.getChildren().isEmpty()) {
 			contenitoreRicette.getChildren().clear();
 		}
-		String nome="";
-		String autore="";
-		int index=1;
+		String nome = "";
+		String autore = "";
+		int index = 1;
 		for(Node nodo: contenitoreRicetta.getChildren()) {
-			if(index==1) {
-				nome=((Label)nodo).getText();
+			if(index == 1) {
+				nome = ((Label)nodo).getText();
 			}
-			else if(index==2) {
-				autore=((Label)nodo).getText();
+			else if(index == 2) {
+				autore = ((Label)nodo).getText();
 			}
 			else {
 				break;
@@ -118,7 +118,7 @@ public class GestisciRicetteView2Controller {
 		aggiornaView();
 	}
 	
-	private void impostaVBox() {  //RENDE CLICCABILI LE RICETTE
+	private void impostaVBox() {  //rende cliccabili le ricette
 		 if (!contenitoreRicette.getChildren().isEmpty()) {
 		        contenitoreRicette.getChildren().forEach(node -> {
 		            VBox contenitoreRicetta = (VBox) node;

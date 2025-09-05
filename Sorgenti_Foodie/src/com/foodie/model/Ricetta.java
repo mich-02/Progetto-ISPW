@@ -70,7 +70,7 @@ public class Ricetta extends SubjectPatternObserver {  //OSSERVATO CONCRETO, EST
 	}
 	
 	public void setAutore(String autore) {
-		this.autore=autore;
+		this.autore = autore;
 	}
 	
 	public void setQuantita(List<String> quantita) {

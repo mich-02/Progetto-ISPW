@@ -44,8 +44,8 @@ public class AggiungiAlimentoView2Controller {
     }
 	
 	@FXML
-	private void gestioneRisultati(KeyEvent event) {  //GESTISCE BARRA DI RICERCA
-		if(event.getCode() == KeyCode.ENTER) {//GETCODE() TI RESTITUISCE IL TASTO PREMUTO
+	private void gestioneRisultati(KeyEvent event) {  //gestisce barra di ricerca
+		if(event.getCode() == KeyCode.ENTER) {//getcode() ti restituisce il tasto premuto
 			trovaAlimenti();
 		}
 		else if(event.getCode() == KeyCode.BACK_SPACE) {
@@ -53,7 +53,7 @@ public class AggiungiAlimentoView2Controller {
 		}
 	}
 
-	private void trovaAlimenti() {  //METODO TROVA ALIMENTI
+	private void trovaAlimenti() { 
 		try {
 			eliminaAlimenti();
 			AlimentoBean alimentoBean = new AlimentoBean();
@@ -67,7 +67,7 @@ public class AggiungiAlimentoView2Controller {
 				labelAlimento.setMinHeight(30);
 				labelAlimento.setWrapText(true);
 				labelAlimento.setFont(Font.font("Arial"));
-				labelAlimento.setAlignment(Pos.CENTER);  //LI RENDE CLICCABILI
+				labelAlimento.setAlignment(Pos.CENTER);  //li rende cliccabili
 				labelAlimento.setOnMouseClicked(event2->{salvaAlimento(labelAlimento.getText());eliminaAlimenti();});
 				contenitoreAlimentiTrovati.getChildren().add(labelAlimento);
 			}
@@ -84,15 +84,15 @@ public class AggiungiAlimentoView2Controller {
 		
 	}
 	
-	private void salvaAlimento(String nomeAlimento) {  //SALVA ALIMENTO
+	private void salvaAlimento(String nomeAlimento) {  
 		AlimentoBean alimentoBean = new AlimentoBean();
 		alimentoBean.setNome(nomeAlimento);
 		trovaRicettaController.aggiungiInDispensa(alimentoBean);
-		trovaRicettaController.salvaDispensa(); //SALVO DISPENSA SU FILE IN AUTOMATICO
+		trovaRicettaController.salvaDispensa(); 
 		
 	}
 	
-	private void eliminaAlimenti() {  //ELIMINA ALIMENTI TROVATI
+	private void eliminaAlimenti() { 
 		if(!contenitoreAlimentiTrovati.getChildren().isEmpty()) {
 			contenitoreAlimentiTrovati.getChildren().clear();
 		}

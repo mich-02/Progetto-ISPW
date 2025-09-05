@@ -67,12 +67,12 @@ public class NuovaRicettaView2Controller implements Observer{
 	}
 	
 	@FXML
-	private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
+	private void tornaAlLogin(MouseEvent event) {  
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
 	
 	@FXML
-	private void disabilitaPulsanti(ActionEvent event) {  //GESTISCI PULSANTI DIFFICOLTA'
+	private void disabilitaPulsanti(ActionEvent event) {  //gestisci pulsanti difficolta'
 		if (facile.isSelected()) {
 		    medio.setDisable(true);
 		    difficile.setDisable(true);
@@ -90,18 +90,18 @@ public class NuovaRicettaView2Controller implements Observer{
 	}
 	
 	@FXML
-    private void caricaViewGestisciRicette(ActionEvent event) {  //CARICA VIEW GESTISCI RICETTE
+    private void caricaViewGestisciRicette(ActionEvent event) {  
 		ViewLoader.caricaView(ViewInfo.GESTISCI_RICETTE2);
     }
 	
 	@FXML
-	private void compilaRicetta(ActionEvent event) {  //METODO PER COMPILARE LA RICETTA
+	private void compilaRicetta(ActionEvent event) {  
 		RicettaBean ricettaBean= new RicettaBean();
 		String testo = nome.getText().trim();
 		if(!testo.isEmpty()) {
 			ricettaBean.setNome(nome.getText());
 		}
-		else {  //TUTTI GLI ELSE SERVONO PER CREARE AVVERTIMENTI GRAFICI
+		else {  //tutti gli else servono per creare avvertimenti grafici
 			nome.setPromptText("INSERISCI NOME");
 			 // Creazione di un oggetto ScheduledExecutorService
 	        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -140,15 +140,15 @@ public class NuovaRicettaView2Controller implements Observer{
 	        scheduler.shutdown();	
 	        return;
 		}
-		int diff=0;
+		int diff = 0;
 		if(facile.isSelected()) {
-			diff=1;
+			diff = 1;
 		}
 		else if(medio.isSelected()) {
-			diff=2;
+			diff = 2;
 		}
 		else if(difficile.isSelected()) {
-			diff=3;
+			diff = 3;
 		}
 		else {
 			pubblica.setText("DIFFICOLTA?");
@@ -170,13 +170,13 @@ public class NuovaRicettaView2Controller implements Observer{
 		}
 		ricettaBean.setDifficolta(diff); 
 		UtenteBean utenteBean = loginController.getUtente();
-		ricettaBean.setAutore(utenteBean.getUsername()); //NOME CHEF PRESO IN AUTOMATICO
+		ricettaBean.setAutore(utenteBean.getUsername());
         if(ingredienti!=null && !(ingredienti.getChildren().isEmpty())) { 
-        	pubblicaRicettaController.compilaRicetta(ricettaBean); //RICHIESTA PUBBLICAZIONE
-        	gestisciRicetteButton.fire();  //SIMULA CLICK AREA PERSONALE
+        	pubblicaRicettaController.compilaRicetta(ricettaBean); //richiesta pubblicazione
+        	gestisciRicetteButton.fire();  //simula click view gestisci ricette
         	
 		}
-		else {  //AVVERTIMENTO GRAFICO INGREDIENTI
+		else {  //avvertimento grafico ingredienti
 			pubblica.setText("INGREDIENTI?");  
 			 // Creazione di un oggetto ScheduledExecutorService
 	        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -196,21 +196,21 @@ public class NuovaRicettaView2Controller implements Observer{
 	}
 	
 	@FXML
-	private void gestioneRisultati(KeyEvent event) {  //GESTISCE BARRA DI RICERCA ALIMENTI
-		if(event.getCode() == KeyCode.ENTER) {//GETCODE() TI RESTITUISCE IL TASTO PREMUTO
+	private void gestioneRisultati(KeyEvent event) {  //gestisce barra di ricerca alimenti
+		if(event.getCode() == KeyCode.ENTER) { //getcode() ti restituisce il tasto premuto
 			trovaAlimenti();
 		}
 		else if(event.getCode() == KeyCode.BACK_SPACE) {
 			eliminaAlimenti();
 		}
 	}
-	private void eliminaAlimenti() {  //ELIMINA ALIMENTI TROVATI
+	private void eliminaAlimenti() { 
 		if(!contenitoreAlimentiTrovati.getChildren().isEmpty()) {
 			this.quantita.setDisable(true);
 			contenitoreAlimentiTrovati.getChildren().clear();
 		}
 	}
-	private void salvaAlimento(String nomeAlimento, String quantita) {  //SALVA ALIMENTO ALLA RICETTA
+	private void salvaAlimento(String nomeAlimento, String quantita) {  //salva alimento alla ricetta
 		if(!quantita.isEmpty()) {
 			AlimentoBean alimentoBean = new AlimentoBean();
 			alimentoBean.setNome(nomeAlimento);
@@ -226,7 +226,6 @@ public class NuovaRicettaView2Controller implements Observer{
 	}	
 	
 	private void trovaAlimenti() {  
-		
 		try {
 			eliminaAlimenti();
 			AlimentoBean alimentoBean = new AlimentoBean();
@@ -240,7 +239,7 @@ public class NuovaRicettaView2Controller implements Observer{
 				labelAlimento.setMinHeight(30);
 				labelAlimento.setWrapText(true);
 				labelAlimento.setFont(Font.font(FORMATO));
-				labelAlimento.setAlignment(Pos.CENTER);  //LI RENDE CLICCABILI
+				labelAlimento.setAlignment(Pos.CENTER);  //li rende cliccabili
 				labelAlimento.setOnMouseClicked(event2->salvaAlimento(labelAlimento.getText(),quantita.getText()));
 				contenitoreAlimentiTrovati.getChildren().add(labelAlimento);
 			}
@@ -258,7 +257,7 @@ public class NuovaRicettaView2Controller implements Observer{
 	}
 
 	@Override
-	public void aggiornaView() {  //AGGIORNA GLI INGREDIENTI IN FUNZIONE DEI CAMBIAMENTI DELLA RICETTA
+	public void aggiornaView() {  //aggiorna gli ingredienti in funzione dei cambiamenti della ricetta
 		ingredienti.getChildren().clear();
 		List<AlimentoBean> alimentiBeanRicetta = pubblicaRicettaController.mostraIngredientiRicetta();
 		if(!alimentiBeanRicetta.isEmpty()) {
@@ -276,16 +275,16 @@ public class NuovaRicettaView2Controller implements Observer{
 		}
 	}
 	
-	private void impostaLabel() {  //IMPOSTA LABEL INGREDIENTI RICETTA CLICCABILI
+	private void impostaLabel() {  //imposta label ingredienti ricetta cliccabili
 		if(!ingredienti.getChildren().isEmpty()) {
 			ingredienti.getChildren().forEach(node->{
-				Label labelAlimento= (Label)node;
+				Label labelAlimento = (Label)node;
 				labelAlimento.setOnMouseClicked(event->eliminaAlimento(labelAlimento.getText()));
 			});
 		}
 	}
 	
-	private void eliminaAlimento(String nomeAlimento) {   //ELIMINA INGREDIENTE DALLA RICETTA 
+	private void eliminaAlimento(String nomeAlimento) { 
 		AlimentoBean alimentoBean = new AlimentoBean();
 		alimentoBean.setNome(nomeAlimento);
 		pubblicaRicettaController.eliminaIngredienteRicetta(alimentoBean);

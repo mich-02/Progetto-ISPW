@@ -36,7 +36,7 @@ public class ModeratoreViewController implements Observer {
 	        controller.registraOsservatoreModeratore(this);
 	        controller.caricaRicetteDaApprovare();
 	        aggiornaView();
-	    } catch (OperazioneNonEseguitaException e) {
+	    } catch (OperazioneNonEseguitaException e) { // gestione dell'eccezione nel caso in cui non ci siano ricette da verificare
 	    	Platform.runLater(() ->
 	        AlertUtils.showAlert(
 	            Alert.AlertType.INFORMATION, 
@@ -48,7 +48,7 @@ public class ModeratoreViewController implements Observer {
 	}
 
 	@Override
-	public void aggiornaView() {  //AGGIORNA VIEW IN BASE ALLE RICHIESTE DA APPROVARE DEL MODERATORE
+	public void aggiornaView() {  // aggiorna view in base alle richieste da approvare del moderatore
 		contenitoreRicetteDaApprovare.getChildren().clear();
 		contenitoreContenutoRicetta.getChildren().clear();
 		List<RicettaBean> ricetteBean = controller.mostraRicetteDaApprovare();
@@ -61,27 +61,27 @@ public class ModeratoreViewController implements Observer {
 				labelRicetta.setWrapText(true);
 				labelRicetta.setFont(Font.font(FORMATO,20));
 				labelRicetta.setAlignment(Pos.CENTER);
-				labelRicetta.setOnMouseClicked(event->apriContenuto(r));  //RENDE CLICCABILI PER APRIRE IL CONTENUTO
+				labelRicetta.setOnMouseClicked(event -> apriContenuto(r));  // rende cliccabili per aprire il contenuto
 				contenitoreRicetteDaApprovare.getChildren().add(labelRicetta);
 			}
 		}
 	}
 	
-	private void apriContenuto(RicettaBean ricettaBean) {  //APRE IL COTNENUTO DELLA RICETTA CLICCATA
+	private void apriContenuto(RicettaBean ricettaBean) {  // apre il contenuto della ricetta cliccata
 		contenitoreContenutoRicetta.getChildren().clear();
-		Label labelNome= new Label(ricettaBean.getNome());
+		Label labelNome = new Label(ricettaBean.getNome());
 		labelNome.setStyle(SFONDOBIANCO);
 		labelNome.setMaxWidth(Double.MAX_VALUE);
 		labelNome.setMinHeight(50);
 		labelNome.setWrapText(true);
 		labelNome.setFont(Font.font(FORMATO,20));
-		Label labelAutore= new Label(ricettaBean.getAutore());
+		Label labelAutore = new Label(ricettaBean.getAutore());
 		labelAutore.setStyle(SFONDOBIANCO);
 		labelAutore.setMaxWidth(Double.MAX_VALUE);
 		labelAutore.setMinHeight(50);
 		labelAutore.setWrapText(true);
 		labelAutore.setFont(Font.font(FORMATO,20));
-		Label labelDescrizione= new Label(ricettaBean.getDescrizione());
+		Label labelDescrizione = new Label(ricettaBean.getDescrizione());
 		labelDescrizione.setStyle(SFONDOBIANCO);
 		labelDescrizione.setMaxWidth(Double.MAX_VALUE);
 		labelDescrizione.setMinHeight(200);
@@ -91,23 +91,23 @@ public class ModeratoreViewController implements Observer {
 	}
 	
 	@FXML
-	private void pubblica(ActionEvent event) {  //PUBBLICA LA RICETTA 
+	private void pubblica(ActionEvent event) {  // tasto pubblica 
 		if(!contenitoreContenutoRicetta.getChildren().isEmpty()) {
-			int indiceLabel=1;
-			String nome="";
-			String autore="";
+			int indiceLabel = 1;
+			String nome = "";
+			String autore = "";
 			for (Node labelNode : contenitoreContenutoRicetta.getChildren()) {	        
                 Label label = (Label) labelNode;
-                if(indiceLabel==1)
-                	nome=label.getText();
-                else if(indiceLabel==2)
-                	autore=label.getText();
+                if(indiceLabel == 1)
+                	nome = label.getText();
+                else if(indiceLabel == 2)
+                	autore = label.getText();
                 indiceLabel++;
 			}
 			RicettaBean ricettaBean = new RicettaBean();
 			ricettaBean.setNome(nome);
 			ricettaBean.setAutore(autore);
-			ricettaBean.setPublish(true);
+			ricettaBean.setPublish(true); 
 			try {
 				controller.pubblicaRicetta(ricettaBean);
 			} catch (OperazioneNonEseguitaException e) {
@@ -117,17 +117,17 @@ public class ModeratoreViewController implements Observer {
 	}
 	
 	@FXML
-	private void scarta(ActionEvent event) {  //SCARTA LA RICETTA
+	private void scarta(ActionEvent event) {  // tasto scarta 
 		if(!contenitoreContenutoRicetta.getChildren().isEmpty()) {
-			int indiceLabel=1;
-			String nome="";
-			String autore="";
+			int indiceLabel = 1;
+			String nome = "";
+			String autore = "";
 			for (Node labelNode : contenitoreContenutoRicetta.getChildren()) {	        
                 Label label = (Label) labelNode;
-                if(indiceLabel==1)
-                	nome=label.getText();
-                else if(indiceLabel==2)
-                	autore=label.getText();
+                if(indiceLabel == 1)
+                	nome = label.getText();
+                else if(indiceLabel == 2)
+                	autore = label.getText();
                 indiceLabel++;
 			}
 			RicettaBean ricettaBean = new RicettaBean();
@@ -143,9 +143,7 @@ public class ModeratoreViewController implements Observer {
 	}
 	
 	@FXML  
-	private void tornaAlLogin(MouseEvent event) {  //CARICA VIEW LOGIN
-		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
-		
-	}
-	
+	private void tornaAlLogin(MouseEvent event) { 
+		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);		
+	}	
 }
