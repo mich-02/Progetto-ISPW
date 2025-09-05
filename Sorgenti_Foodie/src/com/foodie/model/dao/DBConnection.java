@@ -41,7 +41,7 @@ public class DBConnection { //NOSONAR
         return connection;
     }
 
-    // Metodo per chiudere la connessione, se necessario
+    // Metodo per chiudere la connessione
     public void close() {
         try {
             if (connection != null && !connection.isClosed()) {

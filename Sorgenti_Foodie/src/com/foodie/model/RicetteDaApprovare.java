@@ -8,7 +8,7 @@ public class RicetteDaApprovare extends SubjectPatternObserver{
     private static ArrayList<Ricetta> ricetteDaVerificare = new ArrayList<>();
 
     public void aggiungiRicettaDaVerificare(Ricetta ricetta) {  //AGGIUNGI LE RICETTE DA VERIFICARE
-        if(ricetteDaVerificare!=null && !ricetteDaVerificare.contains(ricetta)) {
+        if(ricetteDaVerificare != null && !ricetteDaVerificare.contains(ricetta)) {
             ricetteDaVerificare.add(ricetta);
             notifica();
         }
