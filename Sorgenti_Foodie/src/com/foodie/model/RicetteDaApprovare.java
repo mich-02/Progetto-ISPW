@@ -7,21 +7,21 @@ public class RicetteDaApprovare extends SubjectPatternObserver{
 
     private static ArrayList<Ricetta> ricetteDaVerificare = new ArrayList<>();
 
-    public void aggiungiRicettaDaVerificare(Ricetta ricetta) {  //AGGIUNGI LE RICETTE DA VERIFICARE
+    public void aggiungiRicettaDaVerificare(Ricetta ricetta) {  // aggiungi le ricette da verificare
         if(ricetteDaVerificare != null && !ricetteDaVerificare.contains(ricetta)) {
             ricetteDaVerificare.add(ricetta);
             notifica();
         }
     }
 
-    public void ricettaVerificata(Ricetta ricetta) {  //RIMUOVE LA RICETTA SE VERIFICATA
+    public void ricettaVerificata(Ricetta ricetta) {  // rimuove la ricetta se verificata
         if(ricetteDaVerificare.remove(ricetta)) {
             notifica();
         }
     }
 
-    public List<Ricetta> getRicetteDaVerificare(){  //OTTIENI LE RICETTE DA VERIFICARE
-        if(ricetteDaVerificare!=null && !ricetteDaVerificare.isEmpty()) {
+    public List<Ricetta> getRicetteDaVerificare(){  // ottieni le ricette da verificare
+        if(ricetteDaVerificare != null && !ricetteDaVerificare.isEmpty()) {
             return ricetteDaVerificare;
         }
         else {
@@ -29,8 +29,8 @@ public class RicetteDaApprovare extends SubjectPatternObserver{
         }
     }
 
-    public Ricetta ottieniRicetta(String nome,String autore) {  //OTTIENE I DATI DELLA RICETTA CHE SI DEVE VERIFICARE
-        if(ricetteDaVerificare!=null && !ricetteDaVerificare.isEmpty()) {
+    public Ricetta ottieniRicetta(String nome,String autore) {  // ottiene i dati della ricetta che si deve verificare
+        if(ricetteDaVerificare != null && !ricetteDaVerificare.isEmpty()) {
             for(Ricetta r: ricetteDaVerificare) {
                 if(r.getNome().equals(nome) && r.getAutore().equals(autore)) {
                     return r;

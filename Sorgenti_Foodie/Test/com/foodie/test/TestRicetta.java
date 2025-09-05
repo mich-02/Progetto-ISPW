@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.foodie.model.Alimento;
 import com.foodie.model.Ricetta;
 
-public class TestRicetta {      //VALERIO BALDAZZI
+public class TestRicetta {  //VALERIO BALDAZZI
 	
 	private static final String NOME1= "Pizza";
 	private static final String NOME2= "Pasta";

@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.foodie.model.Chef;
 
-public class TestChef { //BIRU MICHELE FRANCESCO 1
+public class TestChef { //BIRU MICHELE FRANCESCO 
 
 	private static final String USERNAME = "test_chef";
 

@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import com.foodie.model.dao.DBConnection;
 
-public class TestDBConnection {
+public class TestDBConnection { //VALERIO BALDAZZI
 	
 	private DBConnection DBConn;
 	
