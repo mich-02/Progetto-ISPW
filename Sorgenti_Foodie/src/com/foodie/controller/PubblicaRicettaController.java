@@ -33,15 +33,6 @@ public class PubblicaRicettaController {
 		
 	}
 	
-	public void creaRicetta() { 
-		ricetta = new Ricetta();
-	}
-	
-	public Ricetta getRicetta() {  
-		return ricetta;
-	}
-	
-	
 	public void compilaRicetta(RicettaBean ricettaBean) { 
 		ricetta.setNome(ricettaBean.getNome());
 		ricetta.setDescrizione(ricettaBean.getDescrizione());
@@ -215,6 +206,10 @@ public class PubblicaRicettaController {
 			logger.severe("Errore nell'ottenimento delle ricette: " + e.getMessage());
 			return new ArrayList<>();
 		}
+	}
+	
+	public static void creaRicetta() { 
+		ricetta = new Ricetta();
 	}
 	
 	public void registraOsservatoreRicetta(Observer observer) {
