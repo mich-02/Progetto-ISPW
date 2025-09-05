@@ -44,7 +44,7 @@ public class NuovaRicettaViewController {
 	
 	private RicettaBean ricettaBean = new RicettaBean();
 	
-	public void setRicettaBean(RicettaBean ricettaBean) {
+	public void setRicettaBean1(RicettaBean ricettaBean) {
 		this.ricettaBean = ricettaBean;
 		aggiornaView();
 	}
@@ -88,7 +88,7 @@ public class NuovaRicettaViewController {
 	private void caricaViewIngredienti(ActionEvent event) {
 		FXMLLoader loader = ViewLoader.caricaView(ViewInfo.INSERISCI_INGR);
 	        InserisciIngredienteViewController controller = loader.getController();
-	        controller.setRicettaBean(this.ricettaBean); // Passo il ricettaBean 
+	        controller.setRicettaBean2(this.ricettaBean); // Passo il ricettaBean 
 	    
 	}
 	

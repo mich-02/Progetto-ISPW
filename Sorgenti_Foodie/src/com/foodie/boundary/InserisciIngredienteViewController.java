@@ -41,7 +41,7 @@ public class InserisciIngredienteViewController implements Observer{
 	
 	private RicettaBean ricettaBean = new RicettaBean();
 	
-	public void setRicettaBean(RicettaBean ricettaBean) {
+	public void setRicettaBean2(RicettaBean ricettaBean) {
 		this.ricettaBean = ricettaBean;
 	}
 	
@@ -94,7 +94,7 @@ public class InserisciIngredienteViewController implements Observer{
 			*/
 		FXMLLoader loader = ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1);
 		NuovaRicettaViewController controller = loader.getController();
-		controller.setRicettaBean(this.ricettaBean);
+		controller.setRicettaBean1(this.ricettaBean);
 	}
 	
 	@FXML
