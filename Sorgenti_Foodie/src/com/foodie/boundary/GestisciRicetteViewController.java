@@ -32,14 +32,12 @@ public class GestisciRicetteViewController {
 	@FXML
 	private Label eliminaLabel;
 	
-
-	
 	@FXML
-	public void initialize() {
+	private void initialize() {
 		aggiornaView();
 	}
 	
-	public void aggiornaView() {  // trovo tutte le ricette dello chef e aggiorno la view 
+	private void aggiornaView() {  // trovo tutte le ricette dello chef e aggiorno la view 
 		List<RicettaBean> ricetteTrovate = null;
 		contenitoreRicette.getChildren().clear();
 		UtenteBean utenteBean = loginController.getUtente();

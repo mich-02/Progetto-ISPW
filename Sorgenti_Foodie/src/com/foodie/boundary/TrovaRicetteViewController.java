@@ -36,7 +36,7 @@ public class TrovaRicetteViewController {
 	private MenuItem difficile;
 	
 	@FXML
-	public void initialize() {
+	private void initialize() {
 		trovaRicette();
 	}
 	

@@ -68,13 +68,13 @@ public class PubblicaRicettaController {
 		ricetta.eliminaIngrediente(alimento);
 	}
 	
-	private void notificaModeratore() {  //NOTIFICA IL MODERATORE DOPO AVER COMPILATO
+	private void notificaModeratore() {  // notifica moderatore dopo aver compilato
 		logger.info("MODERATORE NOTIFICATO");
 		salvaRicettaDaApprovare(ricetta);
 		creaRicetta(); //resetto la ricetta corrente
 	}
 	
-	private void notificaChef(boolean bool) {  //NOTIFICA LO CHEF DOPO AVER APPROVATO LA RICETTA
+	private void notificaChef(boolean bool) {  // notifica lo chef dopo aver approvato la ricetta
 		String notifica = "CHEF NOTIFICATO: " + bool;
 		logger.info(notifica);
 	}
@@ -144,7 +144,7 @@ public class PubblicaRicettaController {
 		}
 	}
 	
-	public List<RicettaBean> mostraRicetteDaApprovare() {
+	public List<RicettaBean> getRicetteDaApprovare() {
 		List<Ricetta> ricette = null;
 		ricette = ricetteDaApprovare.getRicetteDaVerificare();
 		if(ricette!=null && !ricette.isEmpty()) {
@@ -216,7 +216,7 @@ public class PubblicaRicettaController {
 		ricetta.registra(observer);
 	}
 	
-    public void registraOsservatoreModeratore(Observer observer) {  
+    public void registraOsservatoreRicetteDaApprovare(Observer observer) {  
     	ricetteDaApprovare.registra(observer);
     }
 

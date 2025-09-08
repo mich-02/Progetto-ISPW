@@ -89,7 +89,7 @@ public class NuovaRicettaViewController {
 	}
 	
 	@FXML
-    private void compilaRicetta(ActionEvent event) {
+    private void richiediPubblicazione(ActionEvent event) {
         // Verifica campi vuoti
         boolean valid = true;
 

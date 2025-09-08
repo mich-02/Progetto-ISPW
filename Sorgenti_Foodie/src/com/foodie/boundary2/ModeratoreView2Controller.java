@@ -33,7 +33,7 @@ public class ModeratoreView2Controller implements Observer{
 	@FXML
 	public void initialize() {
 	    try {
-	        controller.registraOsservatoreModeratore(this);
+	        controller.registraOsservatoreRicetteDaApprovare(this);
 	        controller.caricaRicetteDaApprovare();
 	        aggiornaView();
 	    } catch (OperazioneNonEseguitaException e) {
@@ -56,7 +56,7 @@ public class ModeratoreView2Controller implements Observer{
 	@Override
 	public void aggiornaView() {  //AGGIORNA VIEW IN FUNZIONE DELLE RICETTE DA APPROVARE , LE MOSTRA SUBITO COMPLETE 
 		contenitoreRicetteDaApprovare.getChildren().clear();
-		List<RicettaBean> ricetteBean = controller.mostraRicetteDaApprovare();
+		List<RicettaBean> ricetteBean = controller.getRicetteDaApprovare();
 		if(!ricetteBean.isEmpty()) {
 			for(RicettaBean r: ricetteBean) {
 				VBox contenitoreRicetta = new VBox();

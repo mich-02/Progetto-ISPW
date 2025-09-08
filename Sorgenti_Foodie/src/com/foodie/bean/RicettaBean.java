@@ -64,7 +64,7 @@ public class RicettaBean {
         return publish;
     }   
 
-    public void setPublish(Boolean publish) {  
+    public void setPublish(boolean publish) {  
         this.publish = publish;
     }  
 }

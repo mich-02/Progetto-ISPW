@@ -13,8 +13,6 @@ import com.foodie.model.Dispensa;
 import com.foodie.model.LoggedUser;
 import com.foodie.model.Observer;
 import com.foodie.model.Ricetta;
-import com.foodie.model.dao.AlimentiDao;
-import com.foodie.model.dao.AlimentiDaoAPI;
 import com.foodie.model.dao.DaoFactoryProvider;
 import com.foodie.model.dao.DispensaDao;
 import com.foodie.model.dao.RicettaDao;
@@ -23,7 +21,7 @@ import com.foodie.model.dao.RicettaDao;
 public class TrovaRicettaController {  
 	
 	private Dispensa dispensa;
-	private AlimentiDao databaseAlimenti;
+	private AlimentiAPI databaseAlimenti;
 	private static final Logger logger = Logger.getLogger(TrovaRicettaController.class.getName());
 	private RicettaDao ricettaDao;
 	private DispensaDao dispensaDao;
@@ -32,7 +30,7 @@ public class TrovaRicettaController {
 		dispensa = Dispensa.ottieniIstanza();
 		dispensaDao = DaoFactoryProvider.ottieniIstanza().creaDispensaDao();
 		ricettaDao = DaoFactoryProvider.ottieniIstanza().creaRicettaDao();
-		databaseAlimenti = new AlimentiDaoAPI();
+		databaseAlimenti = new AlimentiAPI();
 	}
 	
 	public void aggiungiInDispensa(AlimentoBean alimentoBean) {  
@@ -128,37 +126,12 @@ public class TrovaRicettaController {
 	}
 	
 	public List<AlimentoBean> trovaAlimenti(AlimentoBean alimentoBeanInserito) throws OperazioneNonEseguitaException {
-		List<Alimento> alimentiTrovati;
+		List<AlimentoBean> alimentiTrovatiBean = null;
 		try {
-			ArrayList<AlimentoBean> alimentiTrovatiBean = null;
-			alimentiTrovati = databaseAlimenti.trovaAlimenti(alimentoBeanInserito.getNome());
-			alimentiTrovatiBean = new ArrayList<>();
-			for(Alimento a:alimentiTrovati) {
-				AlimentoBean alimentoBean= new AlimentoBean();
-				alimentoBean.setNome(a.getNome());
-				alimentiTrovatiBean.add(alimentoBean);
-			}
-			mostraAlimenti(alimentiTrovati);
+			alimentiTrovatiBean = databaseAlimenti.trovaAlimenti(alimentoBeanInserito.getNome());
 			return alimentiTrovatiBean;
 		} catch (NessunAlimentoTrovatoException e) {
 			throw new OperazioneNonEseguitaException("Nessun alimento trovato che inizi per " + alimentoBeanInserito.getNome());
-		}
-	}
-	
-	private void mostraAlimenti(List<Alimento> alimenti) {  //METODO PRIVATO PER STAMPARE SU CONSOLE TUTTI GLI ALIMENTI
-		for(Alimento a: alimenti) {   //UTILIZZATO PER COMODITA' NEL PROGETTO
-			logger.info(a.getNome());
-		}
-	}
-	
-	public List<Alimento> mostraLaDispensa(){  //METODO PER OTTENERE GLI ALIMENTI NELLA DISPENSA
-		List<Alimento> alimentiInDispensa = null;
-		alimentiInDispensa = dispensa.getAlimenti();
-		if(alimentiInDispensa!=null && !alimentiInDispensa.isEmpty()) {
-			return alimentiInDispensa;
-		}
-		else {
-			return new ArrayList<>();
 		}
 	}
 	

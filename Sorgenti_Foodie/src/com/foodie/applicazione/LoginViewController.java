@@ -54,13 +54,14 @@ public class LoginViewController {
         interfaccia = 1;
     }
 	
+	@FXML
     private void closeApplication() {  //chiusura applicazione
         Stage stage = (Stage)chiudiLabel.getScene().getWindow();
         stage.close();
     }
 	
 	@FXML
-	public void loginButtonOnAction(ActionEvent event) { //attivo metodo quando premo il pulsante
+	private void loginButtonOnAction(ActionEvent event) { //attivo metodo quando premo il pulsante
 		
 		if(!usernameTextField.getText().isBlank() && !enterPasswordField.getText().isBlank()) {
 			validazioneLogin();
@@ -71,7 +72,7 @@ public class LoginViewController {
 	}
 	
 	@FXML
-	public void registratiButtonOnAction(ActionEvent event) {  //operazione invocata alla pressione del tasto Registrati
+	private void registratiButtonOnAction(ActionEvent event) {  //operazione invocata alla pressione del tasto Registrati
 		ViewLoader.caricaView(ViewInfo.REGISTRAZIONE_VIEW); //carica la view per la pagina di registrazione
 	}
 	

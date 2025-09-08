@@ -31,9 +31,9 @@ public class ModeratoreViewController implements Observer {
 	private VBox contenitoreContenutoRicetta;
 	
 	@FXML
-	public void initialize() {
+	private void initialize() {
 	    try {
-	        controller.registraOsservatoreModeratore(this);
+	        controller.registraOsservatoreRicetteDaApprovare(this);
 	        controller.caricaRicetteDaApprovare();
 	        aggiornaView();
 	    } catch (OperazioneNonEseguitaException e) { // gestione dell'eccezione nel caso in cui non ci siano ricette da verificare
@@ -51,7 +51,7 @@ public class ModeratoreViewController implements Observer {
 	public void aggiornaView() {  // aggiorna view in base alle richieste da approvare del moderatore
 		contenitoreRicetteDaApprovare.getChildren().clear();
 		contenitoreContenutoRicetta.getChildren().clear();
-		List<RicettaBean> ricetteBean = controller.mostraRicetteDaApprovare();
+		List<RicettaBean> ricetteBean = controller.getRicetteDaApprovare();
 		if(!ricetteBean.isEmpty()) {
 			for(RicettaBean r: ricetteBean) {
 				Label labelRicetta = new Label(r.getNome());

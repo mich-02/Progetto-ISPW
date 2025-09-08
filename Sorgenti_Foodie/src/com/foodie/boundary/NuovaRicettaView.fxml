@@ -78,7 +78,7 @@
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="pubblica" layoutX="813.0" layoutY="610.0" mnemonicParsing="false" onAction="#compilaRicetta" prefHeight="29.0" prefWidth="181.0" style="-fx-background-radius: 10; -fx-background-color: rgba(97, 194, 107, 1);" text="Richiedi Pubblicazione" textFill="WHITE">
+            <Button fx:id="pubblica" layoutX="813.0" layoutY="610.0" mnemonicParsing="false" onAction="#richiediPubblicazione" prefHeight="29.0" prefWidth="181.0" style="-fx-background-radius: 10; -fx-background-color: rgba(97, 194, 107, 1);" text="Richiedi Pubblicazione" textFill="WHITE">
                <font>
                   <Font size="15.0" />
                </font>

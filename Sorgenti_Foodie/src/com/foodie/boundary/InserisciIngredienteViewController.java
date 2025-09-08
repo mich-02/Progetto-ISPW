@@ -45,7 +45,7 @@ public class InserisciIngredienteViewController implements Observer{
 	}
 	
 	@FXML
-	public void initialize() {
+	private void initialize() {
 		pubblicaRicettaController.registraOsservatoreRicetta(this);
 		aggiornaView();
 	}
@@ -83,12 +83,12 @@ public class InserisciIngredienteViewController implements Observer{
 	}
 	
 	@FXML
-	public void caricaViewRicetta(ActionEvent event) {  //tasto Torna alla ricetta
+	private void caricaViewRicetta(ActionEvent event) {  //tasto Torna alla ricetta
 		ViewLoader.caricaView(ViewInfo.NUOVA_RICETTA1, ricettaBean);
 	}
 	
 	@FXML
-	public void tornaAlLogin(MouseEvent event) { 
+	private void tornaAlLogin(MouseEvent event) { 
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
 	
@@ -150,7 +150,7 @@ public class InserisciIngredienteViewController implements Observer{
 		if(!bottoneModifica) {
 			if(!contenitoreIngredienti.getChildren().isEmpty()) {
 				contenitoreIngredienti.getChildren().forEach(node->{
-					Label labelAlimento= (Label)node;
+					Label labelAlimento = (Label)node;
 					labelAlimento.setOnMouseClicked(event->eliminaAlimento(labelAlimento.getText()));
 				});
 			}
@@ -158,7 +158,7 @@ public class InserisciIngredienteViewController implements Observer{
 		else {
 			if(!contenitoreIngredienti.getChildren().isEmpty()) {
 				contenitoreIngredienti.getChildren().forEach(node->{
-					Label labelAlimento= (Label)node;
+					Label labelAlimento = (Label)node;
 					labelAlimento.setOnMouseClicked(null);
 				});
 			}
@@ -189,7 +189,7 @@ public class InserisciIngredienteViewController implements Observer{
 	
 	
 	@FXML
-    private void caricaViewGestisciRicette(ActionEvent event) {  //CARICA VIEW GESTISCI RICETTE
+    private void caricaViewGestisciRicette(ActionEvent event) { 
 		ViewLoader.caricaView(ViewInfo.GESTISCI_RICETTE1);
     }
 	

@@ -23,25 +23,25 @@ public class ContenutoRicettaViewController {
 	private static final String FORMATO = "Arial";
 	
 	@FXML
-	public void caricaViewDispensa(ActionEvent event) { 
+	private void caricaViewDispensa(ActionEvent event) { 
 		ViewLoader.caricaView(ViewInfo.DISPENSA_UTENTE);
 	}
 	
 	@FXML
-	public void caricaViewTrovaRicette(ActionEvent event) {
+	private void caricaViewTrovaRicette(ActionEvent event) {
 		ViewLoader.caricaView(ViewInfo.TROVA_RICETTE);
 	}
 	
 	@FXML
-	public void tornaAlLogin(MouseEvent event) {  
+	private void tornaAlLogin(MouseEvent event) {  
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
 	
-	public Label getNome() { //RESTITUICONO LABEL E INFINE VBOX
+	private Label getNome() { //RESTITUICONO LABEL E INFINE VBOX
 		return nome;
 	}
 	
-	public Label getDescrizione() {
+	private Label getDescrizione() {
 		return descrizione;
 	}
 	

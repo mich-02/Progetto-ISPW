@@ -48,7 +48,7 @@ public class RegistratiViewController {
     
     
     @FXML
-    public void initialize() {  
+    private void initialize() {  
       
     	userTypeToggleGroup = new ToggleGroup();
         
@@ -63,6 +63,7 @@ public class RegistratiViewController {
         ruolo = 0;    
     }
 
+    
     private void handleRegistration() {  //imposta il ruolo
         RadioButton selectedRadioButton = (RadioButton) userTypeToggleGroup.getSelectedToggle();
         	
@@ -77,12 +78,12 @@ public class RegistratiViewController {
         }
     
     @FXML
-    public void indietroButtonOnAction(ActionEvent event) { 
+    private void indietroButtonOnAction(ActionEvent event) { 
     	ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
    }
    
    @FXML
-   public void registratiButtonOnAction(ActionEvent event) {  //chiama i metodi per registrarsi
+   private void registratiButtonOnAction(ActionEvent event) {  //chiama i metodi per registrarsi
     	handleRegistration();
     	registrazioneUser();	
    }

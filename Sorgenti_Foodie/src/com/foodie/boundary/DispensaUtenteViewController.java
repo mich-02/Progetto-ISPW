@@ -23,7 +23,6 @@ import com.foodie.model.Observer;
 
 public class DispensaUtenteViewController implements Observer {
 	
-
 	private TrovaRicettaController trovaRicettaController = new TrovaRicettaController();
 	private boolean bottoneModifica = true;
 	private static final String FORMATO = "Arial";
@@ -40,7 +39,7 @@ public class DispensaUtenteViewController implements Observer {
 	private Label labelDispensa;
 	
 	@FXML
-	public void initialize() {
+	private void initialize() {
 		trovaRicettaController.caricaDispense();
 		trovaRicettaController.registraOsservatoreDispensa(this);
 		aggiornaView();
@@ -119,6 +118,7 @@ public class DispensaUtenteViewController implements Observer {
 		}
 	}
 	
+	@Override
 	public void aggiornaView() {  //AGGIORNA LA VIEW IN BASE ALLA DISPENSA
 		if(contenitoreDispensa!=null && !contenitoreDispensa.getChildren().isEmpty()) {
 			contenitoreDispensa.getChildren().clear();

@@ -4,6 +4,13 @@ public class AlimentoBean {
 	
 	private String nome;
     private String quantita;  
+    
+    public AlimentoBean(String nome) {
+    	this.nome = nome;
+    }
+    
+    public AlimentoBean() {
+    }
 	
 	public String getNome() {
 		return nome;
