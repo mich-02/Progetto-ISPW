@@ -6,7 +6,7 @@ import com.foodie.model.dao.RicettaDao;
 import com.foodie.model.dao.RicetteDaApprovareDao;
 import com.foodie.model.dao.UtenteDao;
 
-public class MemoDaoFactory extends DaoFactory { 
+public class MemoDaoFactory implements DaoFactory { 
 
 	@Override
 	public UtenteDao creaUtenteDao() {
