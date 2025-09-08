@@ -13,6 +13,7 @@ import com.foodie.model.Dispensa;
 import com.foodie.model.LoggedUser;
 import com.foodie.model.Observer;
 import com.foodie.model.Ricetta;
+import com.foodie.model.dao.DaoFactory;
 import com.foodie.model.dao.DaoFactoryProvider;
 import com.foodie.model.dao.DispensaDao;
 import com.foodie.model.dao.RicettaDao;
@@ -28,8 +29,10 @@ public class TrovaRicettaController {
 	
 	public TrovaRicettaController() {
 		dispensa = Dispensa.ottieniIstanza();
-		dispensaDao = DaoFactoryProvider.ottieniIstanza().creaDispensaDao();
-		ricettaDao = DaoFactoryProvider.ottieniIstanza().creaRicettaDao();
+		//dispensaDao = DaoFactoryProvider.ottieniIstanza().creaDispensaDao();
+		dispensaDao = DaoFactory.getFactory().creaDispensaDao();
+		//ricettaDao = DaoFactoryProvider.ottieniIstanza().creaRicettaDao();
+		ricettaDao = DaoFactory.getFactory().creaRicettaDao();
 		databaseAlimenti = new AlimentiAPI();
 	}
 	
