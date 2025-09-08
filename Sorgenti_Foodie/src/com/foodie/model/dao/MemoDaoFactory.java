@@ -1,10 +1,9 @@
-package com.foodie.model.dao.memo;
+package com.foodie.model.dao;
 
-import com.foodie.model.dao.DaoFactory;
-import com.foodie.model.dao.DispensaDao;
-import com.foodie.model.dao.RicettaDao;
-import com.foodie.model.dao.RicetteDaApprovareDao;
-import com.foodie.model.dao.UtenteDao;
+import com.foodie.model.dao.memo.DispensaDaoMemo;
+import com.foodie.model.dao.memo.RicettaDaoMemo;
+import com.foodie.model.dao.memo.RicetteDaApprovareDaoMemo;
+import com.foodie.model.dao.memo.UtenteDaoMemo;
 
 public class MemoDaoFactory extends DaoFactory { 
 	private static MemoDaoFactory istanza = null;
