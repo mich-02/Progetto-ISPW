@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -39,7 +40,7 @@ public class AlimentiAPI{
         }
     }
 
-    public ArrayList<AlimentoBean> trovaAlimenti(String nome) throws NessunAlimentoTrovatoException {
+    public List<AlimentoBean> trovaAlimenti(String nome) throws NessunAlimentoTrovatoException {
         try {
             ArrayList<AlimentoBean> alimentiBeanTrovati = new ArrayList<>();
             String nomeCodificato = URLEncoder.encode(nome, "UTF-8"); //da stringa codificato per l'url
