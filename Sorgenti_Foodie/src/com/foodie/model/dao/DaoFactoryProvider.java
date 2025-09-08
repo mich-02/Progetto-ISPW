@@ -2,6 +2,8 @@ package com.foodie.model.dao;
 
 import com.foodie.applicazione.ConfiguratorePersistenza;
 import com.foodie.applicazione.Persistenza;
+import com.foodie.model.dao.db.DBDaoFactory;
+import com.foodie.model.dao.memo.MemoDaoFactory;
 
 public final class DaoFactoryProvider {
 	private static DaoFactory istanza;
