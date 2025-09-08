@@ -20,7 +20,7 @@ public class MemoDaoFactory extends DaoFactory {
 
 	@Override
 	public RicettaDao creaRicettaDao() {
-		return new RicettaDaoMemo(creaDispensaDao(), creaRicetteDaApprovareDao());
+		return new RicettaDaoMemo(this.creaDispensaDao(), this.creaRicetteDaApprovareDao());
 	}
 
 	@Override
