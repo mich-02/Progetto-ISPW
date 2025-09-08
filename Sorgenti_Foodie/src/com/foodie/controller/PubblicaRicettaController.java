@@ -70,8 +70,12 @@ public class PubblicaRicettaController {
 	
 	private void notificaModeratore() {  // notifica moderatore dopo aver compilato
 		logger.info("MODERATORE NOTIFICATO");
-		salvaRicettaDaApprovare(ricetta);
-		creaRicetta(); //resetto la ricetta corrente
+		try {
+			ricetteDaApprovareDao.salvaRicettaDaApprovare(ricetta);
+			creaRicetta(); //resetto la ricetta corrente
+		} catch (DaoException e) {
+			logger.severe("Errore durante il salvataggio della ricetta da approvare: " + e.getMessage());
+		}
 	}
 	
 	private void notificaChef(boolean bool) {  // notifica lo chef dopo aver approvato la ricetta
@@ -218,14 +222,6 @@ public class PubblicaRicettaController {
 	
     public void registraOsservatoreRicetteDaApprovare(Observer observer) {  
     	ricetteDaApprovare.registra(observer);
-    }
-
-    private void salvaRicettaDaApprovare(Ricetta ricetta){ 
-			try {
-				ricetteDaApprovareDao.salvaRicettaDaApprovare(ricetta);
-			} catch (DaoException e) {
-				logger.severe("Errore durante il salvataggio della ricetta da approvare: " + e.getMessage());
-			}
     }
     
     public void caricaRicetteDaApprovare() throws OperazioneNonEseguitaException {

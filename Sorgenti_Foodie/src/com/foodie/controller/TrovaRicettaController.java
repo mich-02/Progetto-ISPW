@@ -83,7 +83,7 @@ public class TrovaRicettaController {
 		}
 	}
 	
-	public void caricaDispense() {  //CARICA GLI INGREDIENTI DELLA DISPENSA DA DB
+	public void caricaDispense() {  //carico ingredienti dispensa da db
 	    dispensa.svuotaDispensa(); // svuota prima di ricaricare
 	    LoggedUser utente = LoggedUser.ottieniIstanza();
 

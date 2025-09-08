@@ -61,13 +61,13 @@ public class ModeratoreViewController implements Observer {
 				labelRicetta.setWrapText(true);
 				labelRicetta.setFont(Font.font(FORMATO,20));
 				labelRicetta.setAlignment(Pos.CENTER);
-				labelRicetta.setOnMouseClicked(event -> apriContenuto(r));  // rende cliccabili per aprire il contenuto
+				labelRicetta.setOnMouseClicked(event -> apriContenutoRicetta(r));  // rende cliccabili per aprire il contenuto
 				contenitoreRicetteDaApprovare.getChildren().add(labelRicetta);
 			}
 		}
 	}
 	
-	private void apriContenuto(RicettaBean ricettaBean) {  // apre il contenuto della ricetta cliccata
+	private void apriContenutoRicetta(RicettaBean ricettaBean) {  // apre il contenuto della ricetta cliccata
 		contenitoreContenutoRicetta.getChildren().clear();
 		Label labelNome = new Label(ricettaBean.getNome());
 		labelNome.setStyle(SFONDOBIANCO);
