@@ -14,6 +14,7 @@ import com.foodie.model.Alimento;
 import com.foodie.model.Observer;
 import com.foodie.model.Ricetta;
 import com.foodie.model.RicetteDaApprovare;
+import com.foodie.model.dao.DaoFactory;
 import com.foodie.model.dao.DaoFactoryProvider;
 import com.foodie.model.dao.RicettaDao;
 import com.foodie.model.dao.RicetteDaApprovareDao;
@@ -28,8 +29,10 @@ public class PubblicaRicettaController {
 	private static final Logger logger = Logger.getLogger(PubblicaRicettaController.class.getName());
 	
 	public PubblicaRicettaController() {
-		ricettaDao = DaoFactoryProvider.ottieniIstanza().creaRicettaDao();
-		ricetteDaApprovareDao = DaoFactoryProvider.ottieniIstanza().creaRicetteDaApprovareDao();
+		//ricettaDao = DaoFactoryProvider.ottieniIstanza().creaRicettaDao();
+		ricettaDao = DaoFactory.ottieniIstanza().creaRicettaDao();
+		//ricetteDaApprovareDao = DaoFactoryProvider.ottieniIstanza().creaRicetteDaApprovareDao();
+		ricetteDaApprovareDao = DaoFactory.ottieniIstanza().creaRicetteDaApprovareDao();
 		
 	}
 	

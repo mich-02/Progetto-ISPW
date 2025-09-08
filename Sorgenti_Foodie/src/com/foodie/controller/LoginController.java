@@ -10,6 +10,7 @@ import com.foodie.model.LoggedUser;
 import com.foodie.model.Moderatore;
 import com.foodie.model.Standard;
 import com.foodie.model.Utente;
+import com.foodie.model.dao.DaoFactory;
 import com.foodie.model.dao.DaoFactoryProvider;
 import com.foodie.model.dao.UtenteDao;
 
@@ -22,7 +23,8 @@ public class LoginController {
 	private UtenteDao utenteDao;
 	
 	public LoginController() {
-		utenteDao = DaoFactoryProvider.ottieniIstanza().creaUtenteDao();
+		//utenteDao = DaoFactoryProvider.ottieniIstanza().creaUtenteDao();
+		utenteDao = DaoFactory.ottieniIstanza().creaUtenteDao();
 	}
 	
 	private void setUtente(String username, int tipo) { //ISTANZIA L'UTENTE IN FUNZIONE DEL TIPO
