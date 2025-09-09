@@ -42,15 +42,15 @@ public class TestDispensa { //VALERIO BALDAZZI
 	
 	@Test
 	public void testEliminaAlimentoNonPresente() {
-		int oldSize= dispensa.getAlimenti().size();
-		Alimento alimentoProva= new Alimento(NOME2);
+		int oldSize = dispensa.getAlimenti().size();
+		Alimento alimentoProva = new Alimento(NOME2);
 		dispensa.eliminaAlimento(alimentoProva); 
 		assertEquals(dispensa.getAlimenti().size(),oldSize);  //CONTROLLO CHE LA DIMENSIONE E' RIMASTA INVARIATA
 	}
 	
 	@Test
 	public void testEliminaAlimentoPresente() {
-		Alimento alimentoProva= new Alimento(NOME1);
+		Alimento alimentoProva = new Alimento(NOME1);
 		dispensa.eliminaAlimento(alimentoProva);
 		assertFalse(dispensa.getAlimenti().contains(alimentoProva));
 		dispensa.aggiungiAlimento(alimentoProva); //RIPRISTINO LO STATO INIZIALE DELLA DISPENSA
