@@ -61,7 +61,7 @@ public class NuovaRicettaView2Controller implements Observer{
 	private TextField quantita;
 	
 	@FXML
-	public void initialize() {
+	private void initialize() {
 		pubblicaRicettaController.registraOsservatoreRicetta(this);
 		aggiornaView();
 	}

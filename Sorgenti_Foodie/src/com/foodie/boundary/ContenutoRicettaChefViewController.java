@@ -21,15 +21,6 @@ public class ContenutoRicettaChefViewController {
 	private Label descrizione;
 	@FXML
 	private VBox contenitoreIngredienti;
-
-	
-	public Label getNome() {  //RESTITUISCO LABEL E INFINE VBOX
-		return nome;
-	}
-	
-	public Label getDescrizione() {
-		return descrizione;
-	}
 	
 	@FXML  
     private void tornaAlLogin(MouseEvent event) { 
@@ -48,12 +39,10 @@ public class ContenutoRicettaChefViewController {
 	
 	
 	public void caricaDatiRicetta(RicettaBean ricettaBean) {  //METODO PER POPOLARE GRAFICAMENTE I DATI DELLA RICETTA
-		Label labelNome = getNome();
-		Label labelDescrizione = getDescrizione();
-		labelNome.setText(ricettaBean.getNome());
-		labelDescrizione.setText(ricettaBean.getDescrizione());
-		for(int i=0;i<ricettaBean.getIngredienti().size();i++) {
-			Label label=new Label(ricettaBean.getIngredienti().get(i).getNome()+": "+ricettaBean.getQuantita().get(i));
+		nome.setText(ricettaBean.getNome());
+		descrizione.setText(ricettaBean.getDescrizione());
+		for(int i = 0; i < ricettaBean.getIngredienti().size(); i++) {
+			Label label = new Label(ricettaBean.getIngredienti().get(i).getNome()+": "+ricettaBean.getQuantita().get(i));
 			label.setStyle("-fx-background-color: white;");
 			label.setMaxWidth(Double.MAX_VALUE);
 			label.setMinHeight(50);

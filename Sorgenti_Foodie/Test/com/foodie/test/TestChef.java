@@ -13,7 +13,6 @@ public class TestChef { //BIRU MICHELE FRANCESCO
 	@Test
     public void testGetUsernameUguale() {
         Chef chef = new Chef(USERNAME);
-		
         assertEquals(USERNAME, chef.getUsername()); // verifica che il metodo restituisca lo username corretto
     }
 

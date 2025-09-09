@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class Dispensa extends SubjectPatternObserver { //NOSONAR
+public class Dispensa extends SubjectPatternObserver { 
 
 	private static Dispensa istanza;                  //OSSERVATO CONCRETO, ESTENDE SUBJECT PATTERN OBSERVER
 	private static ArrayList<Alimento> lista;
@@ -21,8 +21,6 @@ public class Dispensa extends SubjectPatternObserver { //NOSONAR
 		}
 		return istanza;
 	}
-	
-
 	
 	public void aggiungiAlimento(Alimento alimento) { //AGGIUNGI L'ALIMENTO ALLA DISPENSA SE NON PRESENTE
 		if(!lista.contains(alimento)) {

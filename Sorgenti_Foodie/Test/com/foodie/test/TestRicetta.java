@@ -12,48 +12,47 @@ import com.foodie.model.Ricetta;
 
 public class TestRicetta {  //VALERIO BALDAZZI
 	
-	private static final String NOME1= "Pizza";
-	private static final String NOME2= "Pasta";
-	private static final String QUANTITA= "100 g";
-	private Ricetta ricettaDiProva= new Ricetta();
+	private static final String NOME1 = "Pizza";
+	private static final String NOME2 = "Pasta";
+	private static final String QUANTITA = "100 g";
+	private Ricetta ricettaDiProva;
 	
 	@Before
 	public void riempiRicetta() {
-		Alimento alimentoProva= new Alimento(NOME1);
+		ricettaDiProva = new Ricetta();
+		Alimento alimentoProva = new Alimento(NOME1);
 		ricettaDiProva.aggiungiIngrediente(alimentoProva, QUANTITA);
 	}
 	
 	
 	@Test
 	public void testAggiungiIngredienteNonPresente() {
-		Alimento alimentoProva= new Alimento(NOME2);
+		Alimento alimentoProva = new Alimento(NOME2);
 		ricettaDiProva.aggiungiIngrediente(alimentoProva, QUANTITA);
 		assertTrue(ricettaDiProva.getIngredienti().contains(alimentoProva));  //CONTROLLO SE L'INGREDIENTE E' STATO AGGIUNTO
-		ricettaDiProva.eliminaIngrediente(alimentoProva);  //COSI' LA RIPORTO ALLO STATO INIZIALE PER FARE GLI ALTRI TEST
 	}
 	
 	@Test
 	public void testAggiungiIngredientePresente() {
-		int oldSize= ricettaDiProva.getIngredienti().size();
-		Alimento alimentoProva= new Alimento(NOME1);
+		int oldSize = ricettaDiProva.getIngredienti().size();
+		Alimento alimentoProva = new Alimento(NOME1);
 		ricettaDiProva.aggiungiIngrediente(alimentoProva, QUANTITA);
 		assertEquals(ricettaDiProva.getIngredienti().size(),oldSize);   //CONTROLLO SE LA RICETTA E' RIMASTA INVARIATA
 	}
 	
 	@Test
 	public void testEliminaIngredienteNonPresente() {
-		int oldSize= ricettaDiProva.getIngredienti().size();
-		Alimento alimentoProva= new Alimento(NOME2);
+		int oldSize = ricettaDiProva.getIngredienti().size();
+		Alimento alimentoProva = new Alimento(NOME2);
 		ricettaDiProva.eliminaIngrediente(alimentoProva);
 		assertEquals(ricettaDiProva.getIngredienti().size(),oldSize);   //CONTROLLO CHE LA DIMENSIONE E' RIMASTA INVARIATA
 	}
 	
 	@Test
 	public void testEliminaIngredientePresente() {
-		Alimento alimentoProva= new Alimento(NOME1);
+		Alimento alimentoProva = new Alimento(NOME1);
 		ricettaDiProva.eliminaIngrediente(alimentoProva);
 		assertFalse(ricettaDiProva.getIngredienti().contains(alimentoProva));
-		ricettaDiProva.aggiungiIngrediente(alimentoProva, QUANTITA); //RIPRISTINO LO STATO INIZIALE DELLA RICETTA
 	}
 	
 }

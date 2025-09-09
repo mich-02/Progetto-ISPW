@@ -42,7 +42,7 @@ public class TestRicetteDaApprovare {   //BIRU MICHELE FRANCESCO
 		ricettaDiProva.setNome(NOME1);
 		ricettaDiProva.setAutore(AUTORE);
 		ricetteDaApprovare.aggiungiRicettaDaVerificare(ricettaDiProva);
-		assertEquals(ricetteDaApprovare.getRicetteDaVerificare().size(), oldSize);  //CONTROLLO SE LA LISTA E' RIMASTA INVARIATA
+		assertEquals(ricetteDaApprovare.getRicetteDaVerificare().size(), oldSize);  //controllo se la lista e' rimasta invariata
 	}
 	
 	
@@ -53,7 +53,7 @@ public class TestRicetteDaApprovare {   //BIRU MICHELE FRANCESCO
 		ricettaDiProva.setNome(NOME2);
 		ricettaDiProva.setAutore(AUTORE);
 		ricetteDaApprovare.ricettaVerificata(ricettaDiProva);
-		assertEquals(ricetteDaApprovare.getRicetteDaVerificare().size(), oldSize);   //CONTROLLO CHE LA DIMENSIONE E' RIMASTA INVARIATA
+		assertEquals(ricetteDaApprovare.getRicetteDaVerificare().size(), oldSize);   //controllo che la dimensione e' rimasta invariata
 	}
 	
 	
@@ -64,7 +64,7 @@ public class TestRicetteDaApprovare {   //BIRU MICHELE FRANCESCO
 		ricettaDiProva.setAutore(AUTORE);
 		ricetteDaApprovare.ricettaVerificata(ricettaDiProva);
 		assertFalse(ricetteDaApprovare.getRicetteDaVerificare().contains(ricettaDiProva));
-		ricetteDaApprovare.aggiungiRicettaDaVerificare(ricettaDiProva);  //RIPRISTINO LO STATO INIZIALE DELLA RICETTA
+		ricetteDaApprovare.aggiungiRicettaDaVerificare(ricettaDiProva);  //ripristino lo stato iniziale
 	}
 	
 	@Test
@@ -72,6 +72,6 @@ public class TestRicetteDaApprovare {   //BIRU MICHELE FRANCESCO
 		Ricetta ricettaDiProva = new Ricetta();
 		ricettaDiProva.setNome(NOME1);
 		ricettaDiProva.setAutore(AUTORE);
-		assertEquals(ricetteDaApprovare.ottieniRicetta(NOME1, AUTORE),ricettaDiProva);  //CONTROLLA SE OTTENGO LA RICETTA ASPETTATA
+		assertEquals(ricetteDaApprovare.ottieniRicetta(NOME1, AUTORE),ricettaDiProva);  //controlla se ottengo la ricetta aspettata
 	}
 }

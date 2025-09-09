@@ -22,7 +22,7 @@ public class DispensaView2Controller implements Observer{
 	private VBox contenitoreDispensa;
 	
 	@FXML
-	public void initialize() {
+	private void initialize() {
 		trovaRicettaController.caricaDispense();
 		trovaRicettaController.registraOsservatoreDispensa(this);
 		aggiornaView();
@@ -50,6 +50,7 @@ public class DispensaView2Controller implements Observer{
 		trovaRicettaController.salvaDispensa(); //SALVO DISPENSA 
 	}
 	
+	@Override
 	public void aggiornaView() {  //AGGIORNA LA VIEW IN FUNZIONE DELLA DISPENSA
 		contenitoreDispensa.getChildren().clear();
 		List<AlimentoBean> alimentiBeanDispensa = trovaRicettaController.mostraDispensa();

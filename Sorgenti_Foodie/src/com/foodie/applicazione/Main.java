@@ -5,9 +5,7 @@ import com.foodie.boundary.components.ViewLoader;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-
-
-public class Client extends Application {
+public class Main extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {

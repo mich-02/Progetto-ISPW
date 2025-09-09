@@ -31,7 +31,7 @@ public class ModeratoreView2Controller implements Observer{
 	private VBox contenitoreRicetteDaApprovare;
 	
 	@FXML
-	public void initialize() {
+	private void initialize() {
 	    try {
 	        controller.registraOsservatoreRicetteDaApprovare(this);
 	        controller.caricaRicetteDaApprovare();
@@ -48,7 +48,7 @@ public class ModeratoreView2Controller implements Observer{
 	}
 	
 	@FXML
-	public void tornaAlLogin(MouseEvent event) { 
+	private void tornaAlLogin(MouseEvent event) { 
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 
 	}
@@ -93,15 +93,15 @@ public class ModeratoreView2Controller implements Observer{
 		if(!contenitoreRicetteDaApprovare.getChildren().isEmpty()) {
 			contenitoreRicetteDaApprovare.getChildren().clear();
 		}
-		String nome="";
-		String autore="";
-		int index=1;
+		String nome = "";
+		String autore = "";
+		int index = 1;
 		for(Node nodo: contenitoreRicetta.getChildren()) {
-			if(index==1) {
-				nome=((Label)nodo).getText();
+			if(index == 1) {
+				nome = ((Label)nodo).getText();
 			}
-			else if(index==2) {
-				autore=((Label)nodo).getText();
+			else if(index == 2) {
+				autore = ((Label)nodo).getText();
 			}
 			else {
 				break;
@@ -124,17 +124,17 @@ public class ModeratoreView2Controller implements Observer{
 		if(!contenitoreRicetteDaApprovare.getChildren().isEmpty()) {
 			contenitoreRicetteDaApprovare.getChildren().clear();
 		}
-		String nome="";
-		String autore="";
+		String nome = "";
+		String autore = "";
 		for(Node nodo: contenitoreRicetteDaApprovare.getChildren()) {
-			int index=1;
+			int index = 1;
 			VBox contenitoreRicetta = (VBox) nodo;
 			for(Node nodo2: contenitoreRicetta.getChildren()) {
-				if(index==1) {
-					nome=((Label)nodo2).getText();
+				if(index == 1) {
+					nome = ((Label)nodo2).getText();
 				}
-				else if(index==2) {
-					autore=((Label)nodo2).getText();
+				else if(index == 2) {
+					autore = ((Label)nodo2).getText();
 				}
 				else {
 					break;

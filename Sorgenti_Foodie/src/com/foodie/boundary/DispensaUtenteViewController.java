@@ -52,9 +52,8 @@ public class DispensaUtenteViewController implements Observer {
 	
 	@FXML
 	private void caricaViewTrovaRicetta(ActionEvent event) {  //CARICA LA VIEW TROVA RICETTA
-		
 			if(!bottoneModifica) { //resettare il bottone modifica se attivo
-				bottoneModifica=true;
+				bottoneModifica = true;
 				labelDispensa.setFont(Font.font(FORMATO,30));
 				labelDispensa.setText(DISPENSA);
 			}

@@ -8,7 +8,7 @@ public class Moderatore extends Utente {
 
 	@Override
 	public String getViewIniziale(int i) {  //view iniziale
-		if(i==1) {
+		if(i == 1) {
 			return "/com/foodie/boundary/ModeratoreView.fxml";
 		}
 		else {

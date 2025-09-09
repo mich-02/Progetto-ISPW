@@ -37,19 +37,9 @@ public class ContenutoRicettaViewController {
 		ViewLoader.caricaView(ViewInfo.LOGIN_VIEW);
 	}
 	
-	private Label getNome() { //RESTITUICONO LABEL E INFINE VBOX
-		return nome;
-	}
-	
-	private Label getDescrizione() {
-		return descrizione;
-	}
-	
 	private void caricaDatiRicetta(RicettaBean ricettaBean) {  //POPOLA GRAFICAMENTE IL CONTENUTO DELLA RICETTA NEL FXML
-		Label labelNome = getNome();
-		Label labelDescrizione = getDescrizione();
-		labelNome.setText(ricettaBean.getNome());
-		labelDescrizione.setText(ricettaBean.getDescrizione());
+		nome.setText(ricettaBean.getNome());
+		descrizione.setText(ricettaBean.getDescrizione());
 		for(int i=0;i<ricettaBean.getIngredienti().size();i++) {
 			Label label=new Label(ricettaBean.getIngredienti().get(i).getNome()+": "+ricettaBean.getQuantita().get(i));
 			label.setStyle("-fx-background-color: white;");
