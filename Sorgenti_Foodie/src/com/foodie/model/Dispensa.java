@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 public class Dispensa extends SubjectPatternObserver { 
 
-	private static Dispensa istanza;                  //OSSERVATO CONCRETO, ESTENDE SUBJECT PATTERN OBSERVER
+	private static Dispensa istanza = null;                  //OSSERVATO CONCRETO, ESTENDE SUBJECT PATTERN OBSERVER
 	private static ArrayList<Alimento> lista;
 	private static final Logger logger = Logger.getLogger(Dispensa.class.getName());
 	
