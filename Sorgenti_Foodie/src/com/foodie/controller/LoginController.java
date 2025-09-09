@@ -22,7 +22,7 @@ public class LoginController {
 	private UtenteDao utenteDao;
 	
 	public LoginController() {
-		utenteDao = DaoFactoryProvider.ottieniIstanza().creaUtenteDao();
+		utenteDao = DaoFactoryProvider.ottieniIstanza().getDaoFactory().creaUtenteDao();
 	}
 	
 	private void setUtente(String username, int tipo) { //ISTANZIA L'UTENTE IN FUNZIONE DEL TIPO

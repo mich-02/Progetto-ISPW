@@ -28,8 +28,8 @@ public class TrovaRicettaController {
 	
 	public TrovaRicettaController() {
 		dispensa = Dispensa.ottieniIstanza();
-		dispensaDao = DaoFactoryProvider.ottieniIstanza().creaDispensaDao();
-		ricettaDao = DaoFactoryProvider.ottieniIstanza().creaRicettaDao();
+		dispensaDao = DaoFactoryProvider.ottieniIstanza().getDaoFactory().creaDispensaDao();
+		ricettaDao = DaoFactoryProvider.ottieniIstanza().getDaoFactory().creaRicettaDao();
 		databaseAlimenti = new AlimentiAPI();
 	}
 	

@@ -28,8 +28,8 @@ public class PubblicaRicettaController {
 	private static final Logger logger = Logger.getLogger(PubblicaRicettaController.class.getName());
 	
 	public PubblicaRicettaController() {
-		ricettaDao = DaoFactoryProvider.ottieniIstanza().creaRicettaDao();
-		ricetteDaApprovareDao = DaoFactoryProvider.ottieniIstanza().creaRicetteDaApprovareDao();
+		ricettaDao = DaoFactoryProvider.ottieniIstanza().getDaoFactory().creaRicettaDao();
+		ricetteDaApprovareDao = DaoFactoryProvider.ottieniIstanza().getDaoFactory().creaRicetteDaApprovareDao();
 		
 	}
 	
