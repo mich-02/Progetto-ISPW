@@ -3,7 +3,7 @@ package com.foodie.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RicetteDaApprovare extends SubjectPatternObserver{  
+public class RicetteDaApprovare extends SubjectPatternObserver{  //
 
     private static ArrayList<Ricetta> ricetteDaVerificare = new ArrayList<>();
 
