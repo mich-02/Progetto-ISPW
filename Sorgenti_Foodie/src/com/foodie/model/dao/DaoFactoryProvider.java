@@ -6,8 +6,7 @@ import com.foodie.model.dao.db.DBDaoFactory;
 import com.foodie.model.dao.memo.MemoDaoFactory;
 
 public final class DaoFactoryProvider {
-	private static DaoFactoryProvider istanza = null; 
-    private DaoFactory daoFactory; 
+	private static DaoFactoryProvider istanza = null;  
 
     private DaoFactoryProvider() {
     }
@@ -21,6 +20,7 @@ public final class DaoFactoryProvider {
     
     public DaoFactory getDaoFactory() {
     	Persistenza persistenza = ConfiguratorePersistenza.getPersistenzaCorrente();
+    	DaoFactory daoFactory;
         if (persistenza == Persistenza.MEMORIA) {
             daoFactory = MemoDaoFactory.ottieniIstanza();
         } else if (persistenza == Persistenza.DATABASE) {
