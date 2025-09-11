@@ -7,6 +7,17 @@ import com.foodie.model.dao.RicetteDaApprovareDao;
 import com.foodie.model.dao.UtenteDao;
 
 public class MemoDaoFactory implements DaoFactory { 
+	private static MemoDaoFactory istanza = null;
+	
+	private MemoDaoFactory() {
+	}
+	
+	public static MemoDaoFactory ottieniIstanza() {
+		if(istanza == null) {
+			istanza = new MemoDaoFactory();
+		}
+		return istanza;
+	}
 
 	@Override
 	public UtenteDao creaUtenteDao() {

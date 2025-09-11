@@ -9,27 +9,27 @@ public final class DaoFactoryProvider {
 	private static DaoFactoryProvider istanza = null; 
     private DaoFactory daoFactory; 
 
-    // Costruttore privato per impedire istanziazione esterna
     private DaoFactoryProvider() {
-        Persistenza persistenza = ConfiguratorePersistenza.getPersistenzaCorrente();
-        if (persistenza == Persistenza.MEMORIA) {
-            daoFactory = new MemoDaoFactory();
-        } else if (persistenza == Persistenza.DATABASE) {
-            daoFactory = new DBDaoFactory();
-        } else {
-            throw new IllegalStateException("Persistenza non configurata");
-        }
     }
-
+    
     public static DaoFactoryProvider ottieniIstanza() {
         if (istanza == null) {
             istanza = new DaoFactoryProvider();
         }
         return istanza;
     }
-
-    // Metodo per ottenere la DaoFactory
+    
     public DaoFactory getDaoFactory() {
+    	Persistenza persistenza = ConfiguratorePersistenza.getPersistenzaCorrente();
+        if (persistenza == Persistenza.MEMORIA) {
+            daoFactory = MemoDaoFactory.ottieniIstanza();
+        } else if (persistenza == Persistenza.DATABASE) {
+            daoFactory = DBDaoFactory.ottieniIstanza();
+        } else {
+            throw new IllegalStateException("Persistenza non configurata");
+        }
         return daoFactory;
     }
+    
+    
 }
